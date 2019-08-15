@@ -1,0 +1,312 @@
+50
+##start
+Start 1 1
+Room_1 296 2
+Room_2 146 23
+Room_3 11 84
+Room_4 237 280
+Room_5 99 149
+Room_6 121 22
+Room_7 142 183
+Room_8 181 71
+Room_9 297 94
+Room_10 195 16
+Room_11 251 55
+Room_12 182 17
+Room_13 38 21
+Room_14 46 99
+Room_15 143 235
+Room_16 86 246
+Room_17 100 123
+Room_18 221 51
+Room_19 283 121
+Room_20 280 204
+Room_21 18 82
+Room_22 154 254
+Room_23 243 129
+Room_24 108 249
+Room_25 273 200
+Room_26 5 40
+Room_27 187 96
+Room_28 88 177
+Room_29 36 145
+Room_30 150 10
+Room_31 118 206
+Room_32 233 211
+Room_33 152 232
+Room_34 159 128
+Room_35 286 109
+Room_36 234 257
+Room_37 114 64
+Room_38 196 242
+Room_39 9 75
+Room_40 39 259
+Room_41 153 69
+Room_42 134 91
+Room_43 279 270
+Room_44 156 271
+Room_45 129 154
+Room_46 64 93
+Room_47 102 224
+Room_48 268 142
+Room_49 184 11
+Room_50 128 116
+Room_51 84 26
+Room_52 123 166
+Room_53 96 167
+Room_54 52 120
+Room_55 205 182
+Room_56 171 133
+Room_57 217 189
+Room_58 238 90
+Room_59 165 212
+Room_60 110 70
+Room_61 259 283
+Room_62 28 298
+Room_63 230 61
+Room_64 231 108
+Room_65 83 284
+Room_66 253 148
+Room_67 208 282
+Room_68 252 296
+Room_69 77 266
+Room_70 139 63
+Room_71 122 219
+Room_72 107 225
+Room_73 295 203
+Room_74 124 18
+Room_75 66 72
+Room_76 201 278
+Room_77 79 53
+Room_78 15 244
+Room_79 161 124
+Room_80 3 86
+Room_81 32 7
+Room_82 70 168
+Room_83 248 190
+Room_84 6 184
+Room_85 180 252
+Room_86 8 241
+Room_87 247 68
+Room_88 188 281
+Room_89 149 147
+Room_90 190 3
+Room_91 299 105
+Room_92 192 29
+Room_93 160 237
+Room_94 71 260
+Room_95 239 196
+Room_96 93 76
+Room_97 255 165
+Room_98 82 245
+Room_99 76 275
+Room_100 97 269
+##end
+End 300 300
+Start-Room_10
+Start-Room_100
+Start-Room_88
+End-Room_86
+End-Room_37
+End-Room_69
+Room_28-Room_45
+Room_92-Room_62
+Room_28-Room_34
+Room_19-Room_21
+Room_27-Room_35
+Room_83-Room_46
+Room_55-Room_7
+Room_26-Room_4
+Room_25-Room_64
+Room_50-Room_71
+Room_95-Room_48
+Room_29-Room_86
+Room_82-Room_36
+Room_10-Room_20
+Room_70-Room_95
+Room_99-Room_10
+Room_79-Room_23
+Room_16-Room_9
+Room_92-Room_12
+Room_38-Room_66
+Room_63-Room_19
+Room_39-Room_3
+Room_17-Room_71
+Room_13-Room_7
+Room_80-Room_27
+Room_76-Room_72
+Room_39-Room_42
+Room_2-Room_9
+Room_37-Room_53
+Room_91-Room_64
+Room_51-Room_47
+Room_61-Room_20
+Room_95-Room_62
+Room_70-Room_13
+Room_9-Room_76
+Room_12-Room_52
+Room_73-Room_12
+Room_75-Room_5
+Room_70-Room_71
+Room_33-Room_38
+Room_15-Room_90
+Room_96-Room_68
+Room_97-Room_25
+Room_87-Room_53
+Room_66-Room_98
+Room_47-Room_65
+Room_41-Room_52
+Room_25-Room_55
+Room_24-Room_72
+Room_72-Room_1
+Room_62-Room_27
+Room_61-Room_12
+Room_7-Room_33
+Room_30-Room_69
+Room_26-Room_1
+Room_78-Room_15
+Room_23-Room_89
+Room_89-Room_14
+Room_4-Room_44
+Room_42-Room_2
+Room_35-Room_62
+Room_55-Room_66
+Room_62-Room_55
+Room_9-Room_16
+Room_76-Room_89
+Room_1-Room_81
+Room_8-Room_66
+Room_69-Room_3
+Room_33-Room_18
+Room_78-Room_9
+Room_43-Room_13
+Room_61-Room_13
+Room_21-Room_25
+Room_26-Room_40
+Room_25-Room_55
+Room_32-Room_48
+Room_13-Room_91
+Room_15-Room_33
+Room_52-Room_58
+Room_52-Room_86
+Room_90-Room_31
+Room_82-Room_11
+Room_18-Room_94
+Room_97-Room_62
+Room_38-Room_68
+Room_47-Room_74
+Room_95-Room_94
+Room_48-Room_1
+Room_96-Room_82
+Room_22-Room_79
+Room_49-Room_82
+Room_95-Room_17
+Room_36-Room_81
+Room_45-Room_73
+Room_93-Room_61
+Room_20-Room_35
+Room_35-Room_87
+Room_11-Room_89
+Room_33-Room_31
+Room_11-Room_86
+Room_55-Room_11
+Room_69-Room_32
+Room_65-Room_73
+Room_33-Room_4
+Room_55-Room_76
+Room_11-Room_20
+Room_20-Room_8
+Room_39-Room_7
+Room_99-Room_11
+Room_85-Room_59
+Room_73-Room_30
+Room_25-Room_42
+Room_30-Room_18
+Room_92-Room_65
+Room_59-Room_73
+Room_40-Room_42
+Room_17-Room_88
+Room_52-Room_57
+Room_63-Room_52
+Room_13-Room_94
+Room_12-Room_25
+Room_57-Room_88
+Room_82-Room_80
+Room_62-Room_58
+Room_68-Room_93
+Room_35-Room_100
+Room_62-Room_89
+Room_84-Room_51
+Room_88-Room_96
+Room_2-Room_91
+Room_73-Room_58
+Room_61-Room_93
+Room_34-Room_74
+Room_79-Room_58
+Room_72-Room_57
+Room_16-Room_2
+Room_1-Room_44
+Room_79-Room_50
+Room_56-Room_54
+Room_94-Room_49
+Room_22-Room_45
+#link jump
+Room_21-Room_39
+Room_89-Room_38
+Room_92-Room_60
+Room_92-Room_77
+Room_65-Room_70
+Room_4-Room_64
+Room_98-Room_10
+Room_32-Room_25
+Room_12-Room_24
+Room_26-Room_55
+Room_2-Room_65
+Room_7-Room_36
+Room_39-Room_48
+Room_74-Room_17
+Room_21-Room_1
+Room_58-Room_57
+Room_30-Room_2
+Room_14-Room_20
+Room_89-Room_98
+Room_92-Room_90
+Room_96-Room_58
+Room_85-Room_13
+Room_7-Room_76
+Room_37-Room_98
+Room_39-Room_1
+Room_60-Room_39
+Room_8-Room_87
+Room_62-Room_2
+Room_29-Room_32
+Room_35-Room_96
+Room_92-Room_31
+Room_4-Room_32
+Room_45-Room_84
+Room_35-Room_76
+Room_12-Room_60
+Room_62-Room_66
+Room_87-Room_92
+Room_63-Room_45
+Room_22-Room_73
+Room_41-Room_69
+Room_56-Room_78
+Room_45-Room_87
+Room_5-Room_41
+Room_58-Room_100
+Room_75-Room_40
+Room_33-Room_95
+Room_46-Room_98
+Room_52-Room_69
+Room_83-Room_72
+Room_87-Room_97
+Room_26-Room_84
+Room_56-Room_54
+Room_33-Room_32
+Room_26-Room_44
+Room_40-Room_41
+Room_8-Room_2
+Room_64-Room_43
+Room_40-Room_93
+Room_81-Room_89
