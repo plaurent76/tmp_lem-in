@@ -267,7 +267,7 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 	cnt = 0;
 	while (++i < size_y && mx[i][0] != -1)
 		if (!ending_path(mx, i, size_y) && ++cnt)
-			int_set(mx[i], -1, size_y);
+			int_set(mx[i], -1, size_x);
 	cnt = (size_y - start_y) - cnt;
 	ret = cnt;
 	last_full = i;
