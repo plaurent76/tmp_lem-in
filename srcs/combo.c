@@ -46,8 +46,11 @@ int     count_score(t_env *env, int n_combo, int *id_paths)
 
 void    add_combo(t_env *env, int i, int j, int n_cv)
 {
-    env->combo[n_cv][0] = i;
-    env->combo[n_cv][1] = j; 
+    if (n_cv < env->nb_valid && env->flow_max == 2)
+    {
+        env->combo[n_cv][0] = i;
+        env->combo[n_cv][1] = j; 
+    }
 }
 
 void    add_tmp_combo(t_env *env, int i, int *paths, int n_cv)
@@ -109,7 +112,7 @@ void cas_combo2(t_env *env, int n_combo, int i, int j)
         j = i + 1;
         while (j < env->nb_valid)
         {
-            if (n_cv + 1 < env->nb_valid && path_combo2(env, env->paths[i], env->paths[j]))
+            if ((n_cv + 1) < env->nb_valid && path_combo2(env, env->paths[i], env->paths[j]))
             {
                 add_combo(env, i, j, ++n_cv);
                 if (env->score > (env->tmp_score = count_score(env, n_combo, env->combo[n_cv])))
@@ -171,8 +174,8 @@ void    combo_optimal(t_env *env)
     n_combo = 1;
     // env->res[0] = 0;
     env->score = count_score(env, n_combo, NULL);
-    env->combo = alloc_matrix_int(env->flow_max, env->nb_valid, -1);//nombre de combo a revoir
-    env->tmp_combo = alloc_matrix_int(env->flow_max, env->nb_valid, -1);
+    alloc_matrix_int(env->flow_max, env->nb_valid, -1);//nombre de combo a revoir
+    alloc_matrix_int(env->flow_max, env->nb_valid, -1);
     while (++n_combo <= env->flow_max)
     {
         if (n_combo == 2)
@@ -186,8 +189,8 @@ void    combo_optimal(t_env *env)
             replace_tmp_combo(env);
         }
     }
+    print_tab(env->combo, env->flow_max, env->nb_valid);
     free_matrix(&env->combo, env->nb_valid);
     free_matrix(&env->tmp_combo, env->nb_valid);
-    // print_tab(env->combo, env->flow_max, env->nb_valid);
-    print_path(env->res, env->flow_max);
+    free_matrix(&env->paths, env->nb_paths);
 }
