@@ -113,9 +113,9 @@ void	free_matrix(int ***tab, int depth)
 	*tab = NULL;
 }
 
-int	 ffy(int **mx, int size_y)
+int	 ffy(int **mx, int y_start, int size_y)
 {
-	int i = -1;
+	int i = y_start - 1;
 
 	while (++i < size_y) {
 		if (mx[i][1] == -1) {
@@ -137,14 +137,14 @@ int	 ffx(int **mx, int y, int size_x)
 	return 0;
 }
 
-int		ending_path(int **mx, int y, int size_m)
+int		ending_path(int **mx, int y, int size_y)
 {
 	int		i;
 
 	i = -1;
-	while (i < size_m && mx[y][++i] != -1)
+	while (i < size_y && mx[y][++i] != -1)
 	{
-		if (mx[y][i] == 1 || i + 1 == size_m)
+		if (mx[y][i] == 1 || i + 1 == size_y)
 			return (1);
 	}
 	return (0);
@@ -155,14 +155,14 @@ int		duplicate_path_until(int **mx, int until, int size_y, int y_src)
 {
 	int 	y;
 	// int		*tmp;
-
 	// tmp = NULL;
-	y = ffy(mx, size_y);
+	y = ffy(mx, y_src, size_y);
 	if (y == -1)
 		return -1;
 	// 
 	// else
 		memcp(mx[y], mx[y_src], (until) * sizeof(int));
+	// printf("duplicated: %d >> %d\n", y_src, y);
 	return (y);
 }
 
@@ -253,6 +253,37 @@ void	add_to_path(int **mx, int size_x, int y, int id)
 
 }
 
+int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
+{
+	int		i;
+	int		cnt;
+	int		ret;
+	int		y;
+	int		last_full;
+
+	i = start_y - 1;
+	y = start_y;
+	printf("i=%d start_y=%d\n", i, y);
+	cnt = 0;
+	while (++i < size_y && mx[i][0] != -1)
+		if (!ending_path(mx, i, size_y) && ++cnt)
+			int_set(mx[i], -1, size_y);
+	cnt = (size_y - start_y) - cnt;
+	ret = cnt;
+	last_full = i;
+	printf("cnt=%d last_full=%d\n", cnt, last_full);
+	while (--cnt >= 0)
+	{
+		while (last_full > 0 && mx[last_full][0] != -1)
+			--last_full;
+		y = ffy(mx, y, size_y);
+		if (y >= (last_full - 1))
+			break;
+		memcp(mx[y], mx[last_full], (size_x) * sizeof(int));
+		int_set(mx[last_full], -1, size_x);
+	}
+	return ret;
+}
 
 void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 {
@@ -265,7 +296,7 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 	n_link = 0;
 	if (!path_n && mx[0][0] == -1)
 	{
-		path_n = ffy(mx, env->nb_paths);
+		path_n = ffy(mx, path_n, env->nb_paths);
 		if (path_n == -1)
 			return ;
 		add_to_path(mx, env->nb_rooms, path_n, id);
@@ -284,7 +315,15 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 			//printf("%d-%d\n", id, x);
 			++n_link;
 			if (n_link > 1)
+			{
+				if (path_n_duplicate > 0 && id == 0)
+				{ // we found at least 1 path starting from 0
+					printf("Cleaned: %d rows\n",
+						clean_paths(mx, path_n_duplicate, env->nb_paths, env->nb_rooms)
+					);
+				}
 				path_n_duplicate = duplicate_path_until(mx, path_n_length, env->nb_paths, path_n);
+			}
 			if (path_n_duplicate == -1)
 				return ;
 			add_to_path(mx, env->nb_rooms, path_n_duplicate, x);
@@ -294,22 +333,23 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 				explore_paths(env, mx, path_n_duplicate, x);
 			else
 			{
-				plong(1, x, '|');
-				plong(1, path_n_duplicate, '\n');
-				if (path_n > 0 && !ending_path(mx, path_n - 1, env->nb_rooms))
-				{
-				pstr(1, "entrer dans le cas ou le chemins precedent n'est pas fini", '\n');
-					// mx[path_n - 1] = memcp(mx[path_n - 1], mx[path_n], sizeof(int) * env->nb_rooms);
-					// mx[path_n] = mems(mx[path_n], (char)-1, env->nb_rooms);
-				}
+				// plong(1, x, '|');
+				// plong(1, path_n_duplicate, '\n');
+				// if (path_n > 0 && !ending_path(mx, path_n - 1, env->nb_rooms))
+				// {
+				// 	pstr(1, "entré dans le cas ou le chemin precedent n'est pas fini", '\n');
+				// 	memcp(mx[path_n - 1], mx[path_n], sizeof(int) * env->nb_rooms);
+				// 	int_set(mx[path_n], -1, env->nb_rooms);
+				// }
 				env->nb_valid++;
 			}
 		}
 	}
 	if (n_link == 0)
 	{
+		// printf("Would delete row: %d\n", path_n);
 		// del_path(mx, path_n);
-		//printf("path %d deleted cause no link\n", path_n);
+		// printf("path %d deleted cause no link\n", path_n);
 	}
 }
 
@@ -443,7 +483,7 @@ void			genetic_solve(t_env *env)
 	// alloc room_free to track room occupation
 	env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms);
 	mems(env->room_free, (char)1, env->nb_rooms);
-	env->nb_paths = (int)(248 + env->nb_rooms / 2);
+	env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 	fill_links_matrix(env);
 	count_flow_max(env);
 	fill_name_tab(env);
@@ -452,12 +492,12 @@ void			genetic_solve(t_env *env)
 	//  print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 	print_tab(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
-	 print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
+	print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 	if (!load_valid_paths(env, tmp_paths))
 		printf("error loading valid paths into env->paths");
 	// print summary
 	printf("nb_rooms: %d | nb_paths (max): %d | nb_paths (used): %d\n"
-		, env->nb_rooms, env->nb_paths, ffy(env->paths, env->nb_valid));
+		, env->nb_rooms, env->nb_paths, env->nb_valid);
 	// print valid paths:
 	printf("found %d valid paths:\n", env->nb_valid);
 	print_tab(env->paths, env->nb_rooms, env->nb_valid);

@@ -1,15 +1,13 @@
 
 #include "lem_in.h"
 
-int     *int_set(int *tab, int id, int size)
+int     *int_set(int *tab, int val, int size)
 {
     int     i;
 
     i = -1;
     while (++i < size)
-    {
-        tab[i] = id;
-    }
+        tab[i] = val;
     return (tab);
 }
 

@@ -55,8 +55,9 @@
 ** BASICS
 */
 
-void	free_matrix(int ***tab, int depth);
-int		**alloc_matrix_int(int x, int y, int id);
+void	        free_matrix(int ***tab, int depth);
+int		        **alloc_matrix_int(int x, int y, int id);
+int             *int_set(int *tab, int val, int size);
 int				slen(char *s);
 long			labs(long n);
 int				active_bits(char c);
