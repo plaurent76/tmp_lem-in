@@ -500,7 +500,7 @@ void			genetic_solve(t_env *env)
 		, env->nb_rooms, env->nb_paths, env->nb_valid);
 	// print valid paths:
 	printf("found %d valid paths:\n", env->nb_valid);
-	print_tab(env->paths, env->nb_rooms, env->nb_valid);
+	// print_tab(env->paths, env->nb_rooms, env->nb_valid);
 	// print all paths:
 	// printf("all paths:\n");
 	// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
