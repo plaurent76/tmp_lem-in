@@ -466,6 +466,6 @@ void			genetic_solve(t_env *env)
 	// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 	free_matrix(&tmp_paths, env->nb_paths);
 	free_matrix(&env->links, env->nb_rooms);
-	free_matrix(&env->paths, env->nb_valid);
+	//free_matrix(&env->paths, env->nb_valid);
 	return ;
 }

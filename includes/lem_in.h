@@ -55,6 +55,8 @@
 ** BASICS
 */
 
+void	free_matrix(int ***tab, int depth);
+int		**alloc_matrix_int(int x, int y, int id);
 int				slen(char *s);
 long			labs(long n);
 int				active_bits(char c);
@@ -129,7 +131,8 @@ void			put_path(t_path *path);
 /*
 ** PRINT
 */
-
+void 	print_path(int *path, int n);
+void 	print_tab(int **tab, int x, int y);
 void			put_fwinfo(t_env *env);
 void			put_ants(t_env *env);
 void			put_all(t_env *env);
