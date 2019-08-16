@@ -107,7 +107,7 @@ void cas_combo2(t_env *env, int n_combo, int i, int j)
         j = i + 1;
         while (j < env->nb_valid)
         {
-            if (path_combo2(env, env->paths[i], env->paths[j]))
+            if (n_cv < env->nb_valid && path_combo2(env, env->paths[i], env->paths[j]))
             {
                 add_combo(env, i, j, ++n_cv);
                 if (env->score > (env->tmp_score = count_score(env, n_combo, env->combo[n_cv])))
@@ -132,7 +132,7 @@ void cas_combo3(t_env *env, int n_combo, int i, int j)
         j = 0;
         while (j < env->nb_valid)
         {
-            if (env->combo[j][0] != -1 && path_combo3(env, env->paths[i], env->combo[j], n_combo))
+            if (n_cv < env->nb_valid && env->combo[j][0] != -1 && path_combo3(env, env->paths[i], env->combo[j], n_combo))
             {
                 add_tmp_combo(env, i, env->combo[j], ++n_cv);
                 // print_path(env->tmp_combo[n_cv], env->flow_max);
