@@ -33,6 +33,8 @@ int     count_score(t_env *env, int n_combo, int *id_paths)
     i = 0;
     diff = 0;
     score = 0;
+    if (id_paths == NULL)
+        return (score = ((env->nb_ants + diff) / n_combo) + path_len(env->paths[0]) - 1);
     while ((env->nb_ants + diff) % (n_combo + 1) != 0)
         diff++;
     while (i < n_combo)
@@ -168,7 +170,7 @@ void    combo_optimal(t_env *env)
 
     n_combo = 1;
     // env->res[0] = 0;
-    env->score = count_score(env, n_combo, 0);
+    env->score = count_score(env, n_combo, NULL);
     env->combo = alloc_matrix_int(env->flow_max, env->nb_valid, -1);//nombre de combo a revoir
     env->tmp_combo = alloc_matrix_int(env->flow_max, env->nb_valid, -1);
     while (++n_combo <= env->flow_max)

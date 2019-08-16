@@ -492,7 +492,7 @@ void			genetic_solve(t_env *env)
 	//  print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 	print_tab(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
-	print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
+	// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 	if (!load_valid_paths(env, tmp_paths))
 		printf("error loading valid paths into env->paths");
 	// print summary
