@@ -17,6 +17,7 @@ static void		make_magic_happen(t_env *env)
 	anthill_complete(env);
 	genetic_solve(env);
 	combo_optimal(env);
+	assign_colony(env);
 	//IS_SET_M ? 0 : put_lines(env);
 	//IS_SET_R ? put_rooms(env) : 0;
 	//IS_SET_L ? put_links(env) : 0;
