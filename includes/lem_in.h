@@ -17,6 +17,8 @@
 ** DEPENDENCIES
 */
 
+# include <stdio.h>
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -60,7 +62,7 @@ char	        *alloc_array_char(int n, char val);
 int		        **alloc_matrix_int(int x, int y, int val);
 char            **alloc_matrix_char(int x, int y);
 int             *int_set(int *tab, int val, int size);
-void	        free_matrix(int ***tab, int depth);
+void	        free_matrix_int(int ***tab, int depth);
 int				slen(char *s);
 long			labs(long n);
 int				active_bits(char c);
@@ -135,8 +137,8 @@ void			put_path(t_path *path);
 /*
 ** PRINT
 */
-void            print_path(int *path, int n);
-void            print_tab(int **tab, int x, int y);
+void            print_array_int(int *array, int n);
+void            print_matrix_int(int **mx, int x, int y);
 void			put_fwinfo(t_env *env);
 void			put_ants(t_env *env);
 void			put_all(t_env *env);
@@ -153,6 +155,7 @@ void			put_room_links(t_env *env, t_room *room);
 
 void			brute_solve(t_env *env);
 void			genetic_solve(t_env *env);
+void            assign_colony(t_env *env);
 void			move_colony(t_env *env);
 void            combo_optimal(t_env *env);
 

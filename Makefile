@@ -21,6 +21,8 @@ COMMON =	main \
 			io \
 			error \
 			memory \
+			array \
+			matrix \
 			ants \
 			links \
 			rooms \

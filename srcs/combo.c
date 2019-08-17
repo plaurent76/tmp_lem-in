@@ -91,7 +91,7 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                     env->best_flow = n_combo;
                 }
             }
-    // print_tab(combo_2, env->flow_max, env->nb_valid);
+    // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
 }
 
 void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
@@ -110,15 +110,15 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
                 combo_x[++n_cv][0] = i;
                 int_concat(env, combo_x[n_cv], combo_2[j]);
                 // memcp(&combo_x[n_cv], combo_2[j], sizeof(int) * env->flow_max);
-                // print_path(combo_x[n_cv], env->flow_max);
+                // print_array_int(combo_x[n_cv], env->flow_max);
                 if (env->best_score > (score = count_score(env, n_combo, combo_x[n_cv])))
                 {
-                    // print_path(env->combo_x[n_cv], n_combo);
+                    // print_array_int(env->combo_x[n_cv], n_combo);
                     // pstr(1, "meilleur score X", '\n');
                     memcp(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
-                    // print_path(env->best_combo, env->flow_max);
+                    // print_array_int(env->best_combo, env->flow_max);
                 }
             }
 }
@@ -151,14 +151,14 @@ void    combo_optimal(t_env *env)
     get_combo_2(env, combo_2, n_combo);
     while (++n_combo <= env->flow_max)
     {
-        // print_tab(env->combo_2, env->flow_max, env->nb_valid);
+        // print_matrix_int(env->combo_2, env->flow_max, env->nb_valid);
         get_combo_x(env, combo_2, combo_x, n_combo);
-        // print_tab(combo_x, env->flow_max, env->nb_valid);
+        // print_matrix_int(combo_x, env->flow_max, env->nb_valid);
         // pstr(1, "teste", '\n');
         replace_combo_x(env, combo_2, combo_x);
     }
-    print_path(env->best_combo, env->flow_max);
-    // print_tab(combo_2, env->flow_max, env->nb_valid);
-    free_matrix(&combo_2, env->nb_valid);
-    free_matrix(&combo_x, env->nb_valid);
+    print_array_int(env->best_combo, env->flow_max);
+    // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
+    free_matrix_int(&combo_2, env->nb_valid);
+    free_matrix_int(&combo_x, env->nb_valid);
 }

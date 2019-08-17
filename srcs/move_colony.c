@@ -12,10 +12,10 @@
 
 #include "lem_in.h"
 
-int				*get_combo_paths_len(t_env *env)
+int *get_combo_paths_len(t_env *env)
 {
-	int		i;
-	int		*paths_len;
+	int i;
+	int *paths_len;
 
 	if (!(paths_len = alloc_array_int(env->best_flow, 0)))
 		return (NULL);
@@ -25,40 +25,44 @@ int				*get_combo_paths_len(t_env *env)
 	return (paths_len);
 }
 
-int				*get_combo_ants_shares(t_env *env)
+int *get_ants_in_paths(t_env *env)
 {
-	int		*paths_len;
-	int		*ants_in_paths;
-	int		min_len;
-	int		max_len;
-	int		diff;
-	int		i;
-	int		ants_left;
+	int *paths_len;
+	int *ants_in_paths;
+	// int min_len;
+	// int max_len;
+	int diff;
+	int i;
+	int ants_left;
 
 	(paths_len = get_combo_paths_len(env))
-	? 0 : put_error(env, "Error: paths_len malloc failed");
+		? 0
+		: put_error(env, "Error: paths_len malloc failed");
 	(ants_in_paths = alloc_array_int(env->best_flow, 0))
-	? 0 : put_error(env, "Error: ants_in_paths malloc failed");
+		? 0
+		: put_error(env, "Error: ants_in_paths malloc failed");
+
 	// i = -1;
 	// max_len = 0;
 	// min_len = env->nb_rooms;
 	// while (++i < env->best_flow)
 	// 	paths_len[i] > max_len ? (max_len = paths_len[i])
-	// 	: paths_len[i] < min_len ? (min_len = paths_len[i]) : 0;
-	min_len = paths_len[0];
-	max_len = paths_len[env->best_flow - 1];
+	// 	: paths_len[i] < min_len ? (min_len = paths_len[i]) : 0;^
+
+	// min_len = paths_len[0];
+	// max_len = paths_len[env->best_flow - 1];
 	ants_left = env->nb_ants; // % (min_len * env->best_flow);
 	i = -1;
 	while (++i < env->best_flow)
 	{
-		diff = paths_len[i + 1] - paths_len[i];
-		if (diff > 0 && diff > ants_left)
+		diff = (i == env->best_flow - 1) ? 0 : (paths_len[i + 1] - paths_len[i]);
+		if (diff >= 0 && ((diff + paths_len[i]) > ants_left))
 		{
 			ants_in_paths[i] += ants_left;
 			ants_left = 0;
 			break;
 		}
-		else if (diff > 0 && diff < ants_left)
+		else if (diff >= 0 && diff < ants_left)
 		{
 			ants_in_paths[i] += paths_len[i];
 			while (ants_left > 0 && --diff >= 0)
@@ -68,38 +72,47 @@ int				*get_combo_ants_shares(t_env *env)
 			}
 		}
 	}
-		// ants_in_paths[i] += min_len;
+	printf("paths_len: ");
+	print_array_int(paths_len, env->best_flow);
+	printf("ants_in_paths: ");
+	print_array_int(ants_in_paths, env->best_flow);
+	free(paths_len);
+	return (ants_in_paths);
 }
-
-static void		assign_colony(t_env *env)
+/*
+** on recoit les paths sous forme d'indice, avec le score si on le multiplie par le nombre de chemin
+** moins la taille du chemin on a le nb de fourmie que ce chemin va recevoir, et donc comme ca on a plus
+** qu'a cree la colony dabord avec le premier chemins et sont nb de fourmie et ainsi de suite
+** mais il ne faut pas oublier la diff, cad si 3 chemins et 5 fourmis y aura un cheins qui aura une fourmie en moins
+*/
+void assign_colony(t_env *env)
 {
-	int		i;
-	int		*combo_ant_shares;
-	int		nb_ant_p;
-	int		path;
+	int i;
+	int *ants_in_paths;
+	int next_ant_path;
 
 	i = -1;
-	nb_ant_p = 0;
 	(env->colony = (t_ant **)malloc(sizeof(t_ant *) * env->nb_ants))
 	? 0 : put_error(env, "Error: t_ant ** malloc failed");
-	/*
-	** on recoit les paths sous forme d'indice, avec le score si on le multiplie par le nombre de chemin
-	** moins la taille du chemin on a le nb de fourmie que ce chemin va recevoir, et donc comme ca on a plus
-	** qu'a cree la colony dabord avec le premier chemins et sont nb de fourmie et ainsi de suite
-	** mais il ne faut pas oublier la diff, cad si 3 chemins et 5 fourmis y aura un cheins qui aura une fourmie en moins
-	*/
+	ants_in_paths = get_ants_in_paths(env);
+	next_ant_path = 0;
 	while (++i < env->nb_ants)
 	{
-		if (nb_ant_p == 0)
+		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_ant_path]], env->nb_rooms);
+		ants_in_paths[next_ant_path]--;
+		while (1)
 		{
-			
+			(next_ant_path == (env->best_flow - 1))
+			? (next_ant_path = 0) : (++next_ant_path);
+			if (ants_in_paths[next_ant_path] != 0)
+				break;
 		}
-		env->colony[i] = new_ant(env, env->paths[0], size);
 	}
+	printf("colony assigned!\n");
 	//IS_SET_A ? put_ants(env) : 0;
 }
 
-void			put_ant(t_env *env, t_ant *ant)
+void put_ant(t_env *env, t_ant *ant)
 {
 	if (ant && ant->path)
 	{
@@ -109,22 +122,20 @@ void			put_ant(t_env *env, t_ant *ant)
 		? write(1, " ", 1) : 0;
 		write(1, "L", 1);
 		plong(1, ant->n, '\0');
-		write(1, "-", 1);//il faut cree le tab qui va avoir tout les noms des rooms en fonction des id
+		write(1, "-", 1); //il faut cree le tab qui va avoir tout les noms des rooms en fonction des id
 		ant->path->rooms[ant->path->current] != -1
-		? plong(1, ant->path->rooms[ant->path->current], '\0')
-		: 0;
+			? plong(1, ant->path->rooms[ant->path->current], '\0')
+			: 0;
 	}
 }
 
-int				move_ant_forward(t_env *env, t_ant *ant)
+int move_ant_forward(t_env *env, t_ant *ant)
 {
 	ant ? 0 : put_error(env, "Error: tried to move non-existing ant");
 	ant->path ? 0 : put_error(env, "Error: ant has no path to follow");
 	ant->path->size > 0 ? 0 : put_error(env, "Error: ant path size <= 0");
-	ant->path->rooms[ant->path->current] >= 0 ?
-	0 : put_error(env, "Error: could not locate ant");
-	if ((ant->path->current + 1) <= ant->path->size
-		&& env->room_free[ant->path->rooms[ant->path->current + 1]])
+	ant->path->rooms[ant->path->current] >= 0 ? 0 : put_error(env, "Error: could not locate ant");
+	if ((ant->path->current + 1) <= ant->path->size && env->room_free[ant->path->rooms[ant->path->current + 1]])
 	{
 		env->room_free[ant->path->rooms[ant->path->current]] = 1;
 		env->room_free[ant->path->rooms[ant->path->current + 1]] = 0;
@@ -137,11 +148,11 @@ int				move_ant_forward(t_env *env, t_ant *ant)
 	return (0);
 }
 
-void			move_colony(t_env *env)
+void move_colony(t_env *env)
 {
-	int		i;
-	int		j;
-	int		rounds;
+	int i;
+	int j;
+	int rounds;
 
 	i = -1;
 	assign_colony(env);
@@ -153,7 +164,8 @@ void			move_colony(t_env *env)
 		while (++j < env->nb_ants)
 			move_ant_forward(env, env->colony[j]);
 		(i < (rounds - 1) && path_len(env->paths[0], env->nb_rooms) != 2 && (!IS_SET_M || IS_SET_S))
-		? write(1, "\n", 1) : 0;
+			? write(1, "\n", 1)
+			: 0;
 	}
 	(path_len(env->paths[0], env->nb_rooms) == 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
 }

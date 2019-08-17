@@ -11,69 +11,6 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
-
-int		*alloc_array_int(int n, int val)
-{
-	int		*array;
-	int		i;
-
-	i = -1;
-	if (!(array = (int*)malloc(sizeof(int) * n)))
-		return (NULL);
-	while (++i < n)
-		array[i] = val;
-	return (array);
-}
-
-char	*alloc_array_char(int n, char val)
-{
-	char	*array;
-
-	if (!(array = (char*)malloc(sizeof(char) * n)))
-		return (NULL);
-	mems(array, val, n);
-	return (array);
-}
-
-int		**alloc_matrix_int(int x, int y, int val)
-{
-	int		i;
-	int		**matrix;
-	
-	i = -1;
-	if (!(matrix = (int**)malloc(sizeof(int*) * y)))
-		return (NULL);
-	while (++i < y)
-		if (!(matrix[i] = alloc_array_int(x, val)))
-			return (NULL);
-	return (matrix);
-}
-
-char	**alloc_matrix_char(int x, int y)
-{
-	int		i;
-	char	**matrix;
-	
-	i = -1;
-	if (!(matrix = (char**)malloc(sizeof(char*) * y)))
-		return (NULL);
-	while (++i < y)
-		if (!(matrix[i] = alloc_array_char(x, (char)0)))
-			return (NULL);
-	return (matrix);
-}
-
-void	free_matrix(int ***tab, int depth)
-{
-	if (!tab || !(*tab))
-		return ;
-	while (--depth >= 0)
-		if (*tab[depth] != NULL)
-			free(*tab[depth]);
-	free(*tab);
-	*tab = NULL;
-}
 
 int	 ffy(int **paths, int y_start, int size_y)
 {
@@ -145,25 +82,6 @@ int		duplicate_path_until(int **paths, int until, int size_y, int y_src)
 	return (y);
 }
 
-void 	print_path(int *path, int n)
-{
-	int i = -1;
-
-	while (++i < n)
-		(i == (n-1)) ? printf("%d\n", path[i]) : printf(" %d\t| ", path[i]);
-}
-
-void 	print_tab(int **tab, int x, int y)
-{
-	int i = -1;
-
-	while (++i < y)
-	{
-		printf("%d\t | ", i);
-		print_path(tab[i], x);
-	}
-}
-
 int 	paths_match(int *path1, int *path2, int length)
 {
 	int 	i;
@@ -186,13 +104,13 @@ int		room_used(int **paths, int path_n, int until, int id)
 		if (paths[path_n][length] == id)
 		{
 			// printf("room %d found in path %d at length %d: ", id, path_n, length);
-			// print_path(paths[path_n], length + 1);
+			// print_array_int(paths[path_n], length + 1);
 			return (1);
 		}
 	}
 	// length = length < until ? length : until;
 	// printf("room %d NOT found in path %d of length %d: ", id, path_n, length);
-	// print_path(paths[path_n], length);
+	// print_array_int(paths[path_n], length);
 	if (path_n > 0) {
 		//printf("path_n: %d length: %d\n", path_n, length);
 		if (paths_match(paths[path_n], paths[path_n - 1], length)
@@ -201,9 +119,9 @@ int		room_used(int **paths, int path_n, int until, int id)
 		}
 		//bullshit
 		// printf("comparing previous path:\n");
-		// print_path(paths[path_n-1], length);
+		// print_array_int(paths[path_n-1], length);
 		// printf("with new path:\n");
-		// print_path(paths[path_n], length);
+		// print_array_int(paths[path_n], length);
 		// printf("path_match:%s\n", paths_match(paths[path_n], paths[path_n - 1], length) ? "yes\n" : "no\n");
 
 		// printf("comparing last room of previous with new room to add:\n");
@@ -241,7 +159,7 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 	y = start_y;
 	printf("i=%d start_y=%d\n", i, y);
 	cnt = 0;
-	// print_tab(paths, size_x, size_y);
+	// print_matrix_int(paths, size_x, size_y);
 	while (++i < size_y && paths[i][0] != -1)
 		if (!ending_path(paths, i, size_x) && ++cnt)
 			int_set(paths[i], -1, size_x);
@@ -259,27 +177,27 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 		memcp(paths[y], paths[last_full], (size_x) * sizeof(int));
 		int_set(paths[last_full], -1, size_x);
 	}
-	// print_tab(paths, size_x, size_y);
+	// print_matrix_int(paths, size_x, size_y);
 	return ret;
 }
 
-int		add_to_node(t_env *env, int node_room)
+int		add_to_node(t_env *env, int room_id)
 {
 	int i = -1;
 
 	while (++i < env->flow_start_max)
-		if (env->node_usage[i][0] == node_room)
+		if (env->node_usage[i][0] == room_id)
 			if (env->node_usage[i][1]++)
 				return (1);
 	return (0);
 }
 
-int		is_node_full(t_env *env, int node_room)
+int		is_node_full(t_env *env, int room_id)
 {
 	int i = -1;
 
 	while (++i < env->flow_start_max)
-		if (env->node_usage[i][0] == node_room)
+		if (env->node_usage[i][0] == room_id)
 			if (env->node_usage[i][1] >= env->flow_start_max)
 				return (1);
 	return (0);
@@ -328,7 +246,7 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 			if (path_n_duplicate == -1)
 				return ;
 			add_to_path(paths, env->nb_rooms, path_n_duplicate, x);
-			// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
+			// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
 			// printf("explore path %d from room %d\n", path_n, x);
 			if (x != 1)
 				explore_paths(env, paths, path_n_duplicate, x);
@@ -373,9 +291,7 @@ int 	load_valid_paths(t_env *env, int **tmp_paths)
 	i = -1;
 	valid_saved = 0;
 
-	while (++i < (int)env->nb_rooms && valid_saved < env->nb_valid)
-	{
-		j = -1;
+	while (++i < (int)env->nb_rooms && valid_saved < env->nb_valid && (j = -1))
 		while (++j < (int)env->nb_paths)
 		{
 			if (tmp_paths[j][i] == 1)
@@ -384,7 +300,6 @@ int 	load_valid_paths(t_env *env, int **tmp_paths)
 				valid_saved++;
 			}
 		}
-	}
 	return 1;
 }
 
@@ -452,7 +367,7 @@ void         count_flow_max(t_env *env)
 	env->flow_max = flow_end <= env->flow_start_max ? flow_end : env->flow_start_max;
 	env->node_usage = alloc_matrix_int(2, env->flow_start_max, -1);
 	memcp(env->node_usage, node_usage_tmp, sizeof(int) * 2 * env->flow_start_max);
-	free_matrix(&node_usage_tmp, env->nb_rooms);
+	free_matrix_int(&node_usage_tmp, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
@@ -483,10 +398,10 @@ void			genetic_solve(t_env *env)
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
 	0 : put_error(env, "Error: tmp_paths malloc failed");
-	//  print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
-	print_tab(env->links, env->nb_rooms, env->nb_rooms);
+	//  print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
+	print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
-	// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
+	// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
 	if (!load_valid_paths(env, tmp_paths))
 		printf("error loading valid paths into env->paths");
 	// print summary
@@ -494,9 +409,10 @@ void			genetic_solve(t_env *env)
 		, env->nb_rooms, env->nb_paths, env->nb_valid);
 	// print all paths:
 	// printf("all paths:\n");
-	// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
+	// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
 	// print valid paths:
 	printf("found %d valid paths:\n", env->nb_valid);
-	print_tab(env->paths, env->nb_rooms, env->nb_valid);
-	free_matrix(&tmp_paths, env->nb_paths);
+	print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
+	free_matrix_int(&tmp_paths, env->nb_paths);
+	assign_colony(env);
 }

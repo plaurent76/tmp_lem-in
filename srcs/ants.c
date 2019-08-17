@@ -47,9 +47,12 @@ t_ant	*new_ant(t_env *env, int *path, int path_size)
 
 void	del_ant(t_env *env, t_ant *ant)
 {
-	(ant && ant->path && ant->path->rooms)
-	? (env->room_free[ant->path->rooms[ant->path->current]] = 1) : 0;
+	if (!ant)
+		return ;
+	if (ant->path && ant->path->rooms)
+		env->room_free[ant->path->rooms[ant->path->current]] = 1;
 	del_ant_path(ant->path);
-	ant ? free(ant) : 0;
+	free(ant);
+	ant = NULL;
 	--g_ant_id;
 }
