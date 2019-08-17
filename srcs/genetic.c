@@ -346,9 +346,9 @@ void         count_flow_max(t_env *env)
 {
     int     i;
     int     flow_end;
-	int		**node_usage_tmp;
+	int		**tmp_node_usage;
 
-	(node_usage_tmp = alloc_matrix_int(2, env->nb_rooms, -1))
+	(tmp_node_usage = alloc_matrix_int(2, env->nb_rooms, -1))
 	? 0 : put_error(env, "Error: alloc_matric_int failed");
     env->flow_start_max = 0;
     flow_end = 0;
@@ -357,8 +357,8 @@ void         count_flow_max(t_env *env)
     {
         if (env->links[0][i] == 1 && i != 0)
 		{
-			node_usage_tmp[env->flow_start_max][0] = i;
-			node_usage_tmp[env->flow_start_max][1] = 0;
+			tmp_node_usage[env->flow_start_max][0] = i;
+			tmp_node_usage[env->flow_start_max][1] = 0;
             env->flow_start_max++;
 		}
         if (env->links[1][i] == 1 && i != 1)
@@ -367,8 +367,8 @@ void         count_flow_max(t_env *env)
     }
 	env->flow_max = flow_end <= env->flow_start_max ? flow_end : env->flow_start_max;
 	env->node_usage = alloc_matrix_int(2, env->flow_start_max, -1);
-	memcp(env->node_usage, node_usage_tmp, sizeof(int) * 2 * env->flow_start_max);
-	free_matrix_int(&node_usage_tmp, env->nb_rooms);
+	memcp(env->node_usage, tmp_node_usage, sizeof(int) * 2 * env->flow_start_max);
+	// free_matrix_int(&tmp_node_usage, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
