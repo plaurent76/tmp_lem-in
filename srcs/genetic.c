@@ -414,6 +414,6 @@ void			genetic_solve(t_env *env)
 	// print valid paths:
 	printf("found %d valid paths:\n", env->nb_valid);
 	print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
-	free_matrix_int(&tmp_paths, env->nb_paths);
+	// free_matrix_int(&tmp_paths, env->nb_paths);
 	assign_colony(env);
 }
