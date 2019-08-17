@@ -41,6 +41,7 @@ struct			s_env
 	int				nb_rooms;
 	int				nb_ants;
 	int				nb_paths;
+	int				max_paths_per_node;
 	int 			nb_valid;
 	int				**links;
 	int 			**paths;

@@ -25,7 +25,7 @@ int     *int_concat(t_env *env, int *dest, int *src)
 }
 
 //a changer avec id_path qui donnes les calculs a faire pour quels chemins
-int     count_score(t_env *env, int n_combo, int *paths_n)
+int     count_score(t_env *env, int n_combo, int *combo)
 {
     int     score;
     int     diff;
@@ -39,7 +39,7 @@ int     count_score(t_env *env, int n_combo, int *paths_n)
         diff++;
     while (++i < n_combo)
         score += ((env->nb_ants + diff) / n_combo)
-        + path_len(env->paths[paths_n < 0 ? paths_n[i] : 0], env->flow_max) - 1;
+        + path_len(env->paths[combo[i]], env->flow_max) - 1;
     return (score / n_combo);
 }
 
@@ -90,7 +90,7 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                     env->best_score = score;
                 }
             }
-        print_tab(combo_2, env->flow_max, env->nb_valid);
+    // print_tab(combo_2, env->flow_max, env->nb_valid);
 }
 
 void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)

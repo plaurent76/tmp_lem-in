@@ -224,7 +224,7 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 	y = start_y;
 	printf("i=%d start_y=%d\n", i, y);
 	cnt = 0;
-	print_tab(mx, size_x, size_y);
+	// print_tab(mx, size_x, size_y);
 	while (++i < size_y && mx[i][0] != -1)
 		if (!ending_path(mx, i, size_x) && ++cnt)
 			int_set(mx[i], -1, size_x);
@@ -242,7 +242,7 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 		memcp(mx[y], mx[last_full], (size_x) * sizeof(int));
 		int_set(mx[last_full], -1, size_x);
 	}
-	print_tab(mx, size_x, size_y);
+	// print_tab(mx, size_x, size_y);
 	return ret;
 }
 
@@ -269,12 +269,12 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 	while (++x < (int)env->nb_rooms)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
-		if (env->links[id][x] && !room_used(mx, path_n, env->nb_rooms, x)) // link exists with start
+		if (env->links[id][x] && !room_used(mx, path_n, env->nb_rooms, x)
+		&& (++n_link <= env->max_paths_per_node)) // link exists with start
 		{
 			//if (id == 0)
 				//printf("%d\n", x);
 			//printf("%d-%d\n", id, x);
-			++n_link;
 			if (n_link > 1)
 			{
 				if (path_n_duplicate > 0 && id == 0)
@@ -444,10 +444,14 @@ void			genetic_solve(t_env *env)
 	// alloc room_free to track room occupation
 	env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms);
 	mems(env->room_free, (char)1, env->nb_rooms);
-	env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 	fill_links_matrix(env);
-	count_flow_max(env);
 	fill_name_tab(env);
+	count_flow_max(env);
+	env->nb_paths = (int)(1024 * env->flow_max);
+	env->max_paths_per_node = 1024;
+	// env->max_paths_per_node = env->nb_rooms * 2;
+
+	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 	if (!(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)))
 		return ;
 	//  print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
@@ -459,12 +463,12 @@ void			genetic_solve(t_env *env)
 	// print summary
 	printf("nb_rooms: %d | nb_paths (max): %d | nb_paths (used): %d\n"
 		, env->nb_rooms, env->nb_paths, env->nb_valid);
-	// print valid paths:
-	printf("found %d valid paths:\n", env->nb_valid);
-	// print_tab(env->paths, env->nb_rooms, env->nb_valid);
 	// print all paths:
 	// printf("all paths:\n");
 	// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
+	// print valid paths:
+	printf("found %d valid paths:\n", env->nb_valid);
+	print_tab(env->paths, env->nb_rooms, env->nb_valid);
 	free_matrix(&tmp_paths, env->nb_paths);
 	free_matrix(&env->links, env->nb_rooms);
 	//free_matrix(&env->paths, env->nb_valid);
