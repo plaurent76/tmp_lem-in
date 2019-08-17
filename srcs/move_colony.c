@@ -12,22 +12,74 @@
 
 #include "lem_in.h"
 
+int				*get_combo_paths_len(t_env *env)
+{
+	int		i;
+	int		*paths_len;
+
+	if (!(paths_len = alloc_array_int(env->best_flow, 0)))
+		return (NULL);
+	i = -1;
+	while (++i < env->best_flow)
+		paths_len[i] = path_len(env->paths[env->best_combo[i]], env->nb_rooms);
+	return (paths_len);
+}
+
+int				*get_combo_ants_shares(t_env *env)
+{
+	int		*paths_len;
+	int		*ants_in_paths;
+	int		min_len;
+	int		max_len;
+	int		diff;
+	int		i;
+	int		ants_left;
+
+	(paths_len = get_combo_paths_len(env))
+	? 0 : put_error(env, "Error: paths_len malloc failed");
+	(ants_in_paths = alloc_array_int(env->best_flow, 0))
+	? 0 : put_error(env, "Error: ants_in_paths malloc failed");
+	// i = -1;
+	// max_len = 0;
+	// min_len = env->nb_rooms;
+	// while (++i < env->best_flow)
+	// 	paths_len[i] > max_len ? (max_len = paths_len[i])
+	// 	: paths_len[i] < min_len ? (min_len = paths_len[i]) : 0;
+	min_len = paths_len[0];
+	max_len = paths_len[env->best_flow - 1];
+	ants_left = env->nb_ants; // % (min_len * env->best_flow);
+	i = -1;
+	while (++i < env->best_flow)
+	{
+		diff = paths_len[i + 1] - paths_len[i];
+		if (diff > 0 && diff > ants_left)
+		{
+			ants_in_paths[i] += ants_left;
+			ants_left = 0;
+			break;
+		}
+		else if (diff > 0 && diff < ants_left)
+		{
+			ants_in_paths[i] += paths_len[i];
+			while (ants_left > 0 && --diff >= 0)
+			{
+				ants_in_paths[i]++;
+				ants_left--;
+			}
+		}
+	}
+		// ants_in_paths[i] += min_len;
+}
+
 static void		assign_colony(t_env *env)
 {
-	int		n_c;
 	int		i;
-	int		size;
+	int		*combo_ant_shares;
 	int		nb_ant_p;
 	int		path;
 
 	i = -1;
-	size = 0;
 	nb_ant_p = 0;
-	n_c = 0;
-	while (env->paths[0][size] != 1)
-		size++;
-	while (n_c < env->flow_max && env->best_combo[n_c] != -1)
-		n_c++;
 	(env->colony = (t_ant **)malloc(sizeof(t_ant *) * env->nb_ants))
 	? 0 : put_error(env, "Error: t_ant ** malloc failed");
 	/*

@@ -35,6 +35,7 @@ struct			s_env
 
 	int				*best_combo;
 	int				best_score;
+	int				best_flow;
 	int				flow_max;
 	int				flow_start_max;
 	int 			lpri;

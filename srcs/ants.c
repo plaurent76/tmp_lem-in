@@ -14,13 +14,13 @@
 
 static int	g_ant_id = 0;
 
-t_ant	*new_ant(t_env *env, int *path, int size)
+t_ant	*new_ant(t_env *env, int *path, int path_size)
 {
 	t_ant		*a;
 
 	(a = (t_ant *)malloc(sizeof(t_ant)))
 	? 0 : put_error(env, "t_ant malloc failed");
-	a->path = new_path(env, path, size);
+	a->path = new_path(env, path, path_size);
 	a->n = ++g_ant_id;
 	return (a);
 }

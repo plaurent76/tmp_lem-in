@@ -34,12 +34,12 @@ int     count_score(t_env *env, int n_combo, int *combo)
     i = -1;
     diff = 0;
     score = 0;
-    n_combo < 0 ? n_combo = 1 : 0;
+    n_combo < 1 ? n_combo = 1 : 0;
     while ((env->nb_ants + diff) % (n_combo + 1) != 0)
         diff++;
     while (++i < n_combo)
         score += ((env->nb_ants + diff) / n_combo)
-        + path_len(env->paths[combo[i]], env->flow_max) - 1;
+        + path_len(env->paths[combo[i]], env->nb_rooms) - 1;
     return (score / n_combo);
 }
 
@@ -88,6 +88,7 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                     pstr(1, "meilleur score 2", '\n');
                     memcp(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
+                    env->best_flow = n_combo;
                 }
             }
     // print_tab(combo_2, env->flow_max, env->nb_valid);
@@ -113,9 +114,10 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
                 if (env->best_score > (score = count_score(env, n_combo, combo_x[n_cv])))
                 {
                     // print_path(env->combo_x[n_cv], n_combo);
-                    pstr(1, "meilleur score X", '\n');
+                    // pstr(1, "meilleur score X", '\n');
                     memcp(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
+                    env->best_flow = n_combo;
                     // print_path(env->best_combo, env->flow_max);
                 }
             }
@@ -139,13 +141,13 @@ void    combo_optimal(t_env *env)
     int **combo_2;
     int **combo_x;
 
-    if (!(env->best_combo = alloc_array_int(env->flow_max, -1)))
-        return ;
+    ((env->best_combo = alloc_array_int(env->flow_max, -1))
+    && (combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1))
+    && (combo_x = alloc_matrix_int(env->flow_max, env->nb_valid, -1)))
+    ? 0 : put_error(env, "Error: one of combo malloc failed");
     n_combo = 2;
     env->best_combo[0] = 0;
     env->best_score = count_score(env, 1, env->best_combo);
-    combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1);//nombre de combo a revoir
-    combo_x = alloc_matrix_int(env->flow_max, env->nb_valid, -1);
     get_combo_2(env, combo_2, n_combo);
     while (++n_combo <= env->flow_max)
     {
@@ -159,5 +161,4 @@ void    combo_optimal(t_env *env)
     // print_tab(combo_2, env->flow_max, env->nb_valid);
     free_matrix(&combo_2, env->nb_valid);
     free_matrix(&combo_x, env->nb_valid);
-    // free_matrix(&env->paths, env->nb_paths);
 }

@@ -66,8 +66,11 @@ char	**alloc_matrix_char(int x, int y)
 
 void	free_matrix(int ***tab, int depth)
 {
+	if (!tab || !(*tab))
+		return ;
 	while (--depth >= 0)
-		free((*tab)[depth]);
+		if (*tab[depth] != NULL)
+			free(*tab[depth]);
 	free(*tab);
 	*tab = NULL;
 }
@@ -467,7 +470,8 @@ void			genetic_solve(t_env *env)
 
 	env->nb_rooms = env->lpri + 1;
 	// alloc room_free to track room occupation
-	env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms);
+	(env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms)) ?
+	0 : put_error(env, "Error: env->room_free malloc failed");
 	mems(env->room_free, (char)1, env->nb_rooms);
 	fill_links_matrix(env);
 	fill_name_tab(env);
@@ -477,8 +481,8 @@ void			genetic_solve(t_env *env)
 	// env->max_paths_per_node = env->nb_rooms * 2;
 
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
-	if (!(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)))
-		return ;
+	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
+	0 : put_error(env, "Error: tmp_paths malloc failed");
 	//  print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 	print_tab(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
@@ -495,8 +499,4 @@ void			genetic_solve(t_env *env)
 	printf("found %d valid paths:\n", env->nb_valid);
 	print_tab(env->paths, env->nb_rooms, env->nb_valid);
 	free_matrix(&tmp_paths, env->nb_paths);
-	free_matrix(&env->links, env->nb_rooms);
-	free_matrix(&env->node_usage, env->flow_start_max);
-	//free_matrix(&env->paths, env->nb_valid);
-	return ;
 }

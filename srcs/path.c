@@ -43,10 +43,12 @@ t_path	*new_path(t_env *env, int *path, int size)
 
 void	del_ant_path(t_path *path)
 {
-	if (path && path->rooms)
+	if (!path)
+		return ;
+	if (path->rooms)
 		free(path->rooms);
-	// if (path)
-	// 	free (path);
+	free (path);
+	path = NULL;
 }
 
 //pas utile forcement

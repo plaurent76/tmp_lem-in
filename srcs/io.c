@@ -72,6 +72,7 @@ void			free_lines(t_env *env)
 	}
 	(l && l->txt) ? free(l->txt) : 0;
 	l ? free(l) : 0;
+	env->first_line = NULL;
 }
 
 int				get_lines(t_env *env)
