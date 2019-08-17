@@ -14,18 +14,36 @@
 
 static void		assign_colony(t_env *env)
 {
+	int		n_c;
 	int		i;
 	int		size;
+	int		nb_ant_p;
+	int		path;
 
 	i = -1;
 	size = 0;
-	while (env->paths[0][size] != -1)
+	nb_ant_p = 0;
+	n_c = 0;
+	while (env->paths[0][size] != 1)
 		size++;
+	while (n_c < env->flow_max && env->best_combo[n_c] != -1)
+		n_c++;
 	(env->colony = (t_ant **)malloc(sizeof(t_ant *) * env->nb_ants))
 	? 0 : put_error(env, "Error: t_ant ** malloc failed");
+	/*
+	** on recoit les paths sous forme d'indice, avec le score si on le multiplie par le nombre de chemin
+	** moins la taille du chemin on a le nb de fourmie que ce chemin va recevoir, et donc comme ca on a plus
+	** qu'a cree la colony dabord avec le premier chemins et sont nb de fourmie et ainsi de suite
+	** mais il ne faut pas oublier la diff, cad si 3 chemins et 5 fourmis y aura un cheins qui aura une fourmie en moins
+	*/
 	while (++i < env->nb_ants)
-		// change l'itinéraire env->fw en fonction de l'algo (combo paths)
+	{
+		if (nb_ant_p == 0)
+		{
+			
+		}
 		env->colony[i] = new_ant(env, env->paths[0], size);
+	}
 	//IS_SET_A ? put_ants(env) : 0;
 }
 
