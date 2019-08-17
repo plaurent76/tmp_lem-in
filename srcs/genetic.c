@@ -224,23 +224,25 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 	y = start_y;
 	printf("i=%d start_y=%d\n", i, y);
 	cnt = 0;
+	print_tab(mx, size_x, size_y);
 	while (++i < size_y && mx[i][0] != -1)
 		if (!ending_path(mx, i, size_x) && ++cnt)
 			int_set(mx[i], -1, size_x);
-	cnt = (size_y - start_y) - cnt;
+	// cnt = (size_y - start_y) - cnt;
 	ret = cnt;
 	last_full = i;
 	printf("cnt=%d last_full=%d\n", cnt, last_full);
 	while (--cnt >= 0)
 	{
-		while (last_full > 0 && mx[last_full][0] != -1)
+		while (last_full > 0 && mx[last_full][0] == -1)
 			--last_full;
 		y = ffy(mx, y, size_y);
-		if (y >= (last_full - 1))
+		if (y >= (last_full))
 			break;
 		memcp(mx[y], mx[last_full], (size_x) * sizeof(int));
 		int_set(mx[last_full], -1, size_x);
 	}
+	print_tab(mx, size_x, size_y);
 	return ret;
 }
 
@@ -278,7 +280,7 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 				if (path_n_duplicate > 0 && id == 0)
 				{ // we found at least 1 path starting from 0
 					printf("Cleaned: %d rows\n",
-						clean_paths(mx, path_n_duplicate, env->nb_paths, env->nb_rooms)
+						clean_paths(mx, 0, env->nb_paths, env->nb_rooms)
 					);
 				}
 				path_n_duplicate = duplicate_path_until(mx, path_n_length, env->nb_paths, path_n);
