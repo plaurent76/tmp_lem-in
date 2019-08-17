@@ -181,7 +181,7 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 	return ret;
 }
 
-int		add_to_node(t_env *env, int room_id)
+int		use_node(t_env *env, int room_id)
 {
 	int i = -1;
 
@@ -192,10 +192,12 @@ int		add_to_node(t_env *env, int room_id)
 	return (0);
 }
 
-int		is_node_full(t_env *env, int room_id)
+int		is_node_explored(t_env *env, int room_id)
 {
 	int i = -1;
 
+	printf("is_node_explored node_usage:\n");
+	print_matrix_int(env->node_usage, 2, env->flow_start_max);
 	while (++i < env->flow_start_max)
 		if (env->node_usage[i][0] == room_id)
 			if (env->node_usage[i][1] >= env->flow_start_max)
@@ -227,9 +229,9 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
 		if (env->links[room_id][x] && !room_used(paths, path_n, env->nb_rooms, x)
-		&& !is_node_full(env, paths[path_n_duplicate][1]) && ++n_link) // link exists with start
+		&& !is_node_explored(env, paths[path_n_duplicate][1]) && ++n_link) // link exists with start
 		{
-			add_to_node(env, paths[path_n_duplicate][1]);
+			use_node(env, paths[path_n_duplicate][1]);
 			//if (room_id == 0)
 				//printf("%d\n", x);
 			//printf("%d-%d\n", room_id, x);
@@ -399,10 +401,8 @@ void			genetic_solve(t_env *env)
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
 	0 : put_error(env, "Error: tmp_paths malloc failed");
-	//  print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
-	print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
+	// print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
-	// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
 	if (!load_valid_paths(env, tmp_paths))
 		printf("error loading valid paths into env->paths");
 	// print summary
