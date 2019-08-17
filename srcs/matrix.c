@@ -40,15 +40,15 @@ char	**alloc_matrix_char(int x, int y)
 	return (mx);
 }
 
-void	free_matrix_int(int ***mx, int depth)
+void	free_matrix_int(int **mx, int depth)
 {
-	if (!(mx && *mx && **mx))
+	if (!(&mx && mx && *mx))
 		return ;
 	while (--depth >= 0)
-		if (*mx[depth] != NULL)
-			free(*mx[depth]);
-	free(*mx);
-	*mx = NULL;
+		if (mx[depth] != NULL)
+			free(mx[depth]);
+	free(mx);
+	mx = NULL;
 }
 
 void 	print_matrix_int(int **mx, int x, int y)

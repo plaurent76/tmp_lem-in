@@ -100,8 +100,8 @@ void			init_env(t_env *env)
 
 void			deinit_env(t_env *env)
 {
-	free_matrix_int(&env->links, env->nb_rooms);
-	free_matrix_int(&env->node_usage, env->flow_start_max);
+	free_matrix_int(env->links, env->nb_rooms);
+	free_matrix_int(env->node_usage, env->flow_start_max);
 	//free_matrix_int(&env->paths, env->nb_valid);
 	free_colony(env);
 	free_rooms(env);

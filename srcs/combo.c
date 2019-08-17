@@ -161,8 +161,8 @@ void    combo_optimal(t_env *env)
         }
         print_array_int(env->best_combo, env->flow_max);
         // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
-        free_matrix_int(&combo_2, env->nb_valid);
-        free_matrix_int(&combo_x, env->nb_valid);
+        free_matrix_int(combo_2, env->nb_valid);
+        free_matrix_int(combo_x, env->nb_valid);
     }
     else {
         put_error(env, "No combo found as env->nb_valid = 0\n");

@@ -62,7 +62,7 @@ char	        *alloc_array_char(int n, char val);
 int		        **alloc_matrix_int(int x, int y, int val);
 char            **alloc_matrix_char(int x, int y);
 int             *int_set(int *tab, int val, int size);
-void	        free_matrix_int(int ***tab, int depth);
+void	        free_matrix_int(int **mx, int depth);
 int				slen(char *s);
 long			labs(long n);
 int				active_bits(char c);
