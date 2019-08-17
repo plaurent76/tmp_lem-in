@@ -141,24 +141,30 @@ void    combo_optimal(t_env *env)
     int **combo_2;
     int **combo_x;
 
-    ((env->best_combo = alloc_array_int(env->flow_max, -1))
-    && (combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1))
-    && (combo_x = alloc_matrix_int(env->flow_max, env->nb_valid, -1)))
-    ? 0 : put_error(env, "Error: one of combo malloc failed");
-    n_combo = 2;
-    env->best_combo[0] = 0;
-    env->best_score = count_score(env, 1, env->best_combo);
-    get_combo_2(env, combo_2, n_combo);
-    while (++n_combo <= env->flow_max)
+    if (env->nb_valid == 0)
     {
-        // print_matrix_int(env->combo_2, env->flow_max, env->nb_valid);
-        get_combo_x(env, combo_2, combo_x, n_combo);
-        // print_matrix_int(combo_x, env->flow_max, env->nb_valid);
-        // pstr(1, "teste", '\n');
-        replace_combo_x(env, combo_2, combo_x);
+        ((env->best_combo = alloc_array_int(env->flow_max, -1))
+        && (combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1))
+        && (combo_x = alloc_matrix_int(env->flow_max, env->nb_valid, -1)))
+        ? 0 : put_error(env, "Error: one of combo malloc failed");
+        n_combo = 2;
+        env->best_combo[0] = 0;
+        env->best_score = count_score(env, 1, env->best_combo);
+        get_combo_2(env, combo_2, n_combo);
+        while (++n_combo <= env->flow_max)
+        {
+            // print_matrix_int(env->combo_2, env->flow_max, env->nb_valid);
+            get_combo_x(env, combo_2, combo_x, n_combo);
+            // print_matrix_int(combo_x, env->flow_max, env->nb_valid);
+            // pstr(1, "teste", '\n');
+            replace_combo_x(env, combo_2, combo_x);
+        }
+        print_array_int(env->best_combo, env->flow_max);
+        // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
+        free_matrix_int(&combo_2, env->nb_valid);
+        free_matrix_int(&combo_x, env->nb_valid);
     }
-    print_array_int(env->best_combo, env->flow_max);
-    // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
-    free_matrix_int(&combo_2, env->nb_valid);
-    free_matrix_int(&combo_x, env->nb_valid);
+    else {
+        put_error(env, "No combo found as env->nb_valid = 0\n");
+    }
 }
