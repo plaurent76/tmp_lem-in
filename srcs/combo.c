@@ -141,7 +141,7 @@ void    combo_optimal(t_env *env)
     int **combo_2;
     int **combo_x;
 
-    if (env->nb_valid == 0)
+    if (env->nb_valid > 0)
     {
         ((env->best_combo = alloc_array_int(env->flow_max, -1))
         && (combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1))
