@@ -250,7 +250,7 @@ int		add_to_node(t_env *env, int node_room)
 {
 	int i = -1;
 
-	while (++i < env->flow_max)
+	while (++i < env->flow_start_max)
 		if (env->node_usage[i][0] == node_room)
 			if (env->node_usage[i][1]++)
 				return (1);
@@ -261,9 +261,9 @@ int		is_node_full(t_env *env, int node_room)
 {
 	int i = -1;
 
-	while (++i < env->flow_max)
+	while (++i < env->flow_start_max)
 		if (env->node_usage[i][0] == node_room)
-			if (env->node_usage[i][1] >= env->flow_max)
+			if (env->node_usage[i][1] >= env->flow_start_max)
 				return (1);
 	return (0);
 }
@@ -475,7 +475,7 @@ void			genetic_solve(t_env *env)
 	fill_links_matrix(env);
 	fill_name_tab(env);
 	count_flow_max(env);
-	env->nb_paths = (int)(1024 * env->flow_max);
+	env->nb_paths = (int)(1024 * env->flow_start_max);
 	env->max_paths_per_node = 1024;
 	// env->max_paths_per_node = env->nb_rooms * 2;
 
@@ -499,7 +499,7 @@ void			genetic_solve(t_env *env)
 	print_tab(env->paths, env->nb_rooms, env->nb_valid);
 	free_matrix(&tmp_paths, env->nb_paths);
 	free_matrix(&env->links, env->nb_rooms);
-	free_matrix(&env->node_usage, env->flow_max);
+	free_matrix(&env->node_usage, env->flow_start_max);
 	//free_matrix(&env->paths, env->nb_valid);
 	return ;
 }
