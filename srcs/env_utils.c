@@ -60,10 +60,13 @@ void			init_env(t_env *env)
 	env->best_combo = NULL;
 	env->best_score = 0;
 	env->flow_max = 0;
+	env->flow_start_max = 0;
+	env->node_usage = NULL;
 	env->start = NULL;
 	env->end = NULL;
 	env->nb_rooms = 0;
 	env->room_free = NULL;
+	env->room_names = NULL;
 	env->nb_paths = 0;
 	env->nb_valid = 0;
 	env->nb_ants = 0;
