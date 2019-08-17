@@ -29,7 +29,7 @@ void		put_usage(t_env *env)
 
 void		put_error(t_env *env, const char *err_msg)
 {
-	IS_SET_E ? pstr(2, err_msg, '\n') : pstr(2, "Error", '\n');
+	/*IS_SET_E ? */pstr(2, err_msg, '\n') : pstr(2, "Error", '\n');
 	deinit_env(env);
 	exit(EXIT_FAILURE);
 }
