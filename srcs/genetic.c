@@ -449,13 +449,10 @@ void         count_flow_max(t_env *env)
             flow_end++;
         i++;
     }
-    if (flow_end <= env->flow_start_max)
-        env->flow_max = flow_end;
-    else
-        env->flow_max = env->flow_start_max;
+	env->flow_max = flow_end <= env->flow_start_max ? flow_end : env->flow_start_max;
 	env->node_usage = alloc_matrix_int(2, env->flow_start_max, -1);
 	memcp(env->node_usage, node_usage_tmp, sizeof(int) * 2 * env->flow_start_max);
-	free_matrix(node_usage_tmp, env->nb_rooms);
+	free_matrix(&node_usage_tmp, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
