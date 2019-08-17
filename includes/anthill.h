@@ -33,11 +33,8 @@ struct			s_env
 	t_parsed_link	*first_parsed_link;
 	t_parsed_link	*last_parsed_link;
 
-	int				**tmp_combo;
-	int				**combo;
-	int				*res;
-	int				score;
-	int				tmp_score;
+	int				*best_combo;
+	int				best_score;
 	int				flow_max;
 	int 			lpri;
 	int				option;

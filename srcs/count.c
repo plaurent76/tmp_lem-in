@@ -33,12 +33,12 @@
 // 	return (-1);
 // }
 
-int		path_len(int *path)
+int		path_len(int *path, int size)
 {
 	int		i;
 
 	i = 0;
-	while (path[i] != -1)
+	while (path[i] != -1 && i < size)
 		i++;
 	return (i);
 }

@@ -13,77 +13,40 @@
 #include "lem_in.h"
 #include <stdio.h>
 
-// static int		free_gen(t_path **gen, int gen_size, int ret)
-// {
-// 	while (--gen_size >= 0)
-// 		gen[gen_size] ? del_path(gen[gen_size]) : 0;
-// 	gen ? free(gen) : 0;
-// 	return (ret);
-// }
+int		*alloc_array_int(int n, int val)
+{
+	int		*array;
+	int		i;
 
-// static int		generate(t_env *env, t_path *parent, t_path **p, t_link *l)
-// {
-// 	*p = add_path(env, duplicate_path(env, parent), l->room);
-// 	if ((*p)->room == env->end)
-// 	{
-// 		if (path_len(env->fw) == -1 ||
-// 			(path_len(*p) < path_len(env->fw)))
-// 		{
-// 			del_path(env->fw);
-// 			env->fw = duplicate_path(env, *p);
-// 		}
-// 		return (1);
-// 	}
-// 	return (0);
-// }
+	i = -1;
+	if (!(array = (int*)malloc(sizeof(int) * n)))
+		return (NULL);
+	while (++i < n)
+		array[i] = val;
+	return (array);
+}
 
-// static int		next_gen(t_env *env, t_path *parent, int gen_size, int i)
-// {
-// 	t_path	**p;
-// 	t_link	*l;
+char	*alloc_array_char(int n, char val)
+{
+	char	*array;
 
-// 	if (!(parent && parent->room && parent->room->link))
-// 		put_error(env, "Error: cannot make new gen from this parent");
-// 	(p = (t_path **)malloc(sizeof(t_path *) * gen_size))
-// 	? 0 : put_error(env, "Error: t_path ** malloc failed");
-// 	l = parent->room->link;
-// 	while (l && l->prev && l->prev->room)
-// 		l = l->prev;
-// 	while (++i < gen_size && l && l->room)
-// 	{
-// 		if ((in_path(parent, l->room) == 1))
-// 		{
-// 			p[i] = NULL;
-// 			l = l->next;
-// 			continue;
-// 		}
-// 		if ((generate(env, parent, &p[i], l) || (path_len(env->fw) > 0
-// 			&& path_len(p[i]) >= path_len(env->fw))))
-// 			return (env->fw ? free_gen(p, i + 1, 1) : free_gen(p, i + 1, 0));
-// 		next_gen(env, p[i], count_rooms(p[i]->room), -1);
-// 		l = l->next;
-// 	}
-// 	return (env->fw ? free_gen(p, gen_size, 1) : free_gen(p, gen_size, 0));
-// }
+	if (!(array = (char*)malloc(sizeof(char) * n)))
+		return (NULL);
+	mems(array, val, n);
+	return (array);
+}
 
-int		**alloc_matrix_int(int x, int y, int id)
+int		**alloc_matrix_int(int x, int y, int val)
 {
 	int		i;
-	int		j;
 	int		**matrix;
 	
-	i = 0;
+	i = -1;
 	if (!(matrix = (int**)malloc(sizeof(int*) * y)))
 		return (NULL);
-	while (i < y)
-	{
-		j = 0;
-		if (!(matrix[i] = (int*)malloc(sizeof(int) * x)))
+	while (++i < y)
+		if (!(matrix[i] = alloc_array_int(x, val)))
 			return (NULL);
-		while (j < x)
-			matrix[i][j++] = id;
-		i++;
-	}
 	return (matrix);
 }
 
@@ -92,16 +55,12 @@ char	**alloc_matrix_char(int x, int y)
 	int		i;
 	char	**matrix;
 	
-	i = 0;
+	i = -1;
 	if (!(matrix = (char**)malloc(sizeof(char*) * y)))
 		return (NULL);
-	while (i < y)
-	{
-		if (!(matrix[i] = (char*)malloc(sizeof(char) * x)))
+	while (++i < y)
+		if (!(matrix[i] = alloc_array_char(x, (char)0)))
 			return (NULL);
-		mems(matrix[i], 0, x);
-		i++;
-	}
 	return (matrix);
 }
 

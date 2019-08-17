@@ -55,9 +55,12 @@
 ** BASICS
 */
 
-void	        free_matrix(int ***tab, int depth);
-int		        **alloc_matrix_int(int x, int y, int id);
+int		        *alloc_array_int(int n, int val);
+char	        *alloc_array_char(int n, char val);
+int		        **alloc_matrix_int(int x, int y, int val);
+char            **alloc_matrix_char(int x, int y);
 int             *int_set(int *tab, int val, int size);
+void	        free_matrix(int ***tab, int depth);
 int				slen(char *s);
 long			labs(long n);
 int				active_bits(char c);
@@ -125,15 +128,15 @@ t_path			*new_path(t_env *env, int *path, int size);
 t_path			*duplicate_path(t_env *env, t_path *path);
 t_path			*add_path(t_env *env, t_path *path, t_room *room);
 int				in_path(t_path *path, t_room *r);
-int				path_len(int *path);
+int				path_len(int *path, int size);
 void			del_ant_path(t_path *path);
 void			put_path(t_path *path);
 
 /*
 ** PRINT
 */
-void 	print_path(int *path, int n);
-void 	print_tab(int **tab, int x, int y);
+void            print_path(int *path, int n);
+void            print_tab(int **tab, int x, int y);
 void			put_fwinfo(t_env *env);
 void			put_ants(t_env *env);
 void			put_all(t_env *env);

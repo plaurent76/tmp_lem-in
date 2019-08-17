@@ -75,15 +75,15 @@ void			move_colony(t_env *env)
 
 	i = -1;
 	assign_colony(env);
-	rounds = (env->nb_ants + path_len(env->paths[0]));
+	rounds = (env->nb_ants + path_len(env->paths[0], env->nb_rooms));
 	IS_SET_M ? 0 : write(1, "\n", 1);
 	while (++i < rounds)
 	{
 		j = -1;
 		while (++j < env->nb_ants)
 			move_ant_forward(env, env->colony[j]);
-		(i < (rounds - 1) && path_len(env->paths[0]) != 2 && (!IS_SET_M || IS_SET_S))
+		(i < (rounds - 1) && path_len(env->paths[0], env->nb_rooms) != 2 && (!IS_SET_M || IS_SET_S))
 		? write(1, "\n", 1) : 0;
 	}
-	(path_len(env->paths[0]) == 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
+	(path_len(env->paths[0], env->nb_rooms) == 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
 }

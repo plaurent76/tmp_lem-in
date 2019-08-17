@@ -57,10 +57,8 @@ static void		free_parsed_links(t_env *env)
 
 void			init_env(t_env *env)
 {
-	env->combo = NULL;
-	env->res = NULL;
-	env->tmp_score = 0;
-	env->score = 0;
+	env->best_combo = NULL;
+	env->best_score = 0;
 	env->flow_max = 0;
 	env->start = NULL;
 	env->end = NULL;
