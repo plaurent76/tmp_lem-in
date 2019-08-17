@@ -42,7 +42,7 @@ char	**alloc_matrix_char(int x, int y)
 
 void	free_matrix_int(int **mx, int depth)
 {
-	if (!(&mx && mx && *mx))
+	if (!(mx && *mx))
 		return ;
 	while (--depth >= 0)
 		if (mx[depth] != NULL)
