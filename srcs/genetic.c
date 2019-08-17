@@ -368,7 +368,7 @@ void         count_flow_max(t_env *env)
 	env->flow_max = flow_end <= env->flow_start_max ? flow_end : env->flow_start_max;
 	env->node_usage = alloc_matrix_int(2, env->flow_start_max, -1);
 	memcp(env->node_usage, tmp_node_usage, sizeof(int) * 2 * env->flow_start_max);
-	free_matrix_int(tmp_node_usage, env->nb_rooms);
+	// free_matrix_int(tmp_node_usage, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
@@ -414,5 +414,5 @@ void			genetic_solve(t_env *env)
 	// print valid paths:
 	printf("found %d valid paths:\n", env->nb_valid);
 	print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
-	free_matrix_int(tmp_paths, env->nb_paths);
+	// free_matrix_int(tmp_paths, env->nb_paths);
 }
