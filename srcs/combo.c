@@ -165,6 +165,6 @@ void    combo_optimal(t_env *env)
         free_matrix_int(combo_x, env->nb_valid);
     }
     else {
-        put_error(env, "No combo found as env->nb_valid = 0\n");
+        printf("No combo found as env->nb_valid = 0\n");
     }
 }
