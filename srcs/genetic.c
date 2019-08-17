@@ -246,23 +246,23 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 	return ret;
 }
 
-int		add_to_node(t_env *env, int path_n)
+int		add_to_node(t_env *env, int node_room)
 {
 	int i = -1;
 
 	while (++i < env->flow_max)
-		if (env->node_usage[i][0] == path_n)
+		if (env->node_usage[i][0] == node_room)
 			if (env->node_usage[i][1]++)
 				return (1);
 	return (0);
 }
 
-int		is_node_full(t_env *env, int path_n)
+int		is_node_full(t_env *env, int node_room)
 {
 	int i = -1;
 
 	while (++i < env->flow_max)
-		if (env->node_usage[i][0] == path_n)
+		if (env->node_usage[i][0] == node_room)
 			if (env->node_usage[i][1] >= env->flow_max)
 				return (1);
 	return (0);
@@ -292,8 +292,9 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
 		if (env->links[id][x] && !room_used(mx, path_n, env->nb_rooms, x)
-		&& !is_node_full(env, path_n_duplicate) && ++n_link) // link exists with start
+		&& !is_node_full(env, env->paths[path_n_duplicate][1]) && ++n_link) // link exists with start
 		{
+			add_to_node(env, env->paths[path_n_duplicate][1]);
 			//if (id == 0)
 				//printf("%d\n", x);
 			//printf("%d-%d\n", id, x);
