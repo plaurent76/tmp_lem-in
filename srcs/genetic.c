@@ -348,7 +348,8 @@ void         count_flow_max(t_env *env)
     int     flow_end;
 	int		**node_usage_tmp;
 
-	node_usage_tmp = alloc_matrix_int(2, env->nb_rooms, -1);
+	(node_usage_tmp = alloc_matrix_int(2, env->nb_rooms, -1))
+	? 0 : put_error(env, "Error: alloc_matric_int failed");
     env->flow_start_max = 0;
     flow_end = 0;
     i = 0;
