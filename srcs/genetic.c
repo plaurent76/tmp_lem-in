@@ -72,55 +72,72 @@ void	free_matrix(int ***tab, int depth)
 	*tab = NULL;
 }
 
-int	 ffy(int **mx, int y_start, int size_y)
+int	 ffy(int **paths, int y_start, int size_y)
 {
 	int i = y_start - 1;
 
 	while (++i < size_y) {
-		if (mx[i][1] == -1) {
+		if (paths[i][1] == -1) {
 			return i;
 		}
 	}
 	return -1;
 }
 
-int	 ffx(int **mx, int y, int size_x)
+int	 ffx(int **paths, int y, int size_x)
 {
 	int i = -1;
 
 	while (++i < size_x) {
-		if (mx[y][i] == -1) {
+		if (paths[y][i] == -1) {
 			return i;
 		}
 	}
 	return 0;
 }
 
-int		ending_path(int **mx, int y, int size_y)
+// first valid from
+int 	fvf(int **paths, int from, int size_x, int size_y)
+{
+	int i;
+	int j;
+
+	j = from;
+	while (j++ < size_y)
+	{
+		i = -1;
+		while (++i < size_x)
+			if (paths[j][i] == 1)
+				return j;
+	}
+	return -1;
+}
+
+int		ending_path(int **paths, int y, int size_y)
 {
 	int		i;
 
 	i = -1;
-	while (i < size_y && mx[y][++i] != -1)
+	while (i < size_y && paths[y][++i] != -1)
 	{
-		if (mx[y][i] == 1 || i + 1 == size_y)
+		if (paths[y][i] == 1 || i + 1 == size_y)
 			return (1);
 	}
 	return (0);
 }
 
 // duplicates given path row and returns index of duplicated row
-int		duplicate_path_until(int **mx, int until, int size_y, int y_src)
+int		duplicate_path_until(int **paths, int until, int size_y, int y_src)
 {
 	int 	y;
 	// int		*tmp;
 	// tmp = NULL;
-	y = ffy(mx, y_src, size_y);
+	y = ffy(paths, y_src, size_y);
 	if (y == -1)
 		return -1;
 	// 
 	// else
-		memcp(mx[y], mx[y_src], (until) * sizeof(int));
+		memcp(paths[y], paths[y_src], (until) * sizeof(int));
 	// printf("duplicated: %d >> %d\n", y_src, y);
 	return (y);
 }
@@ -156,38 +173,38 @@ int 	paths_match(int *path1, int *path2, int length)
 }
 
 // checks if room is already in path and if path is not duplicate from last one
-int		room_used(int **mx, int path_n, int until, int id)
+int		room_used(int **paths, int path_n, int until, int id)
 {
 	int 	length;
 
 	length = -1;
-	while (++length < until && mx[path_n][length] != -1)
+	while (++length < until && paths[path_n][length] != -1)
 	{
-		if (mx[path_n][length] == id)
+		if (paths[path_n][length] == id)
 		{
 			// printf("room %d found in path %d at length %d: ", id, path_n, length);
-			// print_path(mx[path_n], length + 1);
+			// print_path(paths[path_n], length + 1);
 			return (1);
 		}
 	}
 	// length = length < until ? length : until;
 	// printf("room %d NOT found in path %d of length %d: ", id, path_n, length);
-	// print_path(mx[path_n], length);
+	// print_path(paths[path_n], length);
 	if (path_n > 0) {
 		//printf("path_n: %d length: %d\n", path_n, length);
-		if (paths_match(mx[path_n], mx[path_n - 1], length)
-			&& (id == mx[path_n - 1][length])) {
+		if (paths_match(paths[path_n], paths[path_n - 1], length)
+			&& (id == paths[path_n - 1][length])) {
 			return (1);
 		}
 		//bullshit
 		// printf("comparing previous path:\n");
-		// print_path(mx[path_n-1], length);
+		// print_path(paths[path_n-1], length);
 		// printf("with new path:\n");
-		// print_path(mx[path_n], length);
-		// printf("path_match:%s\n", paths_match(mx[path_n], mx[path_n - 1], length) ? "yes\n" : "no\n");
+		// print_path(paths[path_n], length);
+		// printf("path_match:%s\n", paths_match(paths[path_n], paths[path_n - 1], length) ? "yes\n" : "no\n");
 
 		// printf("comparing last room of previous with new room to add:\n");
-		// printf("%d vs %d match:%s\n", id, mx[path_n - 1][length], (id == mx[path_n - 1][length]) ? "yes\n" : "no\n");
+		// printf("%d vs %d match:%s\n", id, paths[path_n - 1][length], (id == paths[path_n - 1][length]) ? "yes\n" : "no\n");
 		// //end of bullshit
 
 	}
@@ -195,24 +212,21 @@ int		room_used(int **mx, int path_n, int until, int id)
 	return (0);
 }
 
-// void	del_path(int **mx, int y)
-// {
-// 	int 	i;
-
-// 	i = -1;
-// 	while (mx[y][++i] > -1)
-// 	{
-// 		mx[y][i] = -1;
-// 	}
-// }
-
-void	add_to_path(int **mx, int size_x, int y, int id)
+void	del_path(int **paths, int path_n)
 {
-	mx[y][ffx(mx, y, size_x)] = id;
+	int 	i;
 
+	i = -1;
+	while (paths[path_n][++i] > -1)
+		paths[path_n][i] = -1;
 }
 
-int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
+void	add_to_path(int **paths, int size_x, int y, int room_id)
+{
+	paths[y][ffx(paths, y, size_x)] = room_id;
+}
+
+int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 {
 	int		i;
 	int		cnt;
@@ -224,25 +238,25 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 	y = start_y;
 	printf("i=%d start_y=%d\n", i, y);
 	cnt = 0;
-	// print_tab(mx, size_x, size_y);
-	while (++i < size_y && mx[i][0] != -1)
-		if (!ending_path(mx, i, size_x) && ++cnt)
-			int_set(mx[i], -1, size_x);
+	// print_tab(paths, size_x, size_y);
+	while (++i < size_y && paths[i][0] != -1)
+		if (!ending_path(paths, i, size_x) && ++cnt)
+			int_set(paths[i], -1, size_x);
 	// cnt = (size_y - start_y) - cnt;
 	ret = cnt;
 	last_full = i;
 	printf("cnt=%d last_full=%d\n", cnt, last_full);
 	while (--cnt >= 0)
 	{
-		while (last_full > 0 && mx[last_full][0] == -1)
+		while (last_full > 0 && paths[last_full][0] == -1)
 			--last_full;
-		y = ffy(mx, y, size_y);
+		y = ffy(paths, y, size_y);
 		if (y >= (last_full))
 			break;
-		memcp(mx[y], mx[last_full], (size_x) * sizeof(int));
-		int_set(mx[last_full], -1, size_x);
+		memcp(paths[y], paths[last_full], (size_x) * sizeof(int));
+		int_set(paths[last_full], -1, size_x);
 	}
-	// print_tab(mx, size_x, size_y);
+	// print_tab(paths, size_x, size_y);
 	return ret;
 }
 
@@ -268,7 +282,7 @@ int		is_node_full(t_env *env, int node_room)
 	return (0);
 }
 
-void 	explore_paths(t_env *env, int **mx, int path_n, int id)
+void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 {
 	int 	n_link;
 	int 	path_n_duplicate;
@@ -277,53 +291,53 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 
 	x = -1;
 	n_link = 0;
-	if (!path_n && mx[0][0] == -1)
+	if (!path_n && paths[0][0] == -1)
 	{
-		path_n = ffy(mx, path_n, env->nb_paths);
+		path_n = ffy(paths, path_n, env->nb_paths);
 		if (path_n == -1)
 			return ;
-		add_to_path(mx, env->nb_rooms, path_n, id);
+		add_to_path(paths, env->nb_rooms, path_n, room_id);
 	}
 	path_n_duplicate = path_n;
 	path_n_length = 0;
-	while (path_n_length < env->nb_rooms && mx[path_n][path_n_length] != -1)
+	while (path_n_length < env->nb_rooms && paths[path_n][path_n_length] != -1)
 		path_n_length++;
 	while (++x < (int)env->nb_rooms)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
-		if (env->links[id][x] && !room_used(mx, path_n, env->nb_rooms, x)
-		&& !is_node_full(env, env->paths[path_n_duplicate][1]) && ++n_link) // link exists with start
+		if (env->links[room_id][x] && !room_used(paths, path_n, env->nb_rooms, x)
+		&& !is_node_full(env, paths[path_n_duplicate][1]) && ++n_link) // link exists with start
 		{
-			add_to_node(env, env->paths[path_n_duplicate][1]);
-			//if (id == 0)
+			add_to_node(env, paths[path_n_duplicate][1]);
+			//if (room_id == 0)
 				//printf("%d\n", x);
-			//printf("%d-%d\n", id, x);
+			//printf("%d-%d\n", room_id, x);
 			if (n_link > 1)
 			{
-				if (path_n_duplicate > 0 && id == 0)
+				if (path_n_duplicate > 0 && room_id == 0)
 				{ // we found at least 1 path starting from 0
 					printf("Cleaned: %d rows\n",
-						clean_paths(mx, 0, env->nb_paths, env->nb_rooms)
+						clean_paths(paths, 0, env->nb_paths, env->nb_rooms)
 					);
 				}
-				path_n_duplicate = duplicate_path_until(mx, path_n_length, env->nb_paths, path_n);
+				path_n_duplicate = duplicate_path_until(paths, path_n_length, env->nb_paths, path_n);
 			}
 			if (path_n_duplicate == -1)
 				return ;
-			add_to_path(mx, env->nb_rooms, path_n_duplicate, x);
-			// print_tab(mx, env->nb_rooms, env->nb_paths);
+			add_to_path(paths, env->nb_rooms, path_n_duplicate, x);
+			// print_tab(tmp_paths, env->nb_rooms, env->nb_paths);
 			// printf("explore path %d from room %d\n", path_n, x);
 			if (x != 1)
-				explore_paths(env, mx, path_n_duplicate, x);
+				explore_paths(env, paths, path_n_duplicate, x);
 			else
 			{
 				// plong(1, x, '|');
 				// plong(1, path_n_duplicate, '\n');
-				// if (path_n > 0 && !ending_path(mx, path_n - 1, env->nb_rooms))
+				// if (path_n > 0 && !ending_path(tmp_paths, path_n - 1, env->nb_rooms))
 				// {
 				// 	pstr(1, "entré dans le cas ou le chemin precedent n'est pas fini", '\n');
-				// 	memcp(mx[path_n - 1], mx[path_n], sizeof(int) * env->nb_rooms);
-				// 	int_set(mx[path_n], -1, env->nb_rooms);
+				// 	memcp(tmp_paths[path_n - 1], tmp_paths[path_n], sizeof(int) * env->nb_rooms);
+				// 	int_set(tmp_paths[path_n], -1, env->nb_rooms);
 				// }
 				env->nb_valid++;
 			}
@@ -332,32 +346,15 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 	if (n_link == 0)
 	{
 		// printf("Would delete row: %d\n", path_n);
-		// del_path(mx, path_n);
+		// del_path(tmp_paths, path_n);
 		// printf("path %d deleted cause no link\n", path_n);
 	}
 }
 
-// first valid from
-int 	fvf(int **mx, int from, int size_x, int size_y)
-{
-	int i;
-	int j;
-
-	j = from;
-	while (j++ < size_y)
-	{
-		i = -1;
-		while (++i < size_x)
-			if (mx[j][i] == 1)
-				return j;
-	}
-	return -1;
-}
-
 // duplicates given path row and returns index of duplicated row
-int		duplicate_path_to_dest(int **mx_src, int y_src, int **mx_dest, int y_dest, int until)
+int		duplicate_path_to_dest(int **paths_src, int y_src, int **paths_dest, int y_dest, int until)
 {
-	memcp(mx_dest[y_dest], mx_src[y_src], (until) * sizeof(int));
+	memcp(paths_dest[y_dest], paths_src[y_src], (until) * sizeof(int));
 	return (y_dest);
 }
 
