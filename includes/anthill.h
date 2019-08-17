@@ -36,12 +36,14 @@ struct			s_env
 	int				*best_combo;
 	int				best_score;
 	int				flow_max;
+	int				flow_start_max;
 	int 			lpri;
 	int				option;
 	int				nb_rooms;
 	int				nb_ants;
 	int				nb_paths;
 	int				max_paths_per_node;
+	int				**node_usage;
 	int 			nb_valid;
 	int				**links;
 	int 			**paths;

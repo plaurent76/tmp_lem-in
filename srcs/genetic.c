@@ -246,6 +246,28 @@ int 	clean_paths(int **mx, int start_y, int size_y, int size_x)
 	return ret;
 }
 
+int		add_to_node(t_env *env, int path_n)
+{
+	int i = -1;
+
+	while (++i < env->flow_max)
+		if (env->node_usage[i][0] == path_n)
+			if (env->node_usage[i][1]++)
+				return (1);
+	return (0);
+}
+
+int		is_node_full(t_env *env, int path_n)
+{
+	int i = -1;
+
+	while (++i < env->flow_max)
+		if (env->node_usage[i][0] == path_n)
+			if (env->node_usage[i][1] >= env->flow_max)
+				return (1);
+	return (0);
+}
+
 void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 {
 	int 	n_link;
@@ -270,7 +292,7 @@ void 	explore_paths(t_env *env, int **mx, int path_n, int id)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
 		if (env->links[id][x] && !room_used(mx, path_n, env->nb_rooms, x)
-		&& (++n_link <= env->max_paths_per_node)) // link exists with start
+		&& !is_node_full(env, path_n_duplicate) && ++n_link) // link exists with start
 		{
 			//if (id == 0)
 				//printf("%d\n", x);
@@ -407,24 +429,32 @@ void			fill_name_tab(t_env *env)
 void         count_flow_max(t_env *env)
 {
     int     i;
-    int     flow_start;
     int     flow_end;
+	int		**node_usage_tmp;
 
-    flow_start = 0;
+	node_usage_tmp = alloc_matrix_int(2, env->nb_rooms, -1);
+    env->flow_start_max = 0;
     flow_end = 0;
     i = 0;
     while (i < (int)env->nb_rooms)
     {
         if (env->links[0][i] == 1 && i != 0)
-            flow_start++;
+		{
+			node_usage_tmp[env->flow_start_max][0] = i;
+			node_usage_tmp[env->flow_start_max][1] = 0;
+            env->flow_start_max++;
+		}
         if (env->links[1][i] == 1 && i != 1)
             flow_end++;
         i++;
     }
-    if (flow_end <= flow_start)
+    if (flow_end <= env->flow_start_max)
         env->flow_max = flow_end;
     else
-        env->flow_max = flow_start;
+        env->flow_max = env->flow_start_max;
+	env->node_usage = alloc_matrix_int(2, env->flow_start_max, -1);
+	memcp(env->node_usage, node_usage_tmp, sizeof(int) * 2 * env->flow_start_max);
+	free_matrix(node_usage_tmp, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
@@ -471,6 +501,7 @@ void			genetic_solve(t_env *env)
 	print_tab(env->paths, env->nb_rooms, env->nb_valid);
 	free_matrix(&tmp_paths, env->nb_paths);
 	free_matrix(&env->links, env->nb_rooms);
+	free_matrix(&env->node_usage, env->flow_max);
 	//free_matrix(&env->paths, env->nb_valid);
 	return ;
 }
