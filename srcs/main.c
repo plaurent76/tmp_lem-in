@@ -22,8 +22,8 @@ static void		prepare_env(t_env *env)
 	init_links_matrix(env);
 	init_name_tab(env);
 	get_flow_max(env);
-	env->nb_paths = (int)(1024 * env->flow_start_max);
-	env->max_paths_per_node = 1024;
+	env->max_paths_per_node = 4096;
+	env->nb_paths = (int)(env->max_paths_per_node * env->flow_start_max);
 	// env->max_paths_per_node = env->nb_rooms * 2;
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 }
@@ -42,8 +42,9 @@ static void		make_magic_happen(t_env *env)
 	printf("\n");
 	genetic_solve(env);
 	// print valid paths:
-	// printf("found %d valid paths:\n", env->nb_valid);
-	// print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
+	printf("found %d valid paths:\n", env->nb_valid);
+	print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
+	printf("\n");
 	printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
 	print_matrix_int(env->node_exploration, 2, env->flow_start_max);
 	printf("\n");
@@ -53,7 +54,7 @@ static void		make_magic_happen(t_env *env)
 	print_array_int(env->best_combo, env->best_flow);
 	printf("env->best_combo: paths:\n");
 	i = -1;
-    while (++i < env->nb_valid && env->best_combo[i] != -1) {
+    while (++i < env->flow_max && env->best_combo[i] != -1) {
     	print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
     }
 

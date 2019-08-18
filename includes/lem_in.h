@@ -62,7 +62,7 @@ char	        *alloc_array_char(int n, char val);
 int		        **alloc_matrix_int(int x, int y, int val);
 char            **alloc_matrix_char(int x, int y);
 int             *int_set(int *tab, int val, int size);
-void	        free_matrix_int(int **mx, int depth);
+void	        free_matrix(void **mx, int depth);
 int				slen(char *s);
 long			labs(long n);
 int				active_bits(char c);
@@ -106,6 +106,7 @@ void			new_link(t_env *env, t_room *room1, t_room *room2);
 void			link_rooms(t_env *env, t_room *room1, t_room *room2);
 int				count_rooms(t_room *room);
 void			free_room_links(t_env *env, t_room *room);
+void			free_parsed_links(t_env *env);
 
 /*
 ** ROOMS
@@ -118,6 +119,7 @@ int				room_id_error(t_env *env, int room_id);
 int				is_room_free(t_env *env, int room_id);
 int				set_room_free(t_env *env, int room_id);
 int				set_room_busy(t_env *env, int room_id);
+void			free_parsed_rooms(t_env *env);
 
 /*
 ** ANTS

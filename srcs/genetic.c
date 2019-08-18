@@ -308,39 +308,44 @@ void 			init_links_matrix(t_env *env)
 
 	if (!(env->links = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_rooms, 0)))
 		return ;
-	printf("fpl before iteration: %p\n", &(env->first_parsed_link));
+	// printf("fpl before iteration: %p\n", &(env->first_parsed_link));
 	l = env->first_parsed_link;
 	// while (l && l->prev && l->prev->room)
 	// 	l = l->prev;
 	while (l && l->next && l->room1 && l->room2)
 	{
+		// printf("adding link between: %d-%d\n",l->room1->idx,l->room2->idx);
 		env->links[l->room1->idx][l->room2->idx] = 1;
 		env->links[l->room2->idx][l->room1->idx] = 1;
 		l = l->next;
+		// free(l->prev);
 	}
 	if (l && l->room1 && l->room2)
 	{
 		env->links[l->room1->idx][l->room2->idx] = 1;
 		env->links[l->room2->idx][l->room1->idx] = 1;
+		// free(l);
 	}
-	printf("fpl after iteration: %p\n", &(env->first_parsed_link));
+	// printf("fpl after iteration: %p\n", &(env->first_parsed_link));
 }
 /*faut continuer fill name pour en faire un char * a fin , l'indice donne la room a print
 **finir l'impression des fourmis en utilisant la colonie pour que ca ecrive au fur et a mesure
 */
 void			init_name_tab(t_env *env)
 {
-	int		i;
+	int				i;
+	t_parsed_room	*r;
 
-	i = 0;
-	env->room_names = alloc_matrix_char(256, env->nb_rooms);
-	while (i < env->nb_rooms)
+	i = -1;
+	r = env->first_parsed_room;
+	(env->room_names = alloc_matrix_char(256, env->nb_rooms))
+	? 0 : perr(env, "Error: alloc_matric_char failed");
+	while (++i < env->nb_rooms)
 	{
-		env->room_names[i] = memcp(env->room_names[i], env->first_parsed_room->room->id, 256);
-		env->first_parsed_room = env->first_parsed_room->next;
-		// pstr(1, env->room_names[i], (char)1);
-		i++;
+		env->room_names[i] = memcp(env->room_names[i], r->room->id, 256);
+		r = r->next;
 	}
+	free_parsed_rooms(env);
 }
 
 void         get_flow_max(t_env *env)
@@ -372,33 +377,27 @@ void         get_flow_max(t_env *env)
 	while (++i < env->flow_start_max)
 		memcp(env->node_exploration[i], tmp_node_exploration[i], sizeof(int) * 2);
 	// memcp(env->node_exploration, tmp_node_exploration, sizeof(int) * 2 * env->flow_start_max);
-	free_matrix_int(tmp_node_exploration, env->nb_rooms);
+	free_matrix((void *)tmp_node_exploration, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
 {
-	// t_path *init;
-
-	// init = new_path(env);
-	// (init && init->room && init->room->link && init->room->link)
-	// ? 0 : perr(env, "Error: faulty path init");
-	// if (!next_gen(env, init, count_rooms(init->room), -1))
-	// 	perr(env, "Error: no way out");
-	// del_path(init);
-
 	int 	**tmp_paths;
 
 	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
 	0 : perr(env, "Error: tmp_paths malloc failed");
 	// print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
+	if (env->nb_valid < 1)
+	{
+		free_matrix((void *)tmp_paths, env->nb_paths);
+		perr(env, "Error: no way out!");
+	}
 	if (!load_valid_paths(env, tmp_paths))
-		printf("error loading valid paths into env->paths");
-	// print summary
-	printf("nb_rooms: %d | nb_paths (explored): %d | nb_valid: %d\n"
-		, env->nb_rooms, env->nb_paths, env->nb_valid);
-	// print all paths:
-	// printf("all paths:\n");
+	{
+		free_matrix((void *)tmp_paths, env->nb_paths);
+		perr(env, "Error: failed loading valid paths into env->paths");
+	}
 	// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
-	free_matrix_int(tmp_paths, env->nb_paths);
+	free_matrix((void *)tmp_paths, env->nb_paths);
 }

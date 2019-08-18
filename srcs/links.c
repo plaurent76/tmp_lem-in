@@ -37,7 +37,7 @@ void		new_link(t_env *env, t_room *room1, t_room *room2)
 	{
 		parsed_link->prev = L2;
 		L2->next = parsed_link;
-		L2 = L2->next;
+		L2 = parsed_link;
 	}
 	else
 	{

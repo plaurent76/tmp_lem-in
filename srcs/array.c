@@ -39,6 +39,7 @@ void 	print_array_int(int *array, int n)
 {
 	int i = -1;
 
-	while (++i < n)
-		(i == (n-1)) ? printf(" %d\n", array[i]) : printf(" %d\t|", array[i]);
+	while (++i < n && array[i] != -1)
+		(i == 0 ? printf(" %d", array[i]) : printf("\t| %d", array[i]));
+	printf("\n");
 }
