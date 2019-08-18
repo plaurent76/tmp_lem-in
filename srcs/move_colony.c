@@ -35,12 +35,10 @@ int *get_ants_per_node(t_env *env)
 	int i;
 	int ants_left;
 
-	(paths_len = get_combo_paths_len(env))
-		? 0
-		: perr(env, "Error: paths_len malloc failed");
-	(ants_per_node = alloc_array_int(env->best_flow, 0))
-		? 0
-		: perr(env, "Error: ants_per_node malloc failed");
+	(paths_len = get_combo_paths_len(env)) ? 0
+	: perr(env, "Error: paths_len malloc failed");
+	(ants_per_node = alloc_array_int(env->best_flow, 0)) ? 0
+	: perr(env, "Error: ants_per_node malloc failed");
 
 	// i = -1;
 	// max_len = 0;
@@ -113,6 +111,7 @@ void assign_colony(t_env *env)
 				break;
 		}
 	}
+	free(ants_per_node);
 	printf("colony assigned!\n");
 	IS_SET_A ? put_ants(env) : 0;
 }
@@ -131,6 +130,7 @@ void put_ant(t_env *env, t_ant *ant)
 		(ant->path->rooms[ant->path->current - 1] != -1)
 		? pstr(1, env->room_names[ant->path->rooms[ant->path->current - 1]], '\0')
 		: perr(env, "Error: ant->path->current points to no room");
+		write(1, " ", 1);
 	}
 }
 
