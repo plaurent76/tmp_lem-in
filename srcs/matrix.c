@@ -55,9 +55,6 @@ void 	print_matrix_int(int **mx, int x, int y)
 {
 	int i = -1;
 
-	while (++i < y)
-	{
-		printf("%d\t | ", i);
+	while (++i < y && printf(" %d\t| ", i))
 		print_array_int(mx[i], x);
-	}
 }

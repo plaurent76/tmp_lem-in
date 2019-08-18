@@ -186,8 +186,8 @@ int		use_node(t_env *env, int room_id)
 	int i = -1;
 
 	while (++i < env->flow_start_max)
-		if (env->node_usage[i][0] == room_id)
-			if (env->node_usage[i][1]++)
+		if (env->node_exploration[i][0] == room_id)
+			if (env->node_exploration[i][1]++)
 				return (1);
 	return (0);
 }
@@ -197,8 +197,8 @@ int		is_node_explored(t_env *env, int room_id)
 	int i = -1;
 
 	while (++i < env->flow_start_max)
-		if (env->node_usage[i][0] == room_id)
-			if (env->node_usage[i][1] >= env->max_paths_per_node)
+		if (env->node_exploration[i][0] == room_id)
+			if (env->node_exploration[i][1] >= env->max_paths_per_node)
 				return (1);// tu devrais pas test ici si on est passer
 				//1024x sur un noeud de start ? 
 	return (0);
@@ -220,6 +220,12 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 			return ;
 		add_to_path(paths, env->nb_rooms, path_n, room_id);
 	}
+	if (is_node_explored(env, paths[path_n][1]))
+		return ;
+	use_node(env, paths[path_n][1]);
+	// printf("just explored by node (room_id): %d\n", paths[path_n][1]);
+	// print_matrix_int(env->node_exploration, 2, env->flow_start_max);
+
 	path_n_duplicate = path_n;
 	path_n_length = 0;
 	while (path_n_length < env->nb_rooms && paths[path_n][path_n_length] != -1)
@@ -227,13 +233,8 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 	while (++x < (int)env->nb_rooms)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
-		if (env->links[room_id][x] && !room_used(paths, path_n, env->nb_rooms, x)
-		&& !is_node_explored(env, paths[path_n_duplicate][1]) && ++n_link) // link exists with start
+		if (env->links[room_id][x] && !room_used(paths, path_n, env->nb_rooms, x) && ++n_link) // link exists with start
 		{
-			use_node(env, paths[path_n_duplicate][1]);
-			printf("just explored by node (room_id): %d\n", paths[path_n_duplicate][1]);
-			print_matrix_int(env->node_usage, 2, env->flow_start_max);
-
 			if (n_link > 1)
 			{
 				if (path_n_duplicate > 0 && room_id == 0)
@@ -347,9 +348,9 @@ void         count_flow_max(t_env *env)
 {
     int     i;
     int     flow_end;
-	int		**tmp_node_usage;
+	int		**tmp_node_exploration;
 
-	(tmp_node_usage = alloc_matrix_int(2, env->nb_rooms, -1))
+	(tmp_node_exploration = alloc_matrix_int(2, env->nb_rooms, -1))
 	? 0 : put_error(env, "Error: alloc_matric_int failed");
     env->flow_start_max = 0;
     flow_end = 0;
@@ -358,8 +359,8 @@ void         count_flow_max(t_env *env)
     {
         if (env->links[0][i] == 1 && i != 0)
 		{
-			tmp_node_usage[env->flow_start_max][0] = i;
-			tmp_node_usage[env->flow_start_max][1] = 0;
+			tmp_node_exploration[env->flow_start_max][0] = i;
+			tmp_node_exploration[env->flow_start_max][1] = 0;
             env->flow_start_max++;
 		}
         if (env->links[1][i] == 1 && i != 1)
@@ -367,9 +368,9 @@ void         count_flow_max(t_env *env)
         i++;
     }
 	env->flow_max = flow_end <= env->flow_start_max ? flow_end : env->flow_start_max;
-	env->node_usage = alloc_matrix_int(2, env->flow_start_max, -1);
-	memcp(env->node_usage, tmp_node_usage, sizeof(int) * 2 * env->flow_start_max);
-	// free_matrix_int(tmp_node_usage, env->nb_rooms);
+	env->node_exploration = alloc_matrix_int(2, env->flow_start_max, -1);
+	memcp(env->node_exploration, tmp_node_exploration, sizeof(int) * 2 * env->flow_start_max);
+	// free_matrix_int(tmp_node_exploration, env->nb_rooms);
 }
 
 void			genetic_solve(t_env *env)
@@ -410,8 +411,5 @@ void			genetic_solve(t_env *env)
 	// print all paths:
 	// printf("all paths:\n");
 	// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
-	// print valid paths:
-	printf("found %d valid paths:\n", env->nb_valid);
-	print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
 	// free_matrix_int(tmp_paths, env->nb_paths);
 }

@@ -16,13 +16,29 @@ static void		make_magic_happen(t_env *env)
 {
 	anthill_complete(env);
 	genetic_solve(env);
+	// print valid paths:
+	// printf("found %d valid paths:\n", env->nb_valid);
+	// print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
+	printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
+	print_matrix_int(env->node_exploration, 2, env->flow_start_max);
+	printf("\n");
 	combo_optimal(env);
-	assign_colony(env);
+	printf("optimal combo found:\nenv->best_score: %d\nenv->best_flow: %d\nenv->best_combo:\n"
+		, env->best_score, env->best_flow);
+	print_array_int(env->best_combo, env->best_flow);
+	printf("env->best_combo: paths:\n");
+    for (int i = 0; env->best_combo[i] != -1; i++) {
+    	print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
+    }
+
 	//IS_SET_M ? 0 : put_lines(env);
 	//IS_SET_R ? put_rooms(env) : 0;
 	//IS_SET_L ? put_links(env) : 0;
 	//IS_SET_S ? put_fwinfo(env) : 0;
+
+	assign_colony(env); // should be removed
 	//move_colony(env);
+
 	deinit_env(env);
 	exit(EXIT_SUCCESS);
 }

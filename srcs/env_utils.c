@@ -76,7 +76,7 @@ void			init_env(t_env *env)
 	env->best_flow = 1;
 	env->flow_max = 0;
 	env->flow_start_max = 0;
-	env->node_usage = NULL;
+	env->node_exploration = NULL;
 	env->start = NULL;
 	env->end = NULL;
 	env->nb_rooms = 0;
@@ -101,8 +101,8 @@ void			init_env(t_env *env)
 void			deinit_env(t_env *env)
 {
 	free_matrix_int(env->links, env->nb_rooms);
-	free_matrix_int(env->node_usage, env->flow_start_max);
-	//free_matrix_int(&env->paths, env->nb_valid);
+	free_matrix_int(env->node_exploration, env->flow_start_max);
+	free_matrix_int(env->paths, env->nb_valid);
 	free_colony(env);
 	free_rooms(env);
 	free_parsed_links(env);

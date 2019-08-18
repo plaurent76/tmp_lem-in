@@ -44,7 +44,7 @@ struct			s_env
 	int				nb_ants;
 	int				nb_paths;
 	int				max_paths_per_node;
-	int				**node_usage;
+	int				**node_exploration;
 	int 			nb_valid;
 	int				**links;
 	int 			**paths;

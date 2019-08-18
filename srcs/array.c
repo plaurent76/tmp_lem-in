@@ -40,5 +40,5 @@ void 	print_array_int(int *array, int n)
 	int i = -1;
 
 	while (++i < n)
-		(i == (n-1)) ? printf("%d\n", array[i]) : printf(" %d\t| ", array[i]);
+		(i == (n-1)) ? printf(" %d\n", array[i]) : printf(" %d\t|", array[i]);
 }

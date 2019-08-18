@@ -85,7 +85,7 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                 combo_2[n_cv][1] = j;
                 if (env->best_score > (score = count_score(env, n_combo, combo_2[n_cv])))
                 {
-                    pstr(1, "meilleur score 2", '\n');
+                    // pstr(1, "meilleur score 2", '\n');
                     memcp(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
@@ -160,8 +160,6 @@ void    combo_optimal(t_env *env)
             // pstr(1, "teste", '\n');
             replace_combo_x(env, combo_2, combo_x);
         }
-        print_array_int(env->best_combo, env->flow_max);
-        // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
         free_matrix_int(combo_2, env->nb_valid);
         free_matrix_int(combo_x, env->nb_valid);
     }

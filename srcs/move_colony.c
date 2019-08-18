@@ -25,10 +25,10 @@ int *get_combo_paths_len(t_env *env)
 	return (paths_len);
 }
 
-int *get_ants_in_paths(t_env *env)
+int *get_ants_per_paths(t_env *env)
 {
 	int *paths_len;
-	int *ants_in_paths;
+	int *ants_per_paths;
 	// int min_len;
 	// int max_len;
 	int diff;
@@ -38,9 +38,9 @@ int *get_ants_in_paths(t_env *env)
 	(paths_len = get_combo_paths_len(env))
 		? 0
 		: put_error(env, "Error: paths_len malloc failed");
-	(ants_in_paths = alloc_array_int(env->best_flow, 0))
+	(ants_per_paths = alloc_array_int(env->best_flow, 0))
 		? 0
-		: put_error(env, "Error: ants_in_paths malloc failed");
+		: put_error(env, "Error: ants_per_paths malloc failed");
 
 	// i = -1;
 	// max_len = 0;
@@ -53,31 +53,34 @@ int *get_ants_in_paths(t_env *env)
 	// max_len = paths_len[env->best_flow - 1];
 	ants_left = env->nb_ants; // % (min_len * env->best_flow);
 	i = -1;
-	while (++i < env->best_flow)
+	while (++i < env->best_flow - 1)
 	{
-		diff = (i == env->best_flow - 1) ? 0 : (paths_len[i + 1] - paths_len[i]);
+		diff = paths_len[i + 1] - paths_len[i];
 		if (diff >= 0 && ((diff + paths_len[i]) > ants_left))
 		{
-			ants_in_paths[i] += ants_left;
+			ants_per_paths[i] += ants_left;
 			ants_left = 0;
 			break;
 		}
 		else if (diff >= 0 && diff < ants_left)
 		{
-			ants_in_paths[i] += paths_len[i];
-			while (ants_left > 0 && --diff >= 0)
-			{
-				ants_in_paths[i]++;
-				ants_left--;
-			}
+			// ants_per_paths[i] += paths_len[i];
+			ants_per_paths[i] += diff;
+			ants_left -= diff;
 		}
 	}
-	printf("paths_len: ");
+	i = 0;
+	while (--ants_left >= 0)
+	{
+		ants_per_paths[i]++;
+		i = (i == (env->best_flow - 1)) ? 0 : (i + 1);
+	}
+	printf("env->best_combo: paths_len:\n");
 	print_array_int(paths_len, env->best_flow);
-	printf("ants_in_paths: ");
-	print_array_int(ants_in_paths, env->best_flow);
+	printf("env->best_combo: ants_per_paths:\n");
+	print_array_int(ants_per_paths, env->best_flow);
 	free(paths_len);
-	return (ants_in_paths);
+	return (ants_per_paths);
 }
 /*
 ** on recoit les paths sous forme d'indice, avec le score si on le multiplie par le nombre de chemin
@@ -88,23 +91,25 @@ int *get_ants_in_paths(t_env *env)
 void assign_colony(t_env *env)
 {
 	int i;
-	int *ants_in_paths;
+	int *ants_per_paths;
 	int next_ant_path;
 
 	i = -1;
 	(env->colony = (t_ant **)malloc(sizeof(t_ant *) * env->nb_ants))
 	? 0 : put_error(env, "Error: t_ant ** malloc failed");
-	ants_in_paths = get_ants_in_paths(env);
+	ants_per_paths = get_ants_per_paths(env);
 	next_ant_path = 0;
 	while (++i < env->nb_ants)
 	{
+		printf("adding ant %d to colony with path env->best_combo[%d]: %d\n"
+			, i, next_ant_path, env->best_combo[next_ant_path]);
 		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_ant_path]], env->nb_rooms);
-		ants_in_paths[next_ant_path]--;
+		ants_per_paths[next_ant_path]--;
 		while (1)
 		{//je comprend pas cette boucle ^^'
 			(next_ant_path == (env->best_flow - 1))
 			? (next_ant_path = 0) : (++next_ant_path);
-			if (ants_in_paths[next_ant_path] != 0)
+			if (ants_per_paths[next_ant_path] != 0)
 				break;
 		}
 	}
