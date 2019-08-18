@@ -138,8 +138,8 @@ void    replace_combo_x(t_env *env, int **combo_2, int **combo_x)
 void    combo_optimal(t_env *env)
 {
     int n_combo;
-    int **combo_2;
-    int **combo_x;
+    int **combo_2 = NULL;
+    int **combo_x = NULL;
 
     if (env->nb_valid > 0)
     {

@@ -117,19 +117,22 @@ void assign_colony(t_env *env)
 
 void put_ant(t_env *env, t_ant *ant)
 {
-	if (ant && ant->path && ant->path->rooms)
+	if (ant && ant->path && ant->path->rooms && ant->path->current - 1 != 0)
 	{
 		// ((ant->path->current != ant->path->size) && (ant != env->colony[0]))
 		// ? write(1, " ", 1) : 0;
 		// (ant != env->colony[0] && ant->path->size == 2)
-		// ? write(1, " ", 1) : 0;
+		if (env->new_line > 0)	
+			write(1, " ", 1);
+		else
+			env->new_line++;
 		write(1, "L", 1);
 		plong(1, ant->n, '\0');
 		write(1, "-", 1);
 		(ant->path->rooms[ant->path->current - 1] != -1)
 		? pstr(1, env->room_names[ant->path->rooms[ant->path->current - 1]], '\0')
 		: perr(env, "Error: ant->path->current points to no room");
-		write(1, " ", 1);
+		// write(1, " ", 1);
 	}
 }
 
@@ -230,6 +233,7 @@ void move_colony(t_env *env)
 	// IS_SET_M ? 0 : write(1, "\n", 1);
 	while (n_arrived < env->nb_ants && (i = -1))
 	{
+		env->new_line = 0;
 		while (n_arrived < env->nb_ants && ++i < env->nb_ants)
 		{
 			n_arrived += move_ant_forward(env, env->colony[i]);

@@ -33,6 +33,7 @@ struct			s_env
 	t_parsed_link	*first_parsed_link;
 	t_parsed_link	*last_parsed_link;
 
+	int				new_line;
 	int				*best_combo;
 	int				best_score;
 	int				best_flow;

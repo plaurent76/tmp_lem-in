@@ -53,7 +53,7 @@ static void		make_magic_happen(t_env *env)
 	print_array_int(env->best_combo, env->best_flow);
 	printf("env->best_combo: paths:\n");
 	i = -1;
-    while (++i >= 0 && env->best_combo[i] != -1) {
+    while (++i < env->nb_valid && env->best_combo[i] != -1) {
     	print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
     }
 
