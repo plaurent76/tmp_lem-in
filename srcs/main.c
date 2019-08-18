@@ -30,10 +30,16 @@ static void		prepare_env(t_env *env)
 
 static void		make_magic_happen(t_env *env)
 {
+	int i;
+
 	anthill_complete(env);
 	prepare_env(env);
-	printf("room names:\n");
-	print_matrix_char(env->room_names, 256, env->nb_rooms);
+	printf("\n room_id | room_name\n---------------------\n");
+	i = -1;
+	while (++i < env->nb_rooms) {
+		printf(" %d\t | %s\n", i, env->room_names[i]);
+	}
+	printf("\n");
 	genetic_solve(env);
 	// print valid paths:
 	// printf("found %d valid paths:\n", env->nb_valid);
@@ -46,7 +52,8 @@ static void		make_magic_happen(t_env *env)
 		, env->best_score, env->best_flow);
 	print_array_int(env->best_combo, env->best_flow);
 	printf("env->best_combo: paths:\n");
-    for (int i = 0; env->best_combo[i] != -1; i++) {
+	i = -1;
+    while (++i >= 0 && env->best_combo[i] != -1) {
     	print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
     }
 

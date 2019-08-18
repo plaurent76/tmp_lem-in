@@ -64,5 +64,5 @@ void 	print_matrix_char(char **mx, int x, int y)
 	int i = -1;
 
 	while (++i < y && printf(" %d\t| ", i))
-		write(1, &mx[i], x);
+		write(1, mx[i], x);
 }

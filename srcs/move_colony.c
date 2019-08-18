@@ -99,8 +99,8 @@ void assign_colony(t_env *env)
 	next_node = 0;
 	while (++i < env->nb_ants)
 	{
-		printf("new ant #%d in colony: using node %d (path #%d)\n"
-			, i, next_node, env->best_combo[next_node]);
+		// printf("new ant #%d in colony: using node %d (path #%d)\n"
+		// 	, i, next_node, env->best_combo[next_node]);
 		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_node]], env->nb_rooms);
 		ants_per_node[next_node]--;
 
@@ -112,7 +112,6 @@ void assign_colony(t_env *env)
 		}
 	}
 	free(ants_per_node);
-	printf("colony assigned!\n");
 	IS_SET_A ? put_ants(env) : 0;
 }
 
@@ -199,7 +198,7 @@ int move_ant_forward(t_env *env, t_ant *ant)
 			, (ant->n - 1), ant->path->current, ant->path->size);
 		perr(env, "Error: ant->path->current overflow");
 	}
-	if (ant->path->rooms[ant->path->current - 1] == 1)
+	if ((ant->path->current > 1) && ant->path->rooms[ant->path->current - 1] == 1)
 		return (0);
 	// printf("calling is_room_free() for colony[%d], (ant->path->current + 1) = %d, ant->path->rooms[ant->path->current + 1] = %d\n"
 	// 	, (ant->n - 1), (ant->path->current + 1), ant->path->rooms[ant->path->current + 1]);

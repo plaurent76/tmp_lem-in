@@ -308,7 +308,7 @@ void 			init_links_matrix(t_env *env)
 
 	if (!(env->links = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_rooms, 0)))
 		return ;
-	printf("fpl before iteration: %p\n", env->first_parsed_link);
+	printf("fpl before iteration: %p\n", &(env->first_parsed_link));
 	l = env->first_parsed_link;
 	// while (l && l->prev && l->prev->room)
 	// 	l = l->prev;
@@ -323,7 +323,7 @@ void 			init_links_matrix(t_env *env)
 		env->links[l->room1->idx][l->room2->idx] = 1;
 		env->links[l->room2->idx][l->room1->idx] = 1;
 	}
-	printf("fpl after iteration: %p\n", env->first_parsed_link);
+	printf("fpl after iteration: %p\n", &(env->first_parsed_link));
 }
 /*faut continuer fill name pour en faire un char * a fin , l'indice donne la room a print
 **finir l'impression des fourmis en utilisant la colonie pour que ca ecrive au fur et a mesure
@@ -368,7 +368,10 @@ void         get_flow_max(t_env *env)
     }
 	env->flow_max = flow_end <= env->flow_start_max ? flow_end : env->flow_start_max;
 	env->node_exploration = alloc_matrix_int(2, env->flow_start_max, -1);
-	memcp(env->node_exploration, tmp_node_exploration, sizeof(int) * 2 * env->flow_start_max);
+	i = -1;
+	while (++i < env->flow_start_max)
+		memcp(env->node_exploration[i], tmp_node_exploration[i], sizeof(int) * 2);
+	// memcp(env->node_exploration, tmp_node_exploration, sizeof(int) * 2 * env->flow_start_max);
 	free_matrix_int(tmp_node_exploration, env->nb_rooms);
 }
 

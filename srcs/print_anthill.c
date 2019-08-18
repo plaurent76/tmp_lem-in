@@ -14,34 +14,34 @@
 
 // void	put_fwinfo(t_env *env)
 // {
-// 	pstr(1, "Paths used:", ' ');
-// 	plong(1, 1, '\n');
-// 	pstr(1, "Shortest path length:", ' ');
-// 	plong(1, path_len(env->fw), '\n');
-// 	pstr(1, "Turns to move the whole colony:", ' ');
-// 	plong(1, (path_len(env->fw) + env->nb_ants), '\n');
+// 	// pstr(1, "Paths used:", ' ');
+// 	// plong(1, 1, '\n');
+// 	// pstr(1, "Shortest path length:", ' ');
+// 	// plong(1, path_len(env->fw), '\n');
+// 	// pstr(1, "Turns to move the whole colony:", ' ');
+// 	// plong(1, (path_len(env->fw) + env->nb_ants), '\n');
 // }
 
-// void	put_room_links(t_env *env, t_room *room)
-// {
-// 	t_link *l;
+void	put_room_links(t_env *env, t_room *room)
+{
+	t_link *l;
 
-// 	l = room->link;
-// 	(room && &(room->id[0])) ? 0 : perr(env, "Error: No room to target");
-// 	l ? 0 : perr(env, "Error: Room has no link");
-// 	while ((l && l->prev && l->prev->room))
-// 		(l = l->prev);
-// 	pstr(1, room->id, ' ');
-// 	pstr(1, "links:", ' ');
-// 	while (l)
-// 	{
-// 		if (l->next)
-// 			&(l->room->id[0]) ? pstr(1, &(l->room->id[0]), ' ') : 0;
-// 		else
-// 			&(l->room->id[0]) ? pstr(1, &(l->room->id[0]), '\n') : 0;
-// 		l = l->next;
-// 	}
-// }
+	l = room->link;
+	(room && &(room->id[0])) ? 0 : perr(env, "Error: No room to target");
+	l ? 0 : perr(env, "Error: Room has no link");
+	while ((l && l->prev && l->prev->room))
+		(l = l->prev);
+	pstr(1, room->id, ' ');
+	pstr(1, "links:", ' ');
+	while (l)
+	{
+		if (l->next)
+			&(l->room->id[0]) ? pstr(1, &(l->room->id[0]), ' ') : 0;
+		else
+			&(l->room->id[0]) ? pstr(1, &(l->room->id[0]), '\n') : 0;
+		l = l->next;
+	}
+}
 
 void	free_room_links(t_env *env, t_room *room)
 {
