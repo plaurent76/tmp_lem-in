@@ -101,7 +101,7 @@ void assign_colony(t_env *env)
 		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_ant_path]], env->nb_rooms);
 		ants_in_paths[next_ant_path]--;
 		while (1)
-		{
+		{//je comprend pas cette boucle ^^'
 			(next_ant_path == (env->best_flow - 1))
 			? (next_ant_path = 0) : (++next_ant_path);
 			if (ants_in_paths[next_ant_path] != 0)
