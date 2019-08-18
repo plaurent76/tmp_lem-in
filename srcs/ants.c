@@ -50,7 +50,7 @@ void	del_ant(t_env *env, t_ant *ant)
 	if (!ant)
 		return ;
 	(ant->path && ant->path->rooms)
-	? set_room_free(env, ant->path->rooms[ant->path->current]) : 0;
+	? set_room_free(env, ant->path->rooms[ant->path->current - 1]) : 0;
 	del_ant_path(ant->path);
 	free(ant);
 	ant = NULL;

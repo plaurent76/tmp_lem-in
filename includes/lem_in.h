@@ -100,6 +100,7 @@ int				anthill_complete(t_env *env);
 ** LINKS
 */
 
+void 			init_links_matrix(t_env *env);
 t_link			*add_link(t_room *new_room, t_link *prev_link);
 void			new_link(t_env *env, t_room *room1, t_room *room2);
 void			link_rooms(t_env *env, t_room *room1, t_room *room2);
@@ -110,6 +111,7 @@ void			free_room_links(t_env *env, t_room *room);
 ** ROOMS
 */
 
+void 			init_name_tab(t_env *env);
 void			new_room(t_env *env, char *name, long x, long y, int state);
 t_room			*str_to_room(t_env *env, const char *s);
 int				room_id_error(t_env *env, int room_id);
@@ -143,6 +145,7 @@ void			put_ant_path(t_path *path);
 */
 void            print_array_int(int *array, int n);
 void            print_matrix_int(int **mx, int x, int y);
+void            print_matrix_char(char **mx, int x, int y);
 void			put_fwinfo(t_env *env);
 void			put_ants(t_env *env);
 void			put_all(t_env *env);
@@ -156,11 +159,10 @@ void			put_room_links(t_env *env, t_room *room);
 /*
 ** SOLVE
 */
-
-void			brute_solve(t_env *env);
+void         	get_flow_max(t_env *env);
 void			genetic_solve(t_env *env);
+void            combo_optimal(t_env *env);
 void            assign_colony(t_env *env);
 void			move_colony(t_env *env);
-void            combo_optimal(t_env *env);
 
 #endif

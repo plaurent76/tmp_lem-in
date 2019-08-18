@@ -12,9 +12,28 @@
 
 #include "lem_in.h"
 
+static void		prepare_env(t_env *env)
+{
+	env->nb_rooms = env->lpri + 1;
+	// alloc room_free to track room occupation
+	(env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms)) ?
+	0 : perr(env, "Error: env->room_free malloc failed");
+	mems(env->room_free, (char)1, env->nb_rooms);
+	init_links_matrix(env);
+	init_name_tab(env);
+	get_flow_max(env);
+	env->nb_paths = (int)(1024 * env->flow_start_max);
+	env->max_paths_per_node = 1024;
+	// env->max_paths_per_node = env->nb_rooms * 2;
+	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
+}
+
 static void		make_magic_happen(t_env *env)
 {
 	anthill_complete(env);
+	prepare_env(env);
+	printf("room names:\n");
+	print_matrix_char(env->room_names, 256, env->nb_rooms);
 	genetic_solve(env);
 	// print valid paths:
 	// printf("found %d valid paths:\n", env->nb_valid);

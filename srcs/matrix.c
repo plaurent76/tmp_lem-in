@@ -58,3 +58,11 @@ void 	print_matrix_int(int **mx, int x, int y)
 	while (++i < y && printf(" %d\t| ", i))
 		print_array_int(mx[i], x);
 }
+
+void 	print_matrix_char(char **mx, int x, int y)
+{
+	int i = -1;
+
+	while (++i < y && printf(" %d\t| ", i))
+		write(1, &mx[i], x);
+}

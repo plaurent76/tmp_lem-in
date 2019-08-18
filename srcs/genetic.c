@@ -302,7 +302,7 @@ int 	load_valid_paths(t_env *env, int **tmp_paths)
 	return 1;
 }
 
-void 			fill_links_matrix(t_env *env)
+void 			init_links_matrix(t_env *env)
 {
 	t_parsed_link *l;
 
@@ -326,7 +326,7 @@ void 			fill_links_matrix(t_env *env)
 /*faut continuer fill name pour en faire un char * a fin , l'indice donne la room a print
 **finir l'impression des fourmis en utilisant la colonie pour que ca ecrive au fur et a mesure
 */
-void			fill_name_tab(t_env *env)
+void			init_name_tab(t_env *env)
 {
 	int		i;
 
@@ -341,7 +341,7 @@ void			fill_name_tab(t_env *env)
 	}
 }
 
-void         count_flow_max(t_env *env)
+void         get_flow_max(t_env *env)
 {
     int     i;
     int     flow_end;
@@ -383,19 +383,6 @@ void			genetic_solve(t_env *env)
 
 	int 	**tmp_paths;
 
-	env->nb_rooms = env->lpri + 1;
-	// alloc room_free to track room occupation
-	(env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms)) ?
-	0 : perr(env, "Error: env->room_free malloc failed");
-	mems(env->room_free, (char)1, env->nb_rooms);
-	fill_links_matrix(env);
-	fill_name_tab(env);
-	count_flow_max(env);
-	env->nb_paths = (int)(1024 * env->flow_start_max);
-	env->max_paths_per_node = 1024;
-	// env->max_paths_per_node = env->nb_rooms * 2;
-
-	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
 	0 : perr(env, "Error: tmp_paths malloc failed");
 	// print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);

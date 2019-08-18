@@ -121,15 +121,16 @@ void put_ant(t_env *env, t_ant *ant)
 {
 	if (ant && ant->path && ant->path->rooms)
 	{
-		((ant->path->current != ant->path->size) && (ant != env->colony[0]))
-		? write(1, " ", 1) : 0;
-		(ant != env->colony[0] && ant->path->size == 2)
-		? write(1, " ", 1) : 0;
+		// ((ant->path->current != ant->path->size) && (ant != env->colony[0]))
+		// ? write(1, " ", 1) : 0;
+		// (ant != env->colony[0] && ant->path->size == 2)
+		// ? write(1, " ", 1) : 0;
 		write(1, "L", 1);
 		plong(1, ant->n, '\0');
-		write(1, "-", 1); //il faut cree le tab qui va avoir tout les noms des rooms en fonction des id
-		(ant->path->rooms[ant->path->current] != -1)
-		? pstr(1, env->room_names[ant->path->rooms[ant->path->current]], '\0') : 0;
+		write(1, "-", 1);
+		(ant->path->rooms[ant->path->current - 1] != -1)
+		? pstr(1, env->room_names[ant->path->rooms[ant->path->current - 1]], '\0')
+		: perr(env, "Error: ant->path->current points to no room");
 	}
 }
 
@@ -161,8 +162,8 @@ int set_room_busy(t_env *env, int room_id)
 	int err;
 
 	err = room_id_error(env, room_id);
-	err == -1 ? perr(env, "Error: is_room_free called on a negative room_id") : 0;
-	err == 1 ? perr(env, "Error: is_room_free called on an unknown room_id") : 0;
+	err == -1 ? perr(env, "Error: set_room_busy called on a negative room_id") : 0;
+	err == 1 ? perr(env, "Error: set_room_busy called on an unknown room_id") : 0;
 	if (room_id > 1)
 	{
 		env->room_free[room_id] = 0;
@@ -176,8 +177,8 @@ int set_room_free(t_env *env, int room_id)
 	int err;
 
 	err = room_id_error(env, room_id);
-	err == -1 ? perr(env, "Error: is_room_free called on a negative room_id") : 0;
-	err == 1 ? perr(env, "Error: is_room_free called on an unknown room_id") : 0;
+	err == -1 ? perr(env, "Error: set_room_free called on a negative room_id") : 0;
+	err == 1 ? perr(env, "Error: set_room_free called on an unknown room_id") : 0;
 	if (room_id > 1)
 	{
 		env->room_free[room_id] = 1;
@@ -192,20 +193,29 @@ int move_ant_forward(t_env *env, t_ant *ant)
 	ant->path ? 0 : perr(env, "Error: ant has no path to follow");
 	ant->path->size > 0 ? 0 : perr(env, "Error: ant path size <= 0");
 	ant->path->rooms ? 0 : perr(env, "Error: ant path has no rooms");
-	ant->path->rooms[ant->path->current] >= 0 ? 0 : perr(env, "Error: ant->path->current overflow");
-	if (ant->path->current == (ant->path->size - 1))
+	if (ant->path->current > ant->path->size)
 	{
-		if (ant->path->rooms[ant->path->current] != 1)
-			perr(env, "Error: ant path last room is not end");
-		return (0);
+		printf("at colony[%d], path->current=%d, path->size=%d\n"
+			, (ant->n - 1), ant->path->current, ant->path->size);
+		perr(env, "Error: ant->path->current overflow");
 	}
-	if (is_room_free(env, ant->path->rooms[ant->path->current + 1]))
+	if (ant->path->rooms[ant->path->current - 1] == 1)
+		return (0);
+	// printf("calling is_room_free() for colony[%d], (ant->path->current + 1) = %d, ant->path->rooms[ant->path->current + 1] = %d\n"
+	// 	, (ant->n - 1), (ant->path->current + 1), ant->path->rooms[ant->path->current + 1]);
+	// printf("ant->path->rooms[ant->path->current] = %d\n"
+	// 	, ant->path->rooms[ant->path->current]);
+	if (ant->path->current < ant->path->size
+		&& is_room_free(env, ant->path->rooms[ant->path->current]))
 	{
-		set_room_free(env, ant->path->rooms[ant->path->current]);
-		set_room_busy(env, ant->path->rooms[++(ant->path->current)]);
+		if (ant->path->current > 0)
+			set_room_free(env, ant->path->rooms[ant->path->current - 1]);
+		set_room_busy(env, ant->path->rooms[ant->path->current]);
+		ant->path->current++;
 		put_ant(env, ant);
 		// (IS_SET_M && !IS_SET_S) ? 0 : put_ant(env, ant);
-		return (1);
+		if (ant->path->rooms[ant->path->current - 1] == 1)
+			return (1);
 	}
 	return (0);
 }
@@ -213,20 +223,18 @@ int move_ant_forward(t_env *env, t_ant *ant)
 void move_colony(t_env *env)
 {
 	int i;
-	int arrived;
+	int n_arrived;
 
+	n_arrived = 0;
 	assign_colony(env);
 	// rounds = (env->nb_ants + path_len(env->paths[0], env->nb_rooms));
 	// IS_SET_M ? 0 : write(1, "\n", 1);
-	arrived = 0;
-	while (arrived < env->nb_ants)
+	while (n_arrived < env->nb_ants && (i = -1))
 	{
-		i = -1;
-		while (++i < env->nb_ants)
+		while (n_arrived < env->nb_ants && ++i < env->nb_ants)
 		{
-			move_ant_forward(env, env->colony[i]);
-			if (env->colony[i]->path->current == (env->colony[i]->path->size - 1))
-				arrived++;
+			n_arrived += move_ant_forward(env, env->colony[i]);
+			// write(1, " ", 1);
 		}
 		// (i < (rounds - 1) && path_len(env->paths[0], env->nb_rooms) != 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
 		write(1, "\n", 1);
