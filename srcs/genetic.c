@@ -196,8 +196,6 @@ int		is_node_explored(t_env *env, int room_id)
 {
 	int i = -1;
 
-	printf("is_node_explored node_usage:\n");
-	print_matrix_int(env->node_usage, 2, env->flow_start_max);
 	while (++i < env->flow_start_max)
 		if (env->node_usage[i][0] == room_id)
 			if (env->node_usage[i][1] >= env->max_paths_per_node)
@@ -233,9 +231,9 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 		&& !is_node_explored(env, paths[path_n_duplicate][1]) && ++n_link) // link exists with start
 		{
 			use_node(env, paths[path_n_duplicate][1]);
-			//if (room_id == 0)
-				//printf("%d\n", x);
-			//printf("%d-%d\n", room_id, x);
+			printf("just explored by node (room_id): %d\n", paths[path_n_duplicate][1]);
+			print_matrix_int(env->node_usage, 2, env->flow_start_max);
+
 			if (n_link > 1)
 			{
 				if (path_n_duplicate > 0 && room_id == 0)
