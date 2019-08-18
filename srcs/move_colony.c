@@ -25,10 +25,10 @@ int *get_combo_paths_len(t_env *env)
 	return (paths_len);
 }
 
-int *get_ants_per_paths(t_env *env)
+int *get_ants_per_node(t_env *env)
 {
 	int *paths_len;
-	int *ants_per_paths;
+	int *ants_per_node;
 	// int min_len;
 	// int max_len;
 	int diff;
@@ -37,10 +37,10 @@ int *get_ants_per_paths(t_env *env)
 
 	(paths_len = get_combo_paths_len(env))
 		? 0
-		: put_error(env, "Error: paths_len malloc failed");
-	(ants_per_paths = alloc_array_int(env->best_flow, 0))
+		: perr(env, "Error: paths_len malloc failed");
+	(ants_per_node = alloc_array_int(env->best_flow, 0))
 		? 0
-		: put_error(env, "Error: ants_per_paths malloc failed");
+		: perr(env, "Error: ants_per_node malloc failed");
 
 	// i = -1;
 	// max_len = 0;
@@ -58,29 +58,29 @@ int *get_ants_per_paths(t_env *env)
 		diff = paths_len[i + 1] - paths_len[i];
 		if (diff >= 0 && ((diff + paths_len[i]) > ants_left))
 		{
-			ants_per_paths[i] += ants_left;
+			ants_per_node[i] += ants_left;
 			ants_left = 0;
 			break;
 		}
 		else if (diff >= 0 && diff < ants_left)
 		{
-			// ants_per_paths[i] += paths_len[i];
-			ants_per_paths[i] += diff;
+			// ants_per_node[i] += paths_len[i];
+			ants_per_node[i] += diff;
 			ants_left -= diff;
 		}
 	}
 	i = 0;
 	while (--ants_left >= 0)
 	{
-		ants_per_paths[i]++;
+		ants_per_node[i]++;
 		i = (i == (env->best_flow - 1)) ? 0 : (i + 1);
 	}
 	printf("env->best_combo: paths_len:\n");
 	print_array_int(paths_len, env->best_flow);
-	printf("env->best_combo: ants_per_paths:\n");
-	print_array_int(ants_per_paths, env->best_flow);
+	printf("env->best_combo: ants_per_node:\n");
+	print_array_int(ants_per_node, env->best_flow);
 	free(paths_len);
-	return (ants_per_paths);
+	return (ants_per_node);
 }
 /*
 ** on recoit les paths sous forme d'indice, avec le score si on le multiplie par le nombre de chemin
@@ -91,35 +91,35 @@ int *get_ants_per_paths(t_env *env)
 void assign_colony(t_env *env)
 {
 	int i;
-	int *ants_per_paths;
-	int next_ant_path;
+	int *ants_per_node;
+	int next_node;
 
 	i = -1;
 	(env->colony = (t_ant **)malloc(sizeof(t_ant *) * env->nb_ants))
-	? 0 : put_error(env, "Error: t_ant ** malloc failed");
-	ants_per_paths = get_ants_per_paths(env);
-	next_ant_path = 0;
+	? 0 : perr(env, "Error: t_ant ** malloc failed");
+	ants_per_node = get_ants_per_node(env);
+	next_node = 0;
 	while (++i < env->nb_ants)
 	{
-		printf("adding ant %d to colony with path env->best_combo[%d]: %d\n"
-			, i, next_ant_path, env->best_combo[next_ant_path]);
-		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_ant_path]], env->nb_rooms);
-		ants_per_paths[next_ant_path]--;
-		while (1)
-		{//je comprend pas cette boucle ^^'
-			(next_ant_path == (env->best_flow - 1))
-			? (next_ant_path = 0) : (++next_ant_path);
-			if (ants_per_paths[next_ant_path] != 0)
+		printf("new ant #%d in colony: using node %d (path #%d)\n"
+			, i, next_node, env->best_combo[next_node]);
+		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_node]], env->nb_rooms);
+		ants_per_node[next_node]--;
+
+		while (i != (env->nb_ants - 1))
+		{
+			next_node = (next_node == (env->best_flow - 1)) ? 0 : (next_node + 1);
+			if (ants_per_node[next_node] != 0)
 				break;
 		}
 	}
 	printf("colony assigned!\n");
-	//IS_SET_A ? put_ants(env) : 0;
+	IS_SET_A ? put_ants(env) : 0;
 }
 
 void put_ant(t_env *env, t_ant *ant)
 {
-	if (ant && ant->path)
+	if (ant && ant->path && ant->path->rooms)
 	{
 		((ant->path->current != ant->path->size) && (ant != env->colony[0]))
 		? write(1, " ", 1) : 0;
@@ -128,26 +128,83 @@ void put_ant(t_env *env, t_ant *ant)
 		write(1, "L", 1);
 		plong(1, ant->n, '\0');
 		write(1, "-", 1); //il faut cree le tab qui va avoir tout les noms des rooms en fonction des id
-		ant->path->rooms[ant->path->current] != -1
-			? plong(1, ant->path->rooms[ant->path->current], '\0')
-			: 0;
+		(ant->path->rooms[ant->path->current] != -1)
+		? pstr(1, env->room_names[ant->path->rooms[ant->path->current]], '\0') : 0;
 	}
+}
+
+int room_id_error(t_env *env, int room_id)
+{
+	if (room_id < 0)
+		return (-1);
+		// perr(env, "Error: checked for business on a negative room_id");
+	if (room_id > (env->nb_rooms - 1))
+		return (1);
+	return (0);
+		// perr(env, "Error: checked for business on a not existing room_id");
+}
+
+int is_room_free(t_env *env, int room_id)
+{
+	int err;
+
+	err = room_id_error(env, room_id);
+	err == -1 ? perr(env, "Error: is_room_free called on a negative room_id") : 0;
+	err == 1 ? perr(env, "Error: is_room_free called on an unknown room_id") : 0;
+	if (room_id == 0 || room_id == 1)
+		return (1);
+	return (env->room_free[room_id]);
+}
+
+int set_room_busy(t_env *env, int room_id)
+{
+	int err;
+
+	err = room_id_error(env, room_id);
+	err == -1 ? perr(env, "Error: is_room_free called on a negative room_id") : 0;
+	err == 1 ? perr(env, "Error: is_room_free called on an unknown room_id") : 0;
+	if (room_id > 1)
+	{
+		env->room_free[room_id] = 0;
+		return (1);
+	}
+	return (0);
+}
+
+int set_room_free(t_env *env, int room_id)
+{
+	int err;
+
+	err = room_id_error(env, room_id);
+	err == -1 ? perr(env, "Error: is_room_free called on a negative room_id") : 0;
+	err == 1 ? perr(env, "Error: is_room_free called on an unknown room_id") : 0;
+	if (room_id > 1)
+	{
+		env->room_free[room_id] = 1;
+		return (1);
+	}
+	return (0);
 }
 
 int move_ant_forward(t_env *env, t_ant *ant)
 {
-	ant ? 0 : put_error(env, "Error: tried to move non-existing ant");
-	ant->path ? 0 : put_error(env, "Error: ant has no path to follow");
-	ant->path->size > 0 ? 0 : put_error(env, "Error: ant path size <= 0");
-	ant->path->rooms[ant->path->current] >= 0 ? 0 : put_error(env, "Error: could not locate ant");
-	if ((ant->path->current + 1) <= ant->path->size && env->room_free[ant->path->rooms[ant->path->current + 1]])
+	ant ? 0 : perr(env, "Error: tried to move non-existing ant");
+	ant->path ? 0 : perr(env, "Error: ant has no path to follow");
+	ant->path->size > 0 ? 0 : perr(env, "Error: ant path size <= 0");
+	ant->path->rooms ? 0 : perr(env, "Error: ant path has no rooms");
+	ant->path->rooms[ant->path->current] >= 0 ? 0 : perr(env, "Error: ant->path->current overflow");
+	if (ant->path->current == (ant->path->size - 1))
 	{
-		env->room_free[ant->path->rooms[ant->path->current]] = 1;
-		env->room_free[ant->path->rooms[ant->path->current + 1]] = 0;
-		ant->path->current++;
+		if (ant->path->rooms[ant->path->current] != 1)
+			perr(env, "Error: ant path last room is not end");
+		return (0);
+	}
+	if (is_room_free(env, ant->path->rooms[ant->path->current + 1]))
+	{
+		set_room_free(env, ant->path->rooms[ant->path->current]);
+		set_room_busy(env, ant->path->rooms[++(ant->path->current)]);
 		put_ant(env, ant);
-		// ant->path->room->ant = (ant->path->room == env->end) ? NULL : ant;
-		(IS_SET_M && !IS_SET_S) ? 0 : put_ant(env, ant);
+		// (IS_SET_M && !IS_SET_S) ? 0 : put_ant(env, ant);
 		return (1);
 	}
 	return (0);
@@ -156,21 +213,22 @@ int move_ant_forward(t_env *env, t_ant *ant)
 void move_colony(t_env *env)
 {
 	int i;
-	int j;
-	int rounds;
+	int arrived;
 
-	i = -1;
 	assign_colony(env);
-	rounds = (env->nb_ants + path_len(env->paths[0], env->nb_rooms));
-	IS_SET_M ? 0 : write(1, "\n", 1);
-	while (++i < rounds)
+	// rounds = (env->nb_ants + path_len(env->paths[0], env->nb_rooms));
+	// IS_SET_M ? 0 : write(1, "\n", 1);
+	arrived = 0;
+	while (arrived < env->nb_ants)
 	{
-		j = -1;
-		while (++j < env->nb_ants)
-			move_ant_forward(env, env->colony[j]);
-		(i < (rounds - 1) && path_len(env->paths[0], env->nb_rooms) != 2 && (!IS_SET_M || IS_SET_S))
-			? write(1, "\n", 1)
-			: 0;
+		i = -1;
+		while (++i < env->nb_ants)
+		{
+			move_ant_forward(env, env->colony[i]);
+			if (env->colony[i]->path->current == (env->colony[i]->path->size - 1))
+				arrived++;
+		}
+		// (i < (rounds - 1) && path_len(env->paths[0], env->nb_rooms) != 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
+		write(1, "\n", 1);
 	}
-	(path_len(env->paths[0], env->nb_rooms) == 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
 }

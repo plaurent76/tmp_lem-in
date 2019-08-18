@@ -16,7 +16,7 @@ static int		get_ants(t_env *env, const char *p)
 {
 	env->nb_ants = fatol(env, p);
 	if (env->nb_ants > 2147483647 || env->nb_ants <= 0)
-		put_error(env, "Error: expected a positive ant colony size");
+		perr(env, "Error: expected a positive ant colony size");
 	return (1);
 }
 
@@ -75,8 +75,8 @@ static int		get_link(t_env *env, const char *p, int i, int j)
 static int		check_room(t_env *env, const char *p)
 {
 	if ((!env->start || !env->end))
-		put_error(env, "Error: incomplete room list or invalid room name");
-	(!get_link(env, p, -1, -1)) ? put_error(env, "Error: wrong input") : 0;
+		perr(env, "Error: incomplete room list or invalid room name");
+	(!get_link(env, p, -1, -1)) ? perr(env, "Error: wrong input") : 0;
 	return (1);
 }
 
@@ -95,7 +95,7 @@ int				interpret_line(t_env *env, const char *p)
 	if (!scmp(p, "##start") || !scmp(p, "##end"))
 	{
 		((!scmp(p, "##start") && env->start) || (!scmp(p, "##end") && env->end))
-		? put_error(env, "Error: duplicate command") : 0;
+		? perr(env, "Error: duplicate command") : 0;
 		return ((state = (!scmp(p, "##start") ? 2 : 3)));
 	}
 	if (state == 4)

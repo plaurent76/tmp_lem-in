@@ -67,16 +67,16 @@ long		fatol(t_env *env, const char *str)
 
 	while (*str && is_space(*str))
 		++str;
-	(*str) ? 0 : put_error(env, "Error: fatol: nothing to parse");
+	(*str) ? 0 : perr(env, "Error: fatol: nothing to parse");
 	sign = *str == '-' ? -1 : 1;
 	if (*str == '+' || *str == '-')
 		++str;
 	nb = 0;
 	while (*str)
 		is_digit(*str) ? nb = 10 * nb + (*(str++) - '0')
-	: put_error(env, "Error: expected digit only");
-	(*str && nb == 0) ? put_error(env, "Error: expected a number") : 0;
+	: perr(env, "Error: expected digit only");
+	(*str && nb == 0) ? perr(env, "Error: expected a number") : 0;
 	(nb > 2147483647 || nb < -2147483647)
-	? put_error(env, "Error: expected an integer") : 0;
+	? perr(env, "Error: expected an integer") : 0;
 	return (nb * sign);
 }

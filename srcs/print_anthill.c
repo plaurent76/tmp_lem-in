@@ -27,8 +27,8 @@
 // 	t_link *l;
 
 // 	l = room->link;
-// 	(room && &(room->id[0])) ? 0 : put_error(env, "Error: No room to target");
-// 	l ? 0 : put_error(env, "Error: Room has no link");
+// 	(room && &(room->id[0])) ? 0 : perr(env, "Error: No room to target");
+// 	l ? 0 : perr(env, "Error: Room has no link");
 // 	while ((l && l->prev && l->prev->room))
 // 		(l = l->prev);
 // 	pstr(1, room->id, ' ');
@@ -48,8 +48,8 @@ void	free_room_links(t_env *env, t_room *room)
 	t_link *l;
 
 	l = room->link;
-	room ? 0 : put_error(env, "Error: No room to target");
-	l ? 0 : put_error(env, "Error: Room has no link");
+	room ? 0 : perr(env, "Error: No room to target");
+	l ? 0 : perr(env, "Error: Room has no link");
 	while ((l && l->prev && l->prev->room))
 		(l = l->prev);
 	while (l->next)

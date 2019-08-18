@@ -16,9 +16,10 @@ t_path	*new_path(t_env *env, int *path, int size)
 {
 	t_path		*p;
 
-	(p = (t_path *)malloc(sizeof(t_path)))
-	? 0 : put_error(env, "t_path malloc failed");
-	p->rooms = (path ? memcp(p->rooms, path, (sizeof(int) * size)) : NULL);
+	(p = (t_path *)malloc(sizeof(t_path))) ? 0 : perr(env, "t_path malloc failed");
+	(p->rooms = alloc_array_int(size, -1)) ? 0 : perr(env, "t_path malloc failed");
+	if (path != NULL)
+		memcp(p->rooms, path, (sizeof(int) * size));
 	p->current = 0;
 	p->size = size;
 	return (p);
@@ -51,21 +52,23 @@ void	del_ant_path(t_path *path)
 	path = NULL;
 }
 
-//pas utile forcement
-// void	put_ant_path(t_path *path)
-// {
-// 	t_path	*p;
+void	put_ant_path(t_path *path)
+{
+	t_path	*p;
+	int 	i;
 
-// 	p = path;
-// 	if (!path || !path->rooms)
-// 		return ;
-// 	while (p && p->prev)
-// 		p = p->prev;
-// 	while (p && p->room && &(p->room->id[0]))
-// 	{
-// 		if (&(p->room->id[0]))
-// 			p->next ? pstr(1, p->room->id, '-') : pstr(1, p->room->id, '\0');
-// 		p = p->next;
-// 	}
-// 	write(1, "\n", 1);
-// }
+	p = path;
+	if (!path || !path->rooms)
+		return ;
+	i = -1;
+	while (++i < p->size && p->rooms[i] != -1)
+		if (i == (p->size - 1) || p->rooms[i + 1] == -1)
+		{
+			plong(1, p->rooms[i], '\n');
+		}
+		else
+		{
+			plong(1, p->rooms[i], ' ');
+			pstr(1, ">>", ' ');
+		}
+}

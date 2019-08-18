@@ -36,8 +36,7 @@ static void		make_magic_happen(t_env *env)
 	//IS_SET_L ? put_links(env) : 0;
 	//IS_SET_S ? put_fwinfo(env) : 0;
 
-	assign_colony(env); // should be removed
-	//move_colony(env);
+	move_colony(env);
 
 	deinit_env(env);
 	exit(EXIT_SUCCESS);
@@ -50,13 +49,13 @@ static int		get_option(t_env *env, char *av, int i)
 		if ((av[i] != 'u' && av[i] != 'm' && av[i] != 'a' && av[i] != 'l'
 			&& av[i] != 'r' && av[i] != 's' && av[i] != 'v' && av[i] != 'h'
 			&& av[i] != 'e'))
-			put_error(env, "Error: invalid option");
+			perr(env, "Error: invalid option");
 		else if ((av[i] == 'u' && IS_SET_U) || (av[i] == 'm' && IS_SET_M)
 			|| (av[i] == 'a' && IS_SET_A) || (av[i] == 'l' && IS_SET_L)
 			|| (av[i] == 'r' && IS_SET_R) || (av[i] == 's' && IS_SET_S)
 			|| (av[i] == 'v' && IS_SET_V) || (av[i] == 'h' && IS_SET_H)
 			|| (av[i] == 'e' && IS_SET_E))
-			put_error(env, "Error: duplicate option");
+			perr(env, "Error: duplicate option");
 		(av[i] == 'u') ? SET_U : 0;
 		(av[i] == 'm') ? SET_M : 0;
 		(av[i] == 'a') ? SET_A : 0;

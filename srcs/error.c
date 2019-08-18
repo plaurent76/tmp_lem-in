@@ -27,7 +27,7 @@ void		put_usage(t_env *env)
 	exit(EXIT_SUCCESS);
 }
 
-void		put_error(t_env *env, const char *err_msg)
+void		perr(t_env *env, const char *err_msg)
 {
 	/*!IS_SET_E ? pstr(2, "Error", '\n') : */pstr(2, err_msg, '\n');
 	deinit_env(env);
@@ -45,11 +45,11 @@ int			anthill_complete(t_env *env)
 {
 	t_parsed_room *parsed;
 
-	env->nb_ants <= 0 ? put_error(env, "Error: no ants") : 0;
-	!env->start ? put_error(env, "Error: no start room") : 0;
-	!env->end ? put_error(env, "Error: no end room") : 0;
+	env->nb_ants <= 0 ? perr(env, "Error: no ants") : 0;
+	!env->start ? perr(env, "Error: no start room") : 0;
+	!env->end ? perr(env, "Error: no end room") : 0;
 	parsed = R1;
 	if (!(parsed && parsed->room && parsed->room->link))
-		put_error(env, "Error: incomplete anthill");
+		perr(env, "Error: incomplete anthill");
 	return (1);
 }

@@ -93,7 +93,7 @@ void			put_lines(t_env *env);
 
 void			sig_handler(int sig);
 void			put_usage(t_env *env);
-void			put_error(t_env *env, const char *err_msg);
+void			perr(t_env *env, const char *err_msg);
 int				anthill_complete(t_env *env);
 
 /*
@@ -112,6 +112,10 @@ void			free_room_links(t_env *env, t_room *room);
 
 void			new_room(t_env *env, char *name, long x, long y, int state);
 t_room			*str_to_room(t_env *env, const char *s);
+int				room_id_error(t_env *env, int room_id);
+int				is_room_free(t_env *env, int room_id);
+int				set_room_free(t_env *env, int room_id);
+int				set_room_busy(t_env *env, int room_id);
 
 /*
 ** ANTS
@@ -132,7 +136,7 @@ t_path			*add_path(t_env *env, t_path *path, t_room *room);
 int				in_path(t_path *path, t_room *r);
 int				path_len(int *path, int size);
 void			del_ant_path(t_path *path);
-void			put_path(t_path *path);
+void			put_ant_path(t_path *path);
 
 /*
 ** PRINT

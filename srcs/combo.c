@@ -146,7 +146,7 @@ void    combo_optimal(t_env *env)
         if (!(env->best_combo = alloc_array_int(env->flow_max, -1))
         || !(combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1))
         || !(combo_x = alloc_matrix_int(env->flow_max, env->nb_valid, -1)))
-            put_error(env, "Error: one of combo malloc failed");
+            perr(env, "Error: one of combo malloc failed");
         //la condition faisait buguer la compile
         n_combo = 2;
         env->best_combo[0] = 0;
@@ -164,6 +164,6 @@ void    combo_optimal(t_env *env)
         free_matrix_int(combo_x, env->nb_valid);
     }
     else {
-        put_error(env, "No combo found as env->nb_valid = 0\n");
+        perr(env, "No combo found as env->nb_valid = 0\n");
     }
 }

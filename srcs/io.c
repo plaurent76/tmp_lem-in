@@ -17,11 +17,11 @@ static void		store_line(t_env *env, char *s)
 	static t_lines	*last = NULL;
 	t_lines			*l;
 
-	(s && *s) ? 0 : put_error(env, "Error: no line to store");
+	(s && *s) ? 0 : perr(env, "Error: no line to store");
 	(l = (t_lines *)malloc(sizeof(t_lines)))
-	? 0 : put_error(env, "t_lines malloc failed");
+	? 0 : perr(env, "t_lines malloc failed");
 	(l->txt = (char *)malloc(sizeof(char) * (slen(s) + 2)))
-	? 0 : put_error(env, "char* malloc failed");
+	? 0 : perr(env, "char* malloc failed");
 	l->txt[0] = '\0';
 	scat(&(l->txt[0]), s, '\0');
 	env->first_line == NULL ? (env->first_line = l) : 0;
@@ -43,7 +43,7 @@ void			put_lines(t_env *env)
 	l = env->first_line;
 	while (l && l->prev)
 		l = l->prev;
-	(l && l->txt) ? 0 : put_error(env, "Error: no anthill to print");
+	(l && l->txt) ? 0 : perr(env, "Error: no anthill to print");
 	while (l)
 	{
 		if (IS_SET_U && l->txt[0] == '#'
