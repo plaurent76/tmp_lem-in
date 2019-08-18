@@ -200,7 +200,7 @@ int		is_node_explored(t_env *env, int room_id)
 	print_matrix_int(env->node_usage, 2, env->flow_start_max);
 	while (++i < env->flow_start_max)
 		if (env->node_usage[i][0] == room_id)
-			if (env->node_usage[i][1] >= env->flow_start_max)
+			if (env->node_usage[i][1] >= env->max_paths_per_node)
 				return (1);// tu devrais pas test ici si on est passer
 				//1024x sur un noeud de start ? 
 	return (0);
