@@ -14,14 +14,16 @@
 
 void		put_usage(t_env *env)
 {
-	pstr(1, "Usage: lem-in [OPTION]\n"
+	pstr(1,
+		"Usage: ./lem-in [OPTION]... [INPUT]\n"
+		"       ./lem-in [OPTION]... < [FILE]\n\n"
 		"  -u\tuncomment: hides comments on output\n"
 		"  -m\tmute: hides execution output\n"
-		"  -v\tverbose: further info, use with [rla]\n"
+		"  -v\tverbose: displays solver full output\n"
 		"  -r\trooms: displays room list\n"
-		"  -l\tlinks: displays link list\n"
-		"  -a\tants: displays colony\n"
-		"  -s\tsolver: displays solution\n"
+		"  -l\tlinks: displays link matrix\n"
+		"  -a\tants: displays colony details\n"
+		// "  -s\tsolver: displays solution\n"
 		, '\0');
 	deinit_env(env);
 	exit(EXIT_SUCCESS);

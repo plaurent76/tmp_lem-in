@@ -153,7 +153,7 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 	int		cnt;
 	int		to_clean;
 	int		y;
-	int		last_full;
+	// int		last_full;
 
 	i = start_y - 1;
 	y = start_y;
@@ -164,7 +164,7 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 			int_set(paths[i], -1, size_x);
 	// cnt = (size_y - start_y) - cnt;
 	to_clean = cnt;
-	last_full = i;
+	// last_full = i;
 	while (--cnt >= 0)
 	{
 		while (i > 0 && paths[i][0] == -1)
@@ -176,7 +176,8 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 		int_set(paths[i], -1, size_x);
 	}
 	// print_matrix_int(paths, size_x, size_y);
-	printf("tmp_paths cleaned: from=%d to=%d sum=%d\n", start_y, last_full, to_clean);
+	// if (IS_SET_V)
+		// printf("tmp_paths cleaned: from=%d to=%d sum=%d\n", start_y, last_full, to_clean);
 	return (to_clean);
 }
 
@@ -386,7 +387,6 @@ void			genetic_solve(t_env *env)
 
 	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
 	0 : perr(env, "Error: tmp_paths malloc failed");
-	// print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
 	explore_paths(env, tmp_paths, 0, 0);
 	if (env->nb_valid < 1)
 	{

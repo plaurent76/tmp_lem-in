@@ -71,7 +71,7 @@ t_room		*str_to_room(t_env *env, const char *s)
 	return (NULL);
 }
 
-void		put_room(t_env *env, t_room *r)
+void		put_parsed_room(t_env *env, t_room *r)
 {
 	&(r->id[0]) ? pstr(1, r->id, ' ')
 	: perr(env, "Error: no room name to print");
@@ -87,7 +87,7 @@ void		put_room(t_env *env, t_room *r)
 		write(1, "\n", 1);
 }
 
-void		put_rooms(t_env *env)
+void		put_parsed_rooms(t_env *env)
 {
 	t_parsed_room *parsed;
 
@@ -96,8 +96,20 @@ void		put_rooms(t_env *env)
 	? pstr(1, "Rooms list:", '\n') : perr(env, "Error: no parsed rooms");
 	while (parsed)
 	{
-		put_room(env, parsed->room);
-		//IS_SET_V ? put_room_links(env, parsed->room) : 0;
+		put_parsed_room(env, parsed->room);
+		//IS_SET_V ? put_parsed_room_links(env, parsed->room) : 0;
 		parsed = parsed->next;
 	}
+}
+
+void		put_rooms(t_env *env)
+{
+	int i;
+
+	printf("\n room_id | room_name\n---------------------\n");
+	i = -1;
+	while (++i < env->nb_rooms) {
+		printf(" %d\t | %s\n", i, env->room_names[i]);
+	}
+	printf("\n");
 }

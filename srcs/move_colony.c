@@ -73,10 +73,13 @@ int *get_ants_per_node(t_env *env)
 		ants_per_node[i]++;
 		i = (i == (env->best_flow - 1)) ? 0 : (i + 1);
 	}
-	printf("env->best_combo: paths_len:\n");
-	print_array_int(paths_len, env->best_flow);
-	printf("env->best_combo: ants_per_node:\n");
-	print_array_int(ants_per_node, env->best_flow);
+	if (IS_SET_V)
+	{
+		printf("env->best_combo: paths_len:\n");
+		print_array_int(paths_len, env->best_flow);
+		printf("env->best_combo: ants_per_node:\n");
+		print_array_int(ants_per_node, env->best_flow);
+	}
 	free(paths_len);
 	return (ants_per_node);
 }
@@ -214,8 +217,7 @@ int move_ant_forward(t_env *env, t_ant *ant)
 			set_room_free(env, ant->path->rooms[ant->path->current - 1]);
 		set_room_busy(env, ant->path->rooms[ant->path->current]);
 		ant->path->current++;
-		put_ant(env, ant);
-		// (IS_SET_M && !IS_SET_S) ? 0 : put_ant(env, ant);
+		!IS_SET_M ? put_ant(env, ant) : 0;
 		if (ant->path->rooms[ant->path->current - 1] == 1)
 			return (1);
 	}
@@ -237,9 +239,7 @@ void move_colony(t_env *env)
 		while (n_arrived < env->nb_ants && ++i < env->nb_ants)
 		{
 			n_arrived += move_ant_forward(env, env->colony[i]);
-			// write(1, " ", 1);
 		}
-		// (i < (rounds - 1) && path_len(env->paths[0], env->nb_rooms) != 2 && (!IS_SET_M || IS_SET_S)) ? write(1, "\n", 1) : 0;
-		write(1, "\n", 1);
+		!IS_SET_M ? write(1, "\n", 1) : 0;
 	}
 }

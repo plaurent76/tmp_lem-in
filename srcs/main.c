@@ -34,37 +34,32 @@ static void		make_magic_happen(t_env *env)
 
 	anthill_complete(env);
 	prepare_env(env);
-	printf("\n room_id | room_name\n---------------------\n");
-	i = -1;
-	while (++i < env->nb_rooms) {
-		printf(" %d\t | %s\n", i, env->room_names[i]);
-	}
-	printf("\n");
 	genetic_solve(env);
-	// print valid paths:
-	printf("found %d valid paths:\n", env->nb_valid);
-	print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
-	printf("\n");
-	printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
-	print_matrix_int(env->node_exploration, 2, env->flow_start_max);
-	printf("\n");
 	combo_optimal(env);
-	printf("optimal combo found:\nenv->best_score: %d\nenv->best_flow: %d\nenv->best_combo:\n"
-		, env->best_score, env->best_flow);
-	print_array_int(env->best_combo, env->best_flow);
-	printf("env->best_combo: paths:\n");
-	i = -1;
-    while (++i < env->flow_max && env->best_combo[i] != -1) {
-    	print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
-    }
-
-	//IS_SET_M ? 0 : put_lines(env);
-	//IS_SET_R ? put_rooms(env) : 0;
-	//IS_SET_L ? put_links(env) : 0;
-	//IS_SET_S ? put_fwinfo(env) : 0;
-
+	if (IS_SET_V)
+	{
+		// print valid paths:
+		printf("found %d valid paths:\n", env->nb_valid);
+		print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
+		printf("\n");
+		printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
+		print_matrix_int(env->node_exploration, 2, env->flow_start_max);
+		printf("\n");
+		printf("optimal combo found:\nenv->best_score: %d\nenv->best_flow: %d\nenv->best_combo:\n"
+			, env->best_score, env->best_flow);
+		print_array_int(env->best_combo, env->best_flow);
+		printf("env->best_combo: paths:\n");
+		i = -1;
+		while (++i < env->flow_max && env->best_combo[i] != -1) {
+			print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
+		}
+	}
+	!IS_SET_M ?	put_lines(env) : 0;
+	// IS_SET_R ? put_parsed_rooms(env) : 0;
+	// IS_SET_L ? put_parsed_links(env) : 0;
+	IS_SET_R ? put_rooms(env) : 0;
+	IS_SET_L ? put_links(env) : 0;
 	move_colony(env);
-
 	deinit_env(env);
 	exit(EXIT_SUCCESS);
 }
@@ -79,16 +74,14 @@ static int		get_option(t_env *env, char *av, int i)
 			perr(env, "Error: invalid option");
 		else if ((av[i] == 'u' && IS_SET_U) || (av[i] == 'm' && IS_SET_M)
 			|| (av[i] == 'a' && IS_SET_A) || (av[i] == 'l' && IS_SET_L)
-			|| (av[i] == 'r' && IS_SET_R) || (av[i] == 's' && IS_SET_S)
 			|| (av[i] == 'v' && IS_SET_V) || (av[i] == 'h' && IS_SET_H)
-			|| (av[i] == 'e' && IS_SET_E))
+			|| (av[i] == 'e' && IS_SET_E) || (av[i] == 'r' && IS_SET_R))
 			perr(env, "Error: duplicate option");
 		(av[i] == 'u') ? SET_U : 0;
 		(av[i] == 'm') ? SET_M : 0;
 		(av[i] == 'a') ? SET_A : 0;
 		(av[i] == 'l') ? SET_L : 0;
 		(av[i] == 'r') ? SET_R : 0;
-		(av[i] == 's') ? SET_S : 0;
 		(av[i] == 'v') ? SET_V : 0;
 		(av[i] == 'h') ? SET_H : 0;
 		(av[i] == 'e') ? SET_E : 0;

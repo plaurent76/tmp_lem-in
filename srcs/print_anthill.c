@@ -22,7 +22,7 @@
 // 	// plong(1, (path_len(env->fw) + env->nb_ants), '\n');
 // }
 
-void	put_room_links(t_env *env, t_room *room)
+void	put_parsed_room_links(t_env *env, t_room *room)
 {
 	t_link *l;
 

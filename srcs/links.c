@@ -68,7 +68,7 @@ void		link_rooms(t_env *env, t_room *room1, t_room *room2)
 		room2->link = add_link(room1, NULL);
 }
 
-void		put_link(t_env *env, t_parsed_link *l)
+void		put_parsed_link(t_env *env, t_parsed_link *l)
 {
 	(l->room1 && &(l->room1->id[0])) ? pstr(1, &(l->room1->id[0]), '-')
 	: perr(env, "Error: no room name to print");
@@ -76,18 +76,36 @@ void		put_link(t_env *env, t_parsed_link *l)
 	: perr(env, "Error: no room name to print");
 }
 
-void		put_links(t_env *env)
+void		put_parsed_links(t_env *env)
 {
 	t_parsed_link *parsed;
 
 	parsed = L1;
 	if (parsed->room1 && parsed->room2)
 	{
-		put_link(env, parsed);
+		put_parsed_link(env, parsed);
 		while (parsed->next)
 		{
 			parsed = parsed->next;
-			put_link(env, parsed);
+			put_parsed_link(env, parsed);
 		}
+	}
+}
+
+void		put_links(t_env *env)
+{
+	int i = -1;
+	int j;
+	char c;
+
+	while (++i < env->nb_rooms && printf(" %d\t| ", i))
+	{
+		j = -1;
+		while (++j < env->nb_rooms && env->links[i][j] != -1)
+		{
+			c = (char)((env->links[i][j] == 1) ? 'X' : '-');
+			(j == 0 ? printf("%c", c) : printf(" | %c", c));
+		}
+		printf("\n");
 	}
 }

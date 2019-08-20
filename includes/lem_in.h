@@ -38,7 +38,6 @@
 # define IS_SET_A		(env->option & (1 << 2))
 # define IS_SET_L		(env->option & (1 << 3))
 # define IS_SET_R		(env->option & (1 << 4))
-# define IS_SET_S		(env->option & (1 << 5))
 # define IS_SET_V		(env->option & (1 << 6))
 # define IS_SET_H		(env->option & (1 << 7))
 # define IS_SET_E		(env->option & (1 << 8))
@@ -152,11 +151,13 @@ void			put_fwinfo(t_env *env);
 void			put_ants(t_env *env);
 void			put_all(t_env *env);
 void			put_ant(t_env *env, t_ant *ant);
-void			put_room(t_env *env, t_room *r);
-void			put_rooms(t_env *env);
-void			put_link(t_env *env, t_parsed_link *l);
-void			put_links(t_env *env);
-void			put_room_links(t_env *env, t_room *room);
+void            put_rooms(t_env *env);
+void			put_parsed_room(t_env *env, t_room *r);
+void			put_parsed_rooms(t_env *env);
+void            put_links(t_env *env);
+void			put_parsed_link(t_env *env, t_parsed_link *l);
+void			put_parsed_links(t_env *env);
+void			put_parsed_room_links(t_env *env, t_room *room);
 
 /*
 ** SOLVE
