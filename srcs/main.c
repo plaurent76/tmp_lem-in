@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:46 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/24 21:13:28 by fmadura          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:25:42 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static void		prepare_env(t_env *env)
 {
+	int		diff;
+
+	diff = 1;
 	env->nb_rooms = env->lpri + 1;
 	// alloc room_free to track room occupation
 	(env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms)) ?
@@ -22,8 +25,12 @@ static void		prepare_env(t_env *env)
 	init_links_matrix(env);
 	init_name_tab(env);
 	get_flow_max(env);
-	env->max_paths_per_node = 4096;
-	env->nb_paths = (int)(env->max_paths_per_node * env->flow_start_max);
+	while ((4096 * env->flow_start_max) / diff > 22000)
+		diff++;
+	if (diff > 1)
+		printf("on a diviser le nb de paths par node par : %d", diff);
+	env->max_paths_per_node = 4096 / diff;
+	env->nb_paths = (int)((env->max_paths_per_node * env->flow_start_max) / diff);
 	// env->max_paths_per_node = env->nb_rooms * 2;
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 }
