@@ -3,19 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+         #
+#    By: eviana <eviana@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/11/16 02:57:04 by pde-rent          #+#    #+#              #
-#    Updated: 2018/06/20 17:03:00 by pde-rent         ###   ########.fr        #
+#    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
+#    Updated: 2019/08/21 15:36:25 by eviana           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    	= lem-in
 SRC_PATH	= srcs/
 OBJ_PATH	= objs/
-FLAGS		= -Wall -Werror -Wextra -g -O0 #-fsanitize=address
+FLAGS		= -Wall -Werror -Wextra 
 CC			= gcc $(FLAGS)
-NAME_P		= $(shell echo $(NAME) | tr ' ' '\n' | sed "s/\.[acoh]$///g" | tr '\n' ' ' | sed "s/ $///g")
 SRC_SUFFIX	= .c
 COMMON =	main \
 			io \
@@ -62,10 +61,10 @@ OK			= " $(CYAN)$(CHECK)$(WHITE)"
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	@printf "\r$(EOLCLR)[$(NAME_P)] >>>>>>>>>>>>>>\t$(YELLOW)$(BOLD)"\
+	@printf "\r$(EOLCLR)[$(NAME)] >>>>>>>>>>>>>>\t$(YELLOW)$(BOLD)"\
 	"lem_in compiled\t\t"$(OK)'\n'
 	@ $(CC) -I./includes $(OBJ) -o $@
-	@printf "\r$(EOLCLR)[$(NAME_P)] >>>>>>>>>>>>>>\t$(GREEN)$(BOLD)"\
+	@printf "\r$(EOLCLR)[$(NAME)] >>>>>>>>>>>>>>\t$(GREEN)$(BOLD)"\
 	"build successful\t"$(OK)'\n'
 
 $(OBJ) : | $(OBJ_PATH)
@@ -74,17 +73,17 @@ $(OBJ_PATH) :
 	@mkdir -p $(OBJ_PATH)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@printf "\r$(EOLCLR)[$(NAME_P)] compiling\t$(BOLD)$(YELLOW)$<$(WHITE)"
+	@printf "\r$(EOLCLR)[$(NAME)] compiling\t$(BOLD)$(YELLOW)$<$(WHITE)"
 	@$(CC) -I./includes -o $@ -c $<
 	@printf '\t'$(OK)
 
 clean :
-	@printf "[$(NAME_P)] removing\t$(PINK)all obj file$(WHITE)"
+	@printf "[$(NAME)] removing\t$(PINK)all obj file$(WHITE)"
 	@rm -rf $(OBJ_PATH)
 	@printf '\t\t'$(OK)'\n'
 
 fclean : clean
-	@printf "[$(NAME_P)] erasing\t$(PINK)$(NAME)$(WHITE)"
+	@printf "[$(NAME)] erasing\t$(PINK)$(NAME)$(WHITE)"
 	@rm -f $(NAME)
 	@rm -rf lem-in.dSYM
 	@printf '\t\t\t'$(OK)'\n'

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:37 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:25:38 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 14:04:29 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void		perr(t_env *env, const char *err_msg)
 	exit(EXIT_FAILURE);
 }
 
-void		sig_handler(int sig)
-{
-	signal(sig, SIG_IGN);
-	pstr(2, ("Lem-in Force Quit\n"), '\0');
-	exit(EXIT_FAILURE);
-}
+// void		sig_handler(int sig)
+// {
+// 	signal(sig, SIG_IGN);
+// 	pstr(2, ("Lem-in Force Quit\n"), '\0');
+// 	exit(EXIT_FAILURE);
+// }
 
 int			anthill_complete(t_env *env)
 {

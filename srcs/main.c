@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:46 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 15:25:42 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/21 15:39:57 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,14 @@ int				main(int ac, char **av)
 	t_env	env;
 	int		i;
 
-	signal(SIGINT, sig_handler);
+	//signal(SIGINT, sig_handler);
 	init_env(&env);
 	i = 0;
 	while (++i < ac && av[i] && av[i][0] == '-')
 	{
 		get_option(&env, av[i], 0);
 		(env.option & (1 << 7)) ? put_usage(&env) : 0;
+		//ajouter les autres options
 	}
 	get_lines(&env);
 	make_magic_happen(&env);
