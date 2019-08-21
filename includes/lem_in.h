@@ -64,7 +64,7 @@ int             *int_set(int *tab, int val, int size);
 void	        free_matrix(void **mx, int depth);
 int				slen(char *s);
 long			labs(long n);
-int				active_bits(char c);
+int				active_bits(int c);
 int				is_space(const char c);
 int				is_digit(const char c);
 int				plong(int fd, long n, char end);

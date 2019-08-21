@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basics.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:24 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:25:26 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 11:32:49 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ long	labs(long n)
 	return (n > 0 ? n : -n);
 }
 
-int		active_bits(char c)
+int		active_bits(int c)
 {
 	int bits;
 

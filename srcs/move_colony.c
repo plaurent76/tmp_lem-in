@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_colony.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:55 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:25:58 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 13:51:19 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ void assign_colony(t_env *env)
 	next_node = 0;
 	while (++i < env->nb_ants)
 	{
-		// printf("new ant #%d in colony: using node %d (path #%d)\n"
-		// 	, i, next_node, env->best_combo[next_node]);
+		printf("new ant #%d in colony: using node %d (path #%d)\n"
+			, i, next_node, env->best_combo[next_node]);
 		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_node]], env->nb_rooms);
 		ants_per_node[next_node]--;
 

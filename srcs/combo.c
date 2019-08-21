@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   combo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/21 12:27:56 by eviana            #+#    #+#             */
+/*   Updated: 2019/08/21 12:27:56 by eviana           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lem_in.h"
 #include <stdio.h>
@@ -30,16 +41,28 @@ int     count_score(t_env *env, int n_combo, int *combo)
     int     score;
     int     diff;
     int     i;
-
+    int     j;
     i = -1;
     diff = 0;
     score = 0;
     n_combo < 1 ? n_combo = 1 : 0;
-    while ((env->nb_ants + diff) % (n_combo + 1) != 0)
-        diff++;
+    diff = env->nb_ants % (n_combo);
+    //while ((env->nb_ants + diff) % (n_combo + 1) != 0)
+    //    diff++;
     while (++i < n_combo)
+    {
         score += ((env->nb_ants + diff) / n_combo)
         + path_len(env->paths[combo[i]], env->nb_rooms) - 1;
+        if (diff > 0)
+            diff--;
+        j = -1;
+        while (++j < env->nb_rooms)
+        {
+            plong(1, env->paths[combo[i]][j], '_');
+        }
+        printf("\n");
+    }
+    printf("pour combo numero: %d score = %d\n", n_combo, score / n_combo);
     return (score / n_combo);
 }
 
@@ -85,10 +108,10 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                 combo_2[n_cv][1] = j;
                 if (env->best_score > (score = count_score(env, n_combo, combo_2[n_cv])))
                 {
-                    // pstr(1, "meilleur score 2", '\n');
+                    pstr(1, "meilleur score 2", '\n');
                     memcp(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
-                    env->best_flow = n_combo;
+                    plong(1, env->best_flow = n_combo, '\n');
                 }
             }
     // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
@@ -114,7 +137,7 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
                 if (env->best_score > (score = count_score(env, n_combo, combo_x[n_cv])))
                 {
                     // print_array_int(env->combo_x[n_cv], n_combo);
-                    // pstr(1, "meilleur score X", '\n');
+                    pstr(1, "meilleur score X", '\n');
                     memcp(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
