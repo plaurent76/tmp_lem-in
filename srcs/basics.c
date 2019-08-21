@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   basics.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:24 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 11:32:49 by eviana           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:08:43 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int		is_digit(const char c)
 	return ((c >= '0' && c <= '9') ? 1 : 0);
 }
 
-int		slen(char *s)
-{
-	return (*s ? slen(++s) + 1 : 0);
-}
+// int		slen(char *s)
+// {
+// 	return (*s ? slen(++s) + 1 : 0);
+// }
 
 long	labs(long n)
 {

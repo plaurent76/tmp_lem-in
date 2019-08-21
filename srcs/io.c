@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:41 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:25:43 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:30:43 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ static void		store_line(t_env *env, char *s)
 	(s && *s) ? 0 : perr(env, "Error: no line to store");
 	(l = (t_lines *)malloc(sizeof(t_lines)))
 	? 0 : perr(env, "t_lines malloc failed");
-	(l->txt = (char *)malloc(sizeof(char) * (slen(s) + 2)))
+	(l->txt = (char *)malloc(sizeof(char) * (ft_strlen(s) + 2)))
 	? 0 : perr(env, "char* malloc failed");
 	l->txt[0] = '\0';
-	scat(&(l->txt[0]), s, '\0');
+	sp_strcpy(&(l->txt[0]), s, '\0');
 	env->first_line == NULL ? (env->first_line = l) : 0;
 	l->next = NULL;
 	if (last)
@@ -47,12 +47,12 @@ void			put_lines(t_env *env)
 	while (l)
 	{
 		if (IS_SET_U && l->txt[0] == '#'
-			&& scmp(l->txt, "##start") && scmp(l->txt, "##end"))
+			&& ft_strcmp(l->txt, "##start") && ft_strcmp(l->txt, "##end"))
 		{
 			l = l->next;
 			continue;
 		}
-		pstr(1, l->txt, '\n');
+		sp_putstr(1, l->txt, '\n');
 		l = l->next;
 	}
 }

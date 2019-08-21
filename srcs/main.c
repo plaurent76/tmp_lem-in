@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:46 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 15:39:57 by eviana           ###   ########.fr       */
+/*   Updated: 2019/08/21 15:51:15 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void		prepare_env(t_env *env)
 	while ((4096 * env->flow_start_max) / diff > 22000)
 		diff++;
 	if (diff > 1)
-		printf("on a diviser le nb de paths par node par : %d", diff);
+		ft_printf("on a diviser le nb de paths par node par : %d", diff);
 	env->max_paths_per_node = 4096 / diff;
 	env->nb_paths = (int)((env->max_paths_per_node * env->flow_start_max) / diff);
 	// env->max_paths_per_node = env->nb_rooms * 2;

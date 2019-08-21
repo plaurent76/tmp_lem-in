@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 18:08:15 by eviana            #+#    #+#             */
-/*   Updated: 2019/08/21 15:55:10 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/21 15:54:40 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include "../libft.h"
+# include "libft.h"
 # include <wchar.h>
 
 typedef struct	s_asset

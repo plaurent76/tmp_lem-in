@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:26:00 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:26:01 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:17:47 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,17 @@ int				interpret_line(t_env *env, const char *p)
 
 	if (state == 0)
 	{
-		if (p[0] == '#' && scmp(p, "##start") && scmp(p, "##end"))
+		if (p[0] == '#' && ft_strcmp(p, "##start") && ft_strcmp(p, "##end"))
 			return ((1));
 		return ((get_ants(env, p) ? (state = 1) : 0));
 	}
-	if (!p || (p[0] && p[0] == '#' && scmp(p, "##start") && scmp(p, "##end")))
+	if (!p || (p[0] && p[0] == '#' && ft_strcmp(p, "##start") && ft_strcmp(p, "##end")))
 		return (1);
-	if (!scmp(p, "##start") || !scmp(p, "##end"))
+	if (!ft_strcmp(p, "##start") || !ft_strcmp(p, "##end"))
 	{
-		((!scmp(p, "##start") && env->start) || (!scmp(p, "##end") && env->end))
+		((!ft_strcmp(p, "##start") && env->start) || (!ft_strcmp(p, "##end") && env->end))
 		? perr(env, "Error: duplicate command") : 0;
-		return ((state = (!scmp(p, "##start") ? 2 : 3)));
+		return ((state = (!ft_strcmp(p, "##start") ? 2 : 3)));
 	}
 	if (state == 4)
 		return ((get_link(env, p, -1, -1) ? 4 : 0));

@@ -252,11 +252,11 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 				explore_paths(env, paths, path_n_duplicate, x);
 			else
 			{
-				// plong(1, x, '|');
-				// plong(1, path_n_duplicate, '\n');
+				// sp_putlong(1, x, '|');
+				// sp_putlong(1, path_n_duplicate, '\n');
 				// if (path_n > 0 && !ending_path(tmp_paths, path_n - 1, env->nb_rooms))
 				// {
-				// 	pstr(1, "entré dans le cas ou le chemin precedent n'est pas fini", '\n');
+				// 	sp_putstr(1, "entré dans le cas ou le chemin precedent n'est pas fini", '\n');
 				// 	memcp(tmp_paths[path_n - 1], tmp_paths[path_n], sizeof(int) * env->nb_rooms);
 				// 	int_set(tmp_paths[path_n], -1, env->nb_rooms);
 				// }

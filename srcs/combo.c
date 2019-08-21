@@ -58,7 +58,7 @@ int     count_score(t_env *env, int n_combo, int *combo)
         // j = -1;
         // while (++j < env->nb_rooms)
         // {
-        //     plong(1, env->paths[combo[i]][j], '_');
+        //     sp_putlong(1, env->paths[combo[i]][j], '_');
         // }
         // printf("\n");
     }
@@ -103,12 +103,12 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
         while (++j < env->nb_valid)
             if (paths_compatible(env->paths[i], env->paths[j], env->nb_rooms))
             {
-            //    pstr(1, "is compatible", '\n'); 
+            //    sp_putstr(1, "is compatible", '\n'); 
                 combo_2[++n_cv][0] = i;
                 combo_2[n_cv][1] = j;
                 if (env->best_score > (score = count_score(env, n_combo, combo_2[n_cv])))
                 {
-                    // pstr(1, "meilleur score 2", '\n');
+                    // sp_putstr(1, "meilleur score 2", '\n');
                     memcp(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
@@ -137,7 +137,7 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
                 if (env->best_score > (score = count_score(env, n_combo, combo_x[n_cv])))
                 {
                     // print_array_int(env->combo_x[n_cv], n_combo);
-                    // pstr(1, "meilleur score X", '\n');
+                    // sp_putstr(1, "meilleur score X", '\n');
                     memcp(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
@@ -179,7 +179,7 @@ void    combo_optimal(t_env *env)
             // print_matrix_int(env->combo_2, env->flow_max, env->nb_valid);
             get_combo_x(env, combo_2, combo_x, n_combo);
             // print_matrix_int(combo_x, env->flow_max, env->nb_valid);
-            // pstr(1, "teste", '\n');
+            // sp_putstr(1, "teste", '\n');
             replace_combo_x(env, combo_2, combo_x);
         }
         free_matrix((void *)combo_2, env->nb_valid);

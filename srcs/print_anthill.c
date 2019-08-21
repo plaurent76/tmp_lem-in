@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_anthill.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:26:09 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:26:10 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:29:52 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 // void	put_fwinfo(t_env *env)
 // {
-// 	// pstr(1, "Paths used:", ' ');
-// 	// plong(1, 1, '\n');
-// 	// pstr(1, "Shortest path length:", ' ');
-// 	// plong(1, path_len(env->fw), '\n');
-// 	// pstr(1, "Turns to move the whole colony:", ' ');
-// 	// plong(1, (path_len(env->fw) + env->nb_ants), '\n');
+// 	// sp_putstr(1, "Paths used:", ' ');
+// 	// sp_putlong(1, 1, '\n');
+// 	// sp_putstr(1, "Shortest path length:", ' ');
+// 	// sp_putlong(1, path_len(env->fw), '\n');
+// 	// sp_putstr(1, "Turns to move the whole colony:", ' ');
+// 	// sp_putlong(1, (path_len(env->fw) + env->nb_ants), '\n');
 // }
 
 void	put_parsed_room_links(t_env *env, t_room *room)
@@ -31,14 +31,14 @@ void	put_parsed_room_links(t_env *env, t_room *room)
 	l ? 0 : perr(env, "Error: Room has no link");
 	while ((l && l->prev && l->prev->room))
 		(l = l->prev);
-	pstr(1, room->id, ' ');
-	pstr(1, "links:", ' ');
+	sp_putstr(1, room->id, ' ');
+	sp_putstr(1, "links:", ' ');
 	while (l)
 	{
 		if (l->next)
-			&(l->room->id[0]) ? pstr(1, &(l->room->id[0]), ' ') : 0;
+			&(l->room->id[0]) ? sp_putstr(1, &(l->room->id[0]), ' ') : 0;
 		else
-			&(l->room->id[0]) ? pstr(1, &(l->room->id[0]), '\n') : 0;
+			&(l->room->id[0]) ? sp_putstr(1, &(l->room->id[0]), '\n') : 0;
 		l = l->next;
 	}
 }

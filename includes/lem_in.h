@@ -21,6 +21,7 @@
 
 # include "anthill.h"
 # include "libft.h"
+# include "ft_printf.h"
 
 /*
 ** MACROS
@@ -60,16 +61,16 @@ int		        **alloc_matrix_int(int x, int y, int val);
 char            **alloc_matrix_char(int x, int y);
 int             *int_set(int *tab, int val, int size);
 void	        free_matrix(void **mx, int depth);
-int				slen(char *s);
+// int				slen(char *s);
 long			labs(long n);
 int				active_bits(int c);
 int				is_space(const char c);
 int				is_digit(const char c);
-int				plong(int fd, long n, char end);
-int				pstr(int fd, const char *s, char end);
-int				scat(char *dest, const char *src, char c);
+int				sp_putlong(int fd, long n, char end);
+int				sp_putstr(int fd, const char *s, char end);
+int				sp_strcpy(char *dest, const char *src, char c);
 long			fatol(t_env *env, const char *str);
-int				scmp(const char *s1, const char *s2);
+// int				scmp(const char *s1, const char *s2);
 void			*memcp(void *mem2, const void *mem1, int n);
 void			*mems(void *mem, int c, size_t n);
 void			init_env(t_env *env);

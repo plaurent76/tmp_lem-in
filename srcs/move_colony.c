@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:55 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 14:36:26 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:29:30 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,10 @@ void put_ant(t_env *env, t_ant *ant)
 		else
 			env->new_line++;
 		write(1, "L", 1);
-		plong(1, ant->n, '\0');
+		sp_putlong(1, ant->n, '\0');
 		write(1, "-", 1);
 		(ant->path->rooms[ant->path->current - 1] != -1)
-		? pstr(1, env->room_names[ant->path->rooms[ant->path->current - 1]], '\0')
+		? sp_putstr(1, env->room_names[ant->path->rooms[ant->path->current - 1]], '\0')
 		: perr(env, "Error: ant->path->current points to no room");
 		// write(1, " ", 1);
 	}

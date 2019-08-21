@@ -3,52 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:26:14 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:26:18 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:30:13 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int			scmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		++s1;
-		++s2;
-	}
-	return (*s1 - *s2);
-}
+// int			scmp(const char *s1, const char *s2)
+// {
+// 	while (*s1 && *s2)
+// 	{
+// 		if (*s1 != *s2)
+// 			return (*s1 - *s2);
+// 		++s1;
+// 		++s2;
+// 	}
+// 	return (*s1 - *s2);
+// }
 
-int			pstr(int fd, const char *s, char end)
+int			sp_putstr(int fd, const char *s, char end)
 {
 	char *p;
 
 	p = (char *)s;
-	*s ? write(fd, s, slen(p)) : 0;
+	*s ? write(fd, s, ft_strlen(p)) : 0;
 	end != 0 ? write(fd, &end, 1) : 0;
 	return (1);
 }
 
-int			plong(int fd, long nb, char end)
+int			sp_putlong(int fd, long nb, char end)
 {
 	char c;
 
 	if (nb < 0)
 		write(fd, "-", 1);
 	if ((nb = (nb < 0 ? -nb : nb)) >= 10)
-		plong(fd, nb / 10, '\0');
+		sp_putlong(fd, nb / 10, '\0');
 	c = (nb % 10) + '0';
 	write(fd, &c, 1);
 	(end != 0) ? write(fd, &end, 1) : 0;
 	return (1);
 }
 
-int			scat(char *dest, const char *src, const char c)
+int			sp_strcpy(char *dest, const char *src, const char c)
 {
 	int i;
 

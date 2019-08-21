@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:24:28 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:24:29 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:28:59 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ void	put_ants(t_env *env)
 
 	(env->colony && env->nb_ants > 0) ? 0 : perr(env, "Error: no colony");
 	i = -1;
-	pstr(1, "Colony size:", ' ');
-	plong(1, env->nb_ants, '\n');
+	sp_putstr(1, "Colony size:", ' ');
+	sp_putlong(1, env->nb_ants, '\n');
 	if (IS_SET_V)
 	{
-		pstr(1, "Ants' paths:", '\n');
+		sp_putstr(1, "Ants' paths:", '\n');
 		while (++i < env->nb_ants)
 		{
-			pstr(1, "#", '\0');
-			plong(1, i, ' ');
+			sp_putstr(1, "#", '\0');
+			sp_putlong(1, i, ' ');
 			put_ant_path(env->colony[i]->path);
 		}
 	}

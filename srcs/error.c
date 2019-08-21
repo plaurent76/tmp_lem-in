@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:37 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 14:04:29 by eviana           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:26:47 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		put_usage(t_env *env)
 {
-	pstr(1,
+	sp_putstr(1,
 		"Usage: ./lem-in [OPTION]... [INPUT]\n"
 		"       ./lem-in [OPTION]... < [FILE]\n\n"
 		"  -u\tuncomment: hides comments on output\n"
@@ -31,7 +31,7 @@ void		put_usage(t_env *env)
 
 void		perr(t_env *env, const char *err_msg)
 {
-	/*!IS_SET_E ? pstr(2, "Error", '\n') : */pstr(2, err_msg, '\n');
+	/*!IS_SET_E ? sp_putstr(2, "Error", '\n') : */sp_putstr(2, err_msg, '\n');
 	deinit_env(env);
 	exit(EXIT_FAILURE);
 }
@@ -39,7 +39,7 @@ void		perr(t_env *env, const char *err_msg)
 // void		sig_handler(int sig)
 // {
 // 	signal(sig, SIG_IGN);
-// 	pstr(2, ("Lem-in Force Quit\n"), '\0');
+// 	sp_putstr(2, ("Lem-in Force Quit\n"), '\0');
 // 	exit(EXIT_FAILURE);
 // }
 

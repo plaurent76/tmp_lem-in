@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:26:05 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:26:08 by pde-rent         ###   ########.fr       */
+/*   Updated: 2019/08/21 16:29:40 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void	put_ant_path(t_path *path)
 	while (++i < p->size && p->rooms[i] != -1)
 		if (i == (p->size - 1) || p->rooms[i + 1] == -1)
 		{
-			plong(1, p->rooms[i], '\n');
+			sp_putlong(1, p->rooms[i], '\n');
 		}
 		else
 		{
-			plong(1, p->rooms[i], ' ');
-			pstr(1, ">>", ' ');
+			sp_putlong(1, p->rooms[i], ' ');
+			sp_putstr(1, ">>", ' ');
 		}
 }
