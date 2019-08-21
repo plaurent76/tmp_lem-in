@@ -41,7 +41,7 @@ int     count_score(t_env *env, int n_combo, int *combo)
     int     score;
     int     diff;
     int     i;
-    int     j;
+    // int     j;
     i = -1;
     diff = 0;
     score = 0;
@@ -55,14 +55,14 @@ int     count_score(t_env *env, int n_combo, int *combo)
         + path_len(env->paths[combo[i]], env->nb_rooms) - 1;
         if (diff > 0)
             diff--;
-        j = -1;
-        while (++j < env->nb_rooms)
-        {
-            plong(1, env->paths[combo[i]][j], '_');
-        }
-        printf("\n");
+        // j = -1;
+        // while (++j < env->nb_rooms)
+        // {
+        //     plong(1, env->paths[combo[i]][j], '_');
+        // }
+        // printf("\n");
     }
-    printf("pour combo numero: %d score = %d\n", n_combo, score / n_combo);
+    // printf("pour combo numero: %d score = %d\n", n_combo, score / n_combo);
     return (score / n_combo);
 }
 
@@ -108,10 +108,10 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                 combo_2[n_cv][1] = j;
                 if (env->best_score > (score = count_score(env, n_combo, combo_2[n_cv])))
                 {
-                    pstr(1, "meilleur score 2", '\n');
+                    // pstr(1, "meilleur score 2", '\n');
                     memcp(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
-                    plong(1, env->best_flow = n_combo, '\n');
+                    env->best_flow = n_combo;
                 }
             }
     // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
@@ -137,7 +137,7 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
                 if (env->best_score > (score = count_score(env, n_combo, combo_x[n_cv])))
                 {
                     // print_array_int(env->combo_x[n_cv], n_combo);
-                    pstr(1, "meilleur score X", '\n');
+                    // pstr(1, "meilleur score X", '\n');
                     memcp(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;

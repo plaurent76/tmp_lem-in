@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_colony.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:25:55 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 13:51:19 by eviana           ###   ########.fr       */
+/*   Updated: 2019/08/21 14:36:26 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int *get_ants_per_node(t_env *env)
 	while (++i < env->best_flow - 1)
 	{
 		diff = paths_len[i + 1] - paths_len[i];
-		if (diff >= 0 && ((diff + paths_len[i]) > ants_left))
+		if (diff >= 0 && ((diff + paths_len[i] - 1) > ants_left)) // ici un -1 a ete rajouter
 		{
 			ants_per_node[i] += ants_left;
 			ants_left = 0;
