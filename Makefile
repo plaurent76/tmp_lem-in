@@ -6,13 +6,14 @@
 #    By: eviana <eviana@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/08/21 15:36:25 by eviana           ###   ########.fr        #
+#    Updated: 2019/08/21 15:46:10 by eviana           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    	= lem-in
 SRC_PATH	= srcs/
 OBJ_PATH	= objs/
+LIB			= libft/libft.a
 FLAGS		= -Wall -Werror -Wextra 
 CC			= gcc $(FLAGS)
 SRC_SUFFIX	= .c
@@ -61,9 +62,10 @@ OK			= " $(CYAN)$(CHECK)$(WHITE)"
 all : $(NAME)
 
 $(NAME) : $(OBJ)
+	@make -C libft
 	@printf "\r$(EOLCLR)[$(NAME)] >>>>>>>>>>>>>>\t$(YELLOW)$(BOLD)"\
 	"lem_in compiled\t\t"$(OK)'\n'
-	@ $(CC) -I./includes $(OBJ) -o $@
+	@ $(CC) -I./includes $(OBJ) $(LIB) -o $@
 	@printf "\r$(EOLCLR)[$(NAME)] >>>>>>>>>>>>>>\t$(GREEN)$(BOLD)"\
 	"build successful\t"$(OK)'\n'
 
@@ -78,11 +80,13 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@printf '\t'$(OK)
 
 clean :
+	@make clean -C libft
 	@printf "[$(NAME)] removing\t$(PINK)all obj file$(WHITE)"
 	@rm -rf $(OBJ_PATH)
 	@printf '\t\t'$(OK)'\n'
 
 fclean : clean
+	@make fclean -C libft
 	@printf "[$(NAME)] erasing\t$(PINK)$(NAME)$(WHITE)"
 	@rm -f $(NAME)
 	@rm -rf lem-in.dSYM
