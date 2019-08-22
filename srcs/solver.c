@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   genetic.c                                          :+:      :+:    :+:   */
+/*   solver.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/22 12:16:10 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:16:10 by plaurent         ###   ########.fr       */
+/*   Created: 2019/08/22 15:22:24 by eviana            #+#    #+#             */
+/*   Updated: 2019/08/22 15:22:24 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,9 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 	int 	n_link;
 	int 	path_n_duplicate;
 	int		path_n_length;
-	int		x;
+	int		current_room;
 
-	x = -1;
+	current_room = -1;
 	n_link = 0;
 	if (!path_n && paths[0][0] == -1)
 	{
@@ -225,15 +225,14 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 	use_node(env, paths[path_n][1]);
 	// printf("just explored by node (room_id): %d\n", paths[path_n][1]);
 	// print_matrix_int(env->node_exploration, 2, env->flow_start_max);
-
 	path_n_duplicate = path_n;
 	path_n_length = 0;
 	while (path_n_length < env->nb_rooms && paths[path_n][path_n_length] != -1)
 		path_n_length++;
-	while (++x < (int)env->nb_rooms)
+	while (++current_room < (int)env->nb_rooms)
 	{
 		// checks if room is already in path and if path is not duplicate from last one
-		if (env->links[room_id][x] && !room_used(paths, path_n, env->nb_rooms, x) && ++n_link) // link exists with start
+		if (env->links[room_id][current_room] && !room_used(paths, path_n, env->nb_rooms, current_room) && ++n_link) // link exists with start
 		{
 			if (n_link > 1)
 			{
@@ -245,31 +244,21 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 			}
 			if (path_n_duplicate == -1)
 				return ;
-			add_to_path(paths, env->nb_rooms, path_n_duplicate, x);
+			add_to_path(paths, env->nb_rooms, path_n_duplicate, current_room);
 			// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
-			// printf("explore path %d from room %d\n", path_n, x);
-			if (x != 1)
-				explore_paths(env, paths, path_n_duplicate, x);
+			// printf("explore path %d from room %d\n", path_n, current_room);
+			if (current_room != 1)
+				explore_paths(env, paths, path_n_duplicate, current_room);
 			else
-			{
-				// sp_putlong(1, x, '|');
-				// sp_putlong(1, path_n_duplicate, '\n');
-				// if (path_n > 0 && !ending_path(tmp_paths, path_n - 1, env->nb_rooms))
-				// {
-				// 	sp_putstr(1, "entré dans le cas ou le chemin precedent n'est pas fini", '\n');
-				// 	memcp(tmp_paths[path_n - 1], tmp_paths[path_n], sizeof(int) * env->nb_rooms);
-				// 	int_set(tmp_paths[path_n], -1, env->nb_rooms);
-				// }
 				env->nb_valid++;
-			}
 		}
 	}
-	if (n_link == 0)
-	{
-		// printf("Would delete row: %d\n", path_n);
-		// del_path(tmp_paths, path_n);
-		// printf("path %d deleted cause no link\n", path_n);
-	}
+	// if (n_link == 0)
+	// {
+	// 	// printf("Would delete row: %d\n", path_n);
+	// 	// del_path(tmp_paths, path_n);
+	// 	// printf("path %d deleted cause no link\n", path_n);
+	// }
 }
 
 // duplicates given path row and returns index of duplicated row
@@ -307,7 +296,7 @@ int 	load_valid_paths(t_env *env, int **tmp_paths)
 **finir l'impression des fourmis en utilisant la colonie pour que ca ecrive au fur et a mesure
 */
 
-void			genetic_solve(t_env *env)
+void			solver(t_env *env)
 {
 	int 	**tmp_paths;
 

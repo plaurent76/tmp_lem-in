@@ -6,7 +6,7 @@
 /*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 13:34:13 by eviana           ###   ########.fr       */
+/*   Updated: 2019/08/22 15:21:58 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void		make_magic_happen(t_env *env)
 {
 	anthill_complete(env);
 	prepare_env(env);
-	genetic_solve(env);
+	solver(env);
 	combo_optimal(env);
 	if (IS_SET_V)
 		flag_v(env);
