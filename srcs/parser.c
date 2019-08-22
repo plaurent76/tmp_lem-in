@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 15:29:07 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/22 16:25:29 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int		get_link(t_env *env, const char *p, int i, int j)
 	t_room	*room2;
 	char	tmp[256];
 
+	// ft_printf("un lien");
 	while (!p[++i] || p[i] != '-')
 		if (!p[i] || is_space(p[i]))
 			return (0);
@@ -69,6 +70,7 @@ static int		get_link(t_env *env, const char *p, int i, int j)
 	tmp[++j] = '\0';
 	room2 = str_to_room(env, tmp);
 	new_link(env, room1, room2);
+	// ft_printf("test");
 	return (1);
 }
 
@@ -84,6 +86,7 @@ int				interpret_line(t_env *env, const char *p)
 {
 	static int state = 0;
 
+	// sp_putlong(1, state, '\n');
 	if (state == 0)
 	{
 		if (p[0] == '#' && ft_strcmp(p, "##start") && ft_strcmp(p, "##end"))
@@ -100,7 +103,7 @@ int				interpret_line(t_env *env, const char *p)
 	}
 	if (state == 4)
 	{
-		ft_printf("un lien");
+		// ft_printf("avant get_link");
 		return ((get_link(env, p, -1, -1) ? 4 : 0));
 	}
 	if (!(get_room(env, p, -1, -1, state)) && check_room(env, p))

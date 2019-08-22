@@ -6,7 +6,7 @@
 #    By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/08/22 15:31:02 by plaurent         ###   ########.fr        #
+#    Updated: 2019/08/22 16:26:54 by plaurent         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAGS		= -Wall -Werror -Wextra
 CC			= gcc $(FLAGS)
 SRC_SUFFIX	= .c
 COMMON =	main \
-			io \
+			get_lines \
 			error \
 			memory \
 			array \
