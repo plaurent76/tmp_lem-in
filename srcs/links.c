@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:25:44 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 16:27:28 by plaurent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:32:27 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ void		link_rooms(t_env *env, t_room *room1, t_room *room2)
 		room2->link = add_link(room1, NULL);
 }
 
-void		put_parsed_link(t_env *env, t_parsed_link *l)
-{
-	(l->room1 && &(l->room1->id[0])) ? sp_putstr(1, &(l->room1->id[0]), '-')
-	: perr(env, "Error: no room name to print");
-	(l->room2 && &(l->room2->id[0])) ? sp_putstr(1, &(l->room2->id[0]), '\n')
-	: perr(env, "Error: no room name to print");
-}
+// void		put_parsed_link(t_env *env, t_parsed_link *l)
+// {
+// 	(l->room1 && &(l->room1->id[0])) ? sp_putstr(1, &(l->room1->id[0]), '-')
+// 	: perr(env, "Error: no room name to print");
+// 	(l->room2 && &(l->room2->id[0])) ? sp_putstr(1, &(l->room2->id[0]), '\n')
+// 	: perr(env, "Error: no room name to print");
+// }
 
 void		put_parsed_links(t_env *env)
 {
@@ -87,7 +87,13 @@ void		put_parsed_links(t_env *env)
 		while (parsed->next)
 		{
 			parsed = parsed->next;
-			put_parsed_link(env, parsed);
+			// put_parsed_link(env, parsed);
+			(parsed->room1 && &(parsed->room1->id[0]))
+			? sp_putstr(1, &(parsed->room1->id[0]), '-')
+			: perr(env, "Error: no room name to print");
+			(parsed->room2 && &(parsed->room2->id[0]))
+			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
+			: perr(env, "Error: no room name to print");
 		}
 	}
 }
@@ -98,14 +104,14 @@ void		put_links(t_env *env)
 	int j;
 	char c;
 
-	while (++i < env->nb_rooms && printf(" %d\t| ", i))
+	while (++i < env->nb_rooms && ft_printf(" %d\t| ", i))
 	{
 		j = -1;
 		while (++j < env->nb_rooms && env->links[i][j] != -1)
 		{
 			c = (char)((env->links[i][j] == 1) ? 'X' : '-');
-			(j == 0 ? printf("%c", c) : printf(" | %c", c));
+			(j == 0 ? ft_printf("%c", c) : ft_printf(" | %c", c));
 		}
-		printf("\n");
+		ft_printf("\n");
 	}
 }

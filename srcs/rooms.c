@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:26:12 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 16:30:52 by plaurent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:11:33 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:11:37 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ void		put_rooms(t_env *env)
 {
 	int i;
 
-	printf("\n room_id | room_name\n---------------------\n");
+	ft_printf("\n room_id | room_name\n---------------------\n");
 	i = -1;
 	while (++i < env->nb_rooms) {
-		printf(" %d\t | %s\n", i, env->room_names[i]);
+		ft_printf(" %d\t | %s\n", i, env->room_names[i]);
 	}
-	printf("\n");
+	ft_printf("\n");
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   genetic.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:25:39 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:25:40 by pde-rent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:16:10 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:16:10 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		duplicate_path_until(int **paths, int until, int size_y, int y_src)
 		return -1;
 	// 
 	// else
-		memcp(paths[y], paths[y_src], (until) * sizeof(int));
+		ft_memcpy(paths[y], paths[y_src], (until) * sizeof(int));
 	// printf("duplicated: %d >> %d\n", y_src, y);
 	return (y);
 }
@@ -172,7 +172,7 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 		y = ffy(paths, y, size_y);
 		if (y >= (i))
 			break;
-		memcp(paths[y], paths[i], (size_x) * sizeof(int));
+		ft_memcpy(paths[y], paths[i], (size_x) * sizeof(int));
 		int_set(paths[i], -1, size_x);
 	}
 	// print_matrix_int(paths, size_x, size_y);
@@ -275,7 +275,7 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 // duplicates given path row and returns index of duplicated row
 int		duplicate_path_to_dest(int **paths_src, int y_src, int **paths_dest, int y_dest, int until)
 {
-	memcp(paths_dest[y_dest], paths_src[y_src], (until) * sizeof(int));
+	ft_memcpy(paths_dest[y_dest], paths_src[y_src], (until) * sizeof(int));
 	return (y_dest);
 }
 
@@ -343,7 +343,7 @@ void			init_name_tab(t_env *env)
 	? 0 : perr(env, "Error: alloc_matric_char failed");
 	while (++i < env->nb_rooms)
 	{
-		env->room_names[i] = memcp(env->room_names[i], r->room->id, 256);
+		env->room_names[i] = ft_memcpy(env->room_names[i], r->room->id, 256);
 		r = r->next;
 	}
 	free_parsed_rooms(env);
@@ -376,7 +376,7 @@ void         get_flow_max(t_env *env)
 	env->node_exploration = alloc_matrix_int(2, env->flow_start_max, -1);
 	i = -1;
 	while (++i < env->flow_start_max)
-		memcp(env->node_exploration[i], tmp_node_exploration[i], sizeof(int) * 2);
+		ft_memcpy(env->node_exploration[i], tmp_node_exploration[i], sizeof(int) * 2);
 	// memcp(env->node_exploration, tmp_node_exploration, sizeof(int) * 2 * env->flow_start_max);
 	free_matrix((void *)tmp_node_exploration, env->nb_rooms);
 }

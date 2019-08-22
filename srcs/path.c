@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:26:05 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 16:29:40 by plaurent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:16:42 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:16:43 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_path	*new_path(t_env *env, int *path, int size)
 	(p = (t_path *)malloc(sizeof(t_path))) ? 0 : perr(env, "t_path malloc failed");
 	(p->rooms = alloc_array_int(size, -1)) ? 0 : perr(env, "t_path malloc failed");
 	if (path != NULL)
-		memcp(p->rooms, path, (sizeof(int) * size));
+		ft_memcpy(p->rooms, path, (sizeof(int) * size));
 	p->current = 0;
 	p->size = size;
 	return (p);

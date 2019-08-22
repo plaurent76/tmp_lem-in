@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:25:55 by pde-rent          #+#    #+#             */
-/*   Updated: 2019/08/21 16:29:30 by plaurent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:16:32 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:16:34 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ int *get_ants_per_node(t_env *env)
 	}
 	if (IS_SET_V)
 	{
-		printf("env->best_combo: paths_len:\n");
+		ft_printf("env->best_combo: paths_len:\n");
 		print_array_int(paths_len, env->best_flow);
-		printf("env->best_combo: ants_per_node:\n");
+		ft_printf("env->best_combo: ants_per_node:\n");
 		print_array_int(ants_per_node, env->best_flow);
 	}
 	free(paths_len);
@@ -102,7 +102,7 @@ void assign_colony(t_env *env)
 	next_node = 0;
 	while (++i < env->nb_ants)
 	{
-		printf("new ant #%d in colony: using node %d (path #%d)\n"
+		ft_printf("new ant #%d in colony: using node %d (path #%d)\n"
 			, i, next_node, env->best_combo[next_node]);
 		env->colony[i] = new_ant(env, env->paths[env->best_combo[next_node]], env->nb_rooms);
 		ants_per_node[next_node]--;
@@ -200,7 +200,7 @@ int move_ant_forward(t_env *env, t_ant *ant)
 	ant->path->rooms ? 0 : perr(env, "Error: ant path has no rooms");
 	if (ant->path->current > ant->path->size)
 	{
-		printf("at colony[%d], path->current=%d, path->size=%d\n"
+		ft_printf("at colony[%d], path->current=%d, path->size=%d\n"
 			, (ant->n - 1), ant->path->current, ant->path->size);
 		perr(env, "Error: ant->path->current overflow");
 	}

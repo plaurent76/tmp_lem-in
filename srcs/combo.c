@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   combo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/21 12:27:56 by eviana            #+#    #+#             */
-/*   Updated: 2019/08/21 12:27:56 by eviana           ###   ########.fr       */
+/*   Created: 2019/08/22 12:14:14 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:14:14 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
+// #include <stdio.h>
 
 int     *int_set(int *tab, int val, int size)
 {
@@ -109,7 +109,7 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
                 if (env->best_score > (score = count_score(env, n_combo, combo_2[n_cv])))
                 {
                     // sp_putstr(1, "meilleur score 2", '\n');
-                    memcp(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
+                    ft_memcpy(env->best_combo, combo_2[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
                 }
@@ -138,7 +138,7 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
                 {
                     // print_array_int(env->combo_x[n_cv], n_combo);
                     // sp_putstr(1, "meilleur score X", '\n');
-                    memcp(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
+                    ft_memcpy(env->best_combo, combo_x[n_cv], env->flow_max * sizeof(int));
                     env->best_score = score;
                     env->best_flow = n_combo;
                     // print_array_int(env->best_combo, env->flow_max);
@@ -153,7 +153,7 @@ void    replace_combo_x(t_env *env, int **combo_2, int **combo_x)
     i = -1;
     while (++i < env->nb_valid)
     {
-        memcp(combo_2[i], combo_x[i], sizeof(int) * env->flow_max);
+        ft_memcpy(combo_2[i], combo_x[i], sizeof(int) * env->flow_max);
         int_set(combo_x[i], -1, env->flow_max);
     }
 }

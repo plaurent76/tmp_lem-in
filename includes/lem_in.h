@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:19:58 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:20:00 by pde-rent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:12:01 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:12:01 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int				sp_putstr(int fd, const char *s, char end);
 int				sp_strcpy(char *dest, const char *src, char c);
 long			fatol(t_env *env, const char *str);
 // int				scmp(const char *s1, const char *s2);
-void			*memcp(void *mem2, const void *mem1, int n);
-void			*mems(void *mem, int c, size_t n);
+// void			*memcp(void *mem2, const void *mem1, int n);
+// void			*mems(void *mem, int c, size_t n);
 void			init_env(t_env *env);
 void			deinit_env(t_env *env);
 

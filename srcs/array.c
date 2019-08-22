@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pde-rent <pde-rent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 18:25:39 by pde-rent          #+#    #+#             */
-/*   Updated: 2018/06/20 18:25:40 by pde-rent         ###   ########.fr       */
+/*   Created: 2019/08/22 12:13:42 by plaurent          #+#    #+#             */
+/*   Updated: 2019/08/22 12:13:42 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*alloc_array_char(int n, char val)
 
 	if (!(array = (char*)malloc(sizeof(char) * n)))
 		return (NULL);
-	mems(array, val, n);
+	ft_memset(array, val, n);
 	return (array);
 }
 
@@ -40,6 +40,6 @@ void 	print_array_int(int *array, int n)
 	int i = -1;
 
 	while (++i < n && array[i] != -1)
-		(i == 0 ? printf(" %d", array[i]) : printf("\t| %d", array[i]));
-	printf("\n");
+		(i == 0 ? ft_printf(" %d", array[i]) : ft_printf("\t| %d", array[i]));
+	ft_printf("\n");
 }

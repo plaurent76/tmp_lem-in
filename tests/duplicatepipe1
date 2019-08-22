@@ -3,5 +3,7 @@
 start 0 0
 ##end
 end 0 0
-start-end
-start-end
+2 0 0
+2-end
+2-end
+start-2
