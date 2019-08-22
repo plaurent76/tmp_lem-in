@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:54 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:11:56 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/22 13:27:18 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void		put_usage(t_env *env)
 		// "  -s\tsolver: displays solution\n"
 		, '\0');
 	deinit_env(env);
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
 
 void		perr(t_env *env, const char *err_msg)
 {
 	/*!IS_SET_E ? sp_putstr(2, "Error", '\n') : */sp_putstr(2, err_msg, '\n');
 	deinit_env(env);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 
 // void		sig_handler(int sig)

@@ -6,7 +6,7 @@
 #    By: eviana <eviana@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/08/21 15:46:10 by eviana           ###   ########.fr        #
+#    Updated: 2019/08/22 13:40:55 by eviana           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ COMMON =	main \
 			move_colony \
 			print_anthill \
 			genetic	\
-			combo
+			combo \
+			prepare_env
 
 SRC_FILES = $(addsuffix $(SRC_SUFFIX),$(COMMON))
 OBJ_FILES = $(SRC_FILES:.c=.o)

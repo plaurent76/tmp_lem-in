@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:32:27 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/22 13:42:05 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void		put_parsed_links(t_env *env)
 	parsed = L1;
 	if (parsed->room1 && parsed->room2)
 	{
-		put_parsed_link(env, parsed);
+		put_parsed_links(env, parsed);
 		while (parsed->next)
 		{
 			parsed = parsed->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:28:36 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/22 13:34:13 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,6 @@
 
 // map invalid command: il faut detecter que qd ## c est une commande qui peuvent etre invalid
 // map startisend a faire gaffe
-
-static void		prepare_env(t_env *env)
-{
-	int		diff;
-
-	diff = 1;
-	env->nb_rooms = env->lpri + 1;
-	// alloc room_free to track room occupation
-	(env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms)) ?
-	0 : perr(env, "Error: env->room_free malloc failed");
-	ft_memset(env->room_free, (char)1, env->nb_rooms);
-	init_links_matrix(env);
-	init_name_tab(env);
-	get_flow_max(env);
-	while ((4096 * env->flow_start_max) / diff > 22000)
-		diff++;
-	// if (diff > 1)
-	// 	ft_printf("on a diviser le nb de paths par node par : %d", diff);
-	env->max_paths_per_node = 4096 / diff;
-	env->nb_paths = (int)((env->max_paths_per_node * env->flow_start_max)
-	/ diff);
-	// env->max_paths_per_node = env->nb_rooms * 2;
-	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
-}
 
 void			flag_v(t_env *env)
 {
