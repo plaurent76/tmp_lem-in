@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 13:53:15 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/22 15:29:07 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ int				interpret_line(t_env *env, const char *p)
 		return ((state = (!ft_strcmp(p, "##start") ? 2 : 3)));
 	}
 	if (state == 4)
+	{
+		ft_printf("un lien");
 		return ((get_link(env, p, -1, -1) ? 4 : 0));
+	}
 	if (!(get_room(env, p, -1, -1, state)) && check_room(env, p))
 		return ((state = 4));
 	state == 2 ? (env->start = env->last_parsed_room->room) : 0;
