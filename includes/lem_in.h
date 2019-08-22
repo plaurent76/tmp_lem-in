@@ -161,6 +161,7 @@ void			put_parsed_room_links(t_env *env, t_room *room);
 ** SOLVE
 */
 void			solver(t_env *env);
+void            explore_paths(t_env *env, int **paths, int path_n, int room_id);
 void            combo_optimal(t_env *env);
 void            assign_colony(t_env *env);
 void			move_colony(t_env *env);

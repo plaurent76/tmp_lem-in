@@ -67,7 +67,7 @@ int		ending_path(int **paths, int y, int size_y)
 }
 
 // duplicates given path row and returns index of duplicated row
-int		duplicate_path_until(int **paths, int until, int size_y, int y_src)
+int		dup_until(int **paths, int until, int size_y, int y_src)
 {
 	int 	y;
 	// int		*tmp;
@@ -204,15 +204,50 @@ int		is_node_explored(t_env *env, int room_id)
 	return (0);
 }
 
-void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
+int		get_path_n_length(t_env *env, int **paths, int path_n)
+{
+	int		path_n_length;
+
+	path_n_length = 0;
+	while (path_n_length < env->nb_rooms && paths[path_n][path_n_length] != -1)
+		path_n_length++;
+	return (path_n_length);
+}
+
+void	explore_paths2(t_env *env, int **paths, int path_n, int room_id)
 {
 	int 	n_link;
-	int 	path_n_duplicate;
+	int 	path_n_temp;
 	int		path_n_length;
 	int		current_room;
 
 	current_room = -1;
 	n_link = 0;
+	path_n_temp = path_n;
+	path_n_length = get_path_n_length(env, paths, path_n);
+	while (++current_room < (int)env->nb_rooms)
+		// checks if room is already in path and if path is not duplicate from last one
+		if (env->links[room_id][current_room]
+			&& !room_used(paths, path_n, env->nb_rooms, current_room) && ++n_link) // link exists with start
+		{
+			if (n_link > 1)
+			{
+				if (path_n_temp > 0 && room_id == 0) // we found at least 1 path starting from 0
+					clean_paths(paths, 0, env->nb_paths, env->nb_rooms);
+				path_n_temp = dup_until(paths, path_n_length, env->nb_paths, path_n);
+			}
+			if (path_n_temp == -1)
+				return ;
+			add_to_path(paths, env->nb_rooms, path_n_temp, current_room);
+			// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
+			// printf("explore path %d from room %d\n", path_n, current_room);
+			current_room != 1 ?	explore_paths(env, paths, path_n_temp, current_room)
+			: env->nb_valid++;
+		}
+}
+
+void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
+{
 	if (!path_n && paths[0][0] == -1)
 	{
 		path_n = ffy(paths, path_n, env->nb_paths);
@@ -223,36 +258,11 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 	if (is_node_explored(env, paths[path_n][1]))
 		return ;
 	use_node(env, paths[path_n][1]);
+	explore_paths2(env, paths, path_n, room_id);
 	// printf("just explored by node (room_id): %d\n", paths[path_n][1]);
 	// print_matrix_int(env->node_exploration, 2, env->flow_start_max);
-	path_n_duplicate = path_n;
-	path_n_length = 0;
-	while (path_n_length < env->nb_rooms && paths[path_n][path_n_length] != -1)
-		path_n_length++;
-	while (++current_room < (int)env->nb_rooms)
-	{
-		// checks if room is already in path and if path is not duplicate from last one
-		if (env->links[room_id][current_room] && !room_used(paths, path_n, env->nb_rooms, current_room) && ++n_link) // link exists with start
-		{
-			if (n_link > 1)
-			{
-				if (path_n_duplicate > 0 && room_id == 0)
-				{ // we found at least 1 path starting from 0
-					clean_paths(paths, 0, env->nb_paths, env->nb_rooms);
-				}
-				path_n_duplicate = duplicate_path_until(paths, path_n_length, env->nb_paths, path_n);
-			}
-			if (path_n_duplicate == -1)
-				return ;
-			add_to_path(paths, env->nb_rooms, path_n_duplicate, current_room);
-			// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
-			// printf("explore path %d from room %d\n", path_n, current_room);
-			if (current_room != 1)
-				explore_paths(env, paths, path_n_duplicate, current_room);
-			else
-				env->nb_valid++;
-		}
-	}
+
+
 	// if (n_link == 0)
 	// {
 	// 	// printf("Would delete row: %d\n", path_n);
