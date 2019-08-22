@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 13:42:05 by eviana           ###   ########.fr       */
+/*   Updated: 2019/08/22 13:41:11 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,13 @@ void		put_parsed_links(t_env *env)
 	parsed = L1;
 	if (parsed->room1 && parsed->room2)
 	{
-		put_parsed_links(env, parsed);
+		// put_parsed_link(env, parsed);
+		(parsed->room1 && &(parsed->room1->id[0]))
+			? sp_putstr(1, &(parsed->room1->id[0]), '-')
+			: perr(env, "Error: no room name to print");
+			(parsed->room2 && &(parsed->room2->id[0]))
+			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
+			: perr(env, "Error: no room name to print");
 		while (parsed->next)
 		{
 			parsed = parsed->next;
