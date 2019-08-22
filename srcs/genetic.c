@@ -314,6 +314,7 @@ void			genetic_solve(t_env *env)
 	(tmp_paths = alloc_matrix_int((int)env->nb_rooms, (int)env->nb_paths, -1)) ?
 	0 : perr(env, "Error: tmp_paths malloc failed");
 	explore_paths(env, tmp_paths, 0, 0);
+	// print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
 	if (env->nb_valid < 1)
 	{
 		free_matrix((void *)tmp_paths, env->nb_paths);

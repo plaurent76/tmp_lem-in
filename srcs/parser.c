@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 13:39:56 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/08/22 13:53:15 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ int				interpret_line(t_env *env, const char *p)
 	}
 	if (!p || (p[0] && p[0] == '#' && ft_strcmp(p, "##start") && ft_strcmp(p, "##end")))
 		return (1);
-	(p[0] && p[1] && p[0] == '#' && p[1] == '#' && ft_strcmp(p, "##start")
-	&& ft_strcmp(p, "##end")) ? perr(env, "Error: invalid command") : 0;
 	if (!ft_strcmp(p, "##start") || !ft_strcmp(p, "##end"))
 	{
 		((!ft_strcmp(p, "##start") && env->start) || (!ft_strcmp(p, "##end") && env->end))
