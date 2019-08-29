@@ -228,7 +228,9 @@ void move_colony(t_env *env)
 {
 	int i;
 	int n_arrived;
+	int	n_line;
 
+	n_line = -1;
 	n_arrived = 0;
 	assign_colony(env);
 	// rounds = (env->nb_ants + path_len(env->paths[0], env->nb_rooms));
@@ -241,5 +243,7 @@ void move_colony(t_env *env)
 			n_arrived += move_ant_forward(env, env->colony[i]);
 		}
 		!IS_SET_M ? write(1, "\n", 1) : 0;
+		n_line++;
 	}
+	ft_printf("le nb de ligne est de: %d\n", n_line);
 }

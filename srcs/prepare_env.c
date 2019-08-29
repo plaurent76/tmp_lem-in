@@ -12,6 +12,41 @@
 
 #include "lem_in.h"
 
+void	check_matrix(t_env *env)
+{
+	int		i;
+	int		tmp_i;
+	int		j;
+	int		tube;
+
+	i = 1;
+	tmp_i = 0;
+	while (i < (int)env->nb_rooms)
+	{
+		tube = -1;
+		j = 0;
+		while (j < (int)env->nb_rooms)
+		{
+			if (env->links[i][j] == 1 && i != j && tube == -1)
+				tube = j;
+			else if (env->links[i][j] == 1 && i != j && tube >= 0)
+			{
+				tube = -1;
+				break ;
+			}
+			j++;
+		}
+		if (tube >= 0 && i >= 2)//ces deux conditions font que si on a une impasse on regarde ensuite la room lier a limpasse et ainsi de suite sinon  on avance avec i normalament mais dans le cas ou on avais impasse et que on a mtn plus on repart avec i++ par rapport a la premiere impasse
+		{
+			env->links[tube][i] = 0;
+			env->links[i][tube] = 0;
+			i = tube;
+		}
+		else
+			i = ++tmp_i;
+	}
+}
+
 static void init_links_matrix(t_env *env)
 {
 	t_parsed_link *l;
@@ -72,7 +107,7 @@ static void get_flow_max(t_env *env)
         if (env->links[0][i] == 1 && i != 0)
 		{
 			tmp_node_exploration[env->flow_start_max][0] = i;
-			tmp_node_exploration[env->flow_start_max][1] = 0;
+			tmp_node_exploration[env->flow_start_max][1] = env->nb_rooms;
             env->flow_start_max++;
 		}
         if (env->links[1][i] == 1 && i != 1)
@@ -90,24 +125,24 @@ static void get_flow_max(t_env *env)
 
 void		prepare_env(t_env *env)
 {
-	// int		diff;
+	int		diff;
 
-	// diff = 1;
+	diff = 1;
 	env->nb_rooms = env->lpri + 1;
 	// alloc room_free to track room occupation
 	(env->room_free = (char *)malloc(sizeof(char)*env->nb_rooms)) ?
 	0 : perr(env, "Error: env->room_free malloc failed");
 	ft_memset(env->room_free, (char)1, env->nb_rooms);
 	init_links_matrix(env);
+	check_matrix(env);
 	init_name_tab(env);
 	get_flow_max(env);
-	// while ((4096 * env->flow_start_max) / diff > 22000)
+	// while ((4096 * env->flow_start_max) / diff > 100000)
 	// 	diff++;
 	// if (diff > 1)
-	// 	ft_printf("on a diviser le nb de paths par node par : %d", diff);
-	env->max_paths_per_node = 4096; // / diff;
-	env->nb_paths = (int)((env->max_paths_per_node * env->flow_start_max));
-	// / diff);
+		// ft_printf("on a diviser le nb de paths par node par : %d", diff);
+	// env->max_paths_per_node = 4096;// / diff;
+	env->nb_paths = (int)((10000 * env->flow_start_max));
 	// env->max_paths_per_node = env->nb_rooms * 2;
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 }

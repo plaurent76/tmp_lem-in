@@ -16,7 +16,7 @@ int	 ffy(int **paths, int y_start, int size_y)
 {
 	int i = y_start - 1;
 
-	while (++i < size_y) {
+	while (++i < size_y - 1) {
 		if (paths[i][1] == -1) {
 			return i;
 		}
@@ -93,15 +93,35 @@ int 	paths_match(int *path1, int *path2, int length)
 	return (1);
 }
 
+int		best_path_node(t_env *env, int **paths, int path_n, int path_len)
+{
+	int i = -1;
+
+	// ft_printf("path_n: %d node: %d\n", path_n, paths[path_n][1]);
+	while (++i < env->flow_start_max)
+		if (env->node_exploration[i][0] == paths[path_n][1])
+			if (env->node_exploration[i][1] > path_len)
+				return (1);// tu devrais pas test ici si on est passer
+				//1024x sur un noeud de start ? 
+	return (0);
+}
+
 // checks if room is already in path and if path is not duplicate from last one
-int		room_used(int **paths, int path_n, int until, int id)
+int		room_used(t_env *env, int **paths, int path_n, int until, int id)
 {
 	int 	length;
+	int		len_max;
+	int		i;
 
 	length = -1;
+	len_max = 0;
+	i = -1;
+	while (++i < env->flow_start_max)
+		if (env->node_exploration[i][0] == paths[path_n][1])
+			len_max = env->node_exploration[i][1];
 	while (++length < until && paths[path_n][length] != -1)
 	{
-		if (paths[path_n][length] == id)
+		if ((length > len_max && path_n != 0) || paths[path_n][length] == id)
 		{
 			// printf("room %d found in path %d at length %d: ", id, path_n, length);
 			// print_array_int(paths[path_n], length + 1);
@@ -147,6 +167,17 @@ void	add_to_path(int **paths, int size_x, int y, int room_id)
 	paths[y][ffx(paths, y, size_x)] = room_id;
 }
 
+int		not_use_node(t_env *env, int room_id)
+{
+	int i = -1;
+
+	while (++i < env->flow_start_max)
+		if (env->node_exploration[i][0] == room_id)
+			if (env->node_exploration[i][1] > 0 && env->node_exploration[i][1]--)
+				return (1);
+	return (0);
+}
+
 int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 {
 	int		i;
@@ -160,7 +191,7 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 	cnt = 0;
 	// print_matrix_int(paths, size_x, size_y);
 	while (++i < size_y && paths[i][0] != -1)
-		if (!ending_path(paths, i, size_x) && ++cnt)
+		if (!ending_path(paths, i, size_x) && paths[i + 1][0] != -1 && ++cnt)
 			int_set(paths[i], -1, size_x);
 	// cnt = (size_y - start_y) - cnt;
 	to_clean = cnt;
@@ -175,32 +206,22 @@ int 	clean_paths(int **paths, int start_y, int size_y, int size_x)
 		ft_memcpy(paths[y], paths[i], (size_x) * sizeof(int));
 		int_set(paths[i], -1, size_x);
 	}
+	ft_printf("test");
 	// print_matrix_int(paths, size_x, size_y);
 	// if (IS_SET_V)
 		// printf("tmp_paths cleaned: from=%d to=%d sum=%d\n", start_y, last_full, to_clean);
 	return (to_clean);
 }
 
-int		use_node(t_env *env, int room_id)
+int		use_node(t_env *env, int **paths, int path_n, int not_use)
 {
 	int i = -1;
 
-	while (++i < env->flow_start_max)
-		if (env->node_exploration[i][0] == room_id)
-			if (env->node_exploration[i][1]++)
-				return (1);
-	return (0);
-}
-
-int		is_node_explored(t_env *env, int room_id)
-{
-	int i = -1;
-
-	while (++i < env->flow_start_max)
-		if (env->node_exploration[i][0] == room_id)
-			if (env->node_exploration[i][1] >= env->max_paths_per_node)
-				return (1);// tu devrais pas test ici si on est passer
-				//1024x sur un noeud de start ? 
+	while (++i < env->flow_start_max && not_use >= 0)
+		if (env->node_exploration[i][0] == paths[path_n][1])
+		{
+			env->node_exploration[i][1] = path_len(paths[path_n], env->nb_rooms) - 2;
+		}
 	return (0);
 }
 
@@ -226,24 +247,31 @@ void	explore_paths2(t_env *env, int **paths, int path_n, int room_id)
 	path_n_temp = path_n;
 	path_n_length = get_path_n_length(env, paths, path_n);
 	while (++current_room < (int)env->nb_rooms)
+	{
+		// ft_printf("room_id: %d, current_room: %d, path_n: %d\n", room_id, current_room, path_n);
 		// checks if room is already in path and if path is not duplicate from last one
-		if (env->links[room_id][current_room]
-			&& !room_used(paths, path_n, env->nb_rooms, current_room) && ++n_link) // link exists with start
+		if (env->links[room_id][current_room] && room_id != current_room
+			&& !room_used(env, paths, path_n, env->nb_rooms, current_room) && ++n_link) // link exists with start
 		{
 			if (n_link > 1)
 			{
-				if (path_n_temp > 0 && room_id == 0) // we found at least 1 path starting from 0
+				if ((path_n_temp > 0 && room_id == 0))// || ((env->nb_valid % 1000) == 0 && env->nb_valid > 0)) // we found at least 1 path starting from 0
+				{
+					ft_printf("clean quand path_n == %d et que nb_valid == %d\n", path_n_temp, env->nb_valid);
 					clean_paths(paths, 0, env->nb_paths, env->nb_rooms);
+				}
 				path_n_temp = dup_until(paths, path_n_length, env->nb_paths, path_n);
+				// use_node(env, paths[path_n][1]);
 			}
 			if (path_n_temp == -1)
 				return ;
 			add_to_path(paths, env->nb_rooms, path_n_temp, current_room);
-			// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
-			// printf("explore path %d from room %d\n", path_n, current_room);
+			// print_matrix_int(paths, env->nb_rooms, env->nb_paths);
+			// ft_printf("explore path %d from room %d\n", path_n, current_room);
 			current_room != 1 ?	explore_paths(env, paths, path_n_temp, current_room)
-			: env->nb_valid++;
+			: (use_node(env, paths, path_n, env->nb_valid++));
 		}
+	}
 }
 
 void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
@@ -255,14 +283,15 @@ void 	explore_paths(t_env *env, int **paths, int path_n, int room_id)
 			return ;
 		add_to_path(paths, env->nb_rooms, path_n, room_id);
 	}
-	if (is_node_explored(env, paths[path_n][1]))
-		return ;
-	use_node(env, paths[path_n][1]);
+	// if (is_node_explored(env, paths[path_n][1]))
+	// {
+	// 	ft_printf("stop par node trop explo au path_n:%d\n", path_n);
+	// 	return ;
+	// }
+	// use_node(env, paths[path_n][1]);
 	explore_paths2(env, paths, path_n, room_id);
 	// printf("just explored by node (room_id): %d\n", paths[path_n][1]);
 	// print_matrix_int(env->node_exploration, 2, env->flow_start_max);
-
-
 	// if (n_link == 0)
 	// {
 	// 	// printf("Would delete row: %d\n", path_n);
@@ -325,5 +354,6 @@ void			solver(t_env *env)
 		perr(env, "Error: failed loading valid paths into env->paths");
 	}
 	// print_matrix_int(tmp_paths, env->nb_rooms, env->nb_paths);
+	// ft_printf("nb_valid = %d\n", env->nb_valid);
 	free_matrix((void *)tmp_paths, env->nb_paths);
 }

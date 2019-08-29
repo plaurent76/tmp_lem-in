@@ -46,15 +46,16 @@ int     count_score(t_env *env, int n_combo, int *combo)
     diff = 0;
     score = 0;
     n_combo < 1 ? n_combo = 1 : 0;
-    diff = env->nb_ants % (n_combo);
-    //while ((env->nb_ants + diff) % (n_combo + 1) != 0)
-    //    diff++;
+    // diff = env->nb_ants % (n_combo);
+    while ((env->nb_ants + diff) % (n_combo + 1) != 0)
+       diff++;
     while (++i < n_combo)
     {
         score += ((env->nb_ants + diff) / n_combo)
         + path_len(env->paths[combo[i]], env->nb_rooms) - 1;
         if (diff > 0)
             diff--;
+        ft_printf("count score");
         // j = -1;
         // while (++j < env->nb_rooms)
         // {
@@ -101,7 +102,7 @@ void    get_combo_2(t_env *env, int **combo_2, int n_combo)
     n_cv = -1;
     while (++i < env->nb_valid && (j = i) >= 0)
         while (++j < env->nb_valid)
-            if (paths_compatible(env->paths[i], env->paths[j], env->nb_rooms))
+            if (n_cv + 1 < env->nb_valid && paths_compatible(env->paths[i], env->paths[j], env->nb_rooms))
             {
             //    sp_putstr(1, "is compatible", '\n'); 
                 combo_2[++n_cv][0] = i;
@@ -127,7 +128,7 @@ void get_combo_x(t_env *env, int **combo_2, int **combo_x, int n_combo)
     i = -1;
     n_cv = -1;
     while (++i < env->nb_valid && (j = -1))
-        while (++j < env->nb_valid)
+        while (++j < env->nb_valid && combo_2[j][0] != -1)
             if ((n_cv + 1) < env->nb_valid && combo_2[j][0] != -1 && combo_x_compatible(env, env->paths[i], combo_2[j], n_combo))
             {
                 combo_x[++n_cv][0] = i;
@@ -166,6 +167,11 @@ void    combo_optimal(t_env *env)
 
     if (env->nb_valid > 0)
     {
+        if (env->nb_valid > 1000)
+        {
+            ft_putnbr(env->nb_valid);
+            env->nb_valid = 1000;
+        }
         if (!(env->best_combo = alloc_array_int(env->flow_max, -1))
         || !(combo_2 = alloc_matrix_int(env->flow_max, env->nb_valid, -1))
         || !(combo_x = alloc_matrix_int(env->flow_max, env->nb_valid, -1)))
@@ -174,6 +180,7 @@ void    combo_optimal(t_env *env)
         env->best_combo[0] = 0;
         env->best_score = count_score(env, 1, env->best_combo);
         get_combo_2(env, combo_2, n_combo);
+        // print_matrix_int(combo_2, env->flow_max, env->nb_valid);
         while (++n_combo <= env->flow_max)
         {
             // print_matrix_int(env->combo_2, env->flow_max, env->nb_valid);
