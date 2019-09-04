@@ -39,9 +39,9 @@ static void		make_magic_happen(t_env *env)
 {
 	anthill_complete(env);
 	prepare_env(env);
-	ft_printf("avant solver");
-	solver(env);
-	ft_printf("apres solver");
+	ek(env);
+	// print_matrix_int(env->paths, env->nb_rooms, env->nb_paths);
+	// solver(env);
 	combo_optimal(env);
 	if (IS_SET_V)
 		flag_v(env);

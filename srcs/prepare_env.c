@@ -85,7 +85,7 @@ static void init_name_tab(t_env *env)
 	? 0 : perr(env, "Error: alloc_matric_char failed");
 	while (++i < env->nb_rooms)
 	{
-		env->room_names[i] = ft_memcpy(env->room_names[i], r->room->id, 256);
+		env->room_names[r->room->idx] = ft_memcpy(env->room_names[r->room->idx], r->room->id, 256);
 		r = r->next;
 	}
 	free_parsed_rooms(env);
@@ -137,12 +137,13 @@ void		prepare_env(t_env *env)
 	check_matrix(env);
 	init_name_tab(env);
 	get_flow_max(env);
+	// print_matrix_int(env->links, env->nb_rooms, env->nb_rooms);
 	// while ((4096 * env->flow_start_max) / diff > 100000)
 	// 	diff++;
 	// if (diff > 1)
 		// ft_printf("on a diviser le nb de paths par node par : %d", diff);
 	// env->max_paths_per_node = 4096;// / diff;
-	env->nb_paths = (int)((10000 * env->flow_start_max));
+	env->nb_paths = 100;//(int)((env->nb_rooms * env->flow_max));
 	// env->max_paths_per_node = env->nb_rooms * 2;
 	// env->nb_paths = (int)(4096 + env->nb_rooms / 2);
 }

@@ -31,7 +31,7 @@ int *get_ants_per_node(t_env *env)
 	int *ants_per_node;
 	// int min_len;
 	// int max_len;
-	int diff;
+	// int diff;
 	int i;
 	int ants_left;
 
@@ -51,23 +51,29 @@ int *get_ants_per_node(t_env *env)
 	// max_len = paths_len[env->best_flow - 1];
 	ants_left = env->nb_ants; // % (min_len * env->best_flow);
 	i = -1;
-	while (++i < env->best_flow - 1)
+	while (++i < env->best_flow && ants_left > 0)
 	{
-		diff = paths_len[i + 1] - paths_len[i];
-		if (diff >= 0 && ((diff + paths_len[i] - 1) > ants_left)) // ici un -1 a ete rajouter
-		{
-			ants_per_node[i] += ants_left;
-			ants_left = 0;
-			break;
-		}
-		else if (diff >= 0 && diff < ants_left)
-		{
-			// ants_per_node[i] += paths_len[i];
-			ants_per_node[i] += diff;
-			ants_left -= diff;
-		}
+		// diff = paths_len[i + 1] - paths_len[i];
+		// if (diff >= 0 && ((diff + paths_len[i] - 1) > ants_left)) // ici un -1 a ete rajouter
+		// {
+		// 	ants_per_node[i] += ants_left;
+		// 	ants_left = 0;
+		// 	break;
+		// }
+		// else if (diff >= 0 && diff < ants_left)
+		// {
+		// 	// ants_per_node[i] += paths_len[i];
+		// 	ants_per_node[i] += diff;
+		// 	ants_left -= diff;
+		// }
+		if ((env->best_score - (paths_len[i] - 1)) >= ants_left)
+			ants_per_node[i] = ants_left;
+		else
+			ants_per_node[i] = env->best_score - (paths_len[i] - 1);
+		ants_left = ants_left - ants_per_node[i];
 	}
 	i = 0;
+	ft_putnbr(ants_left);
 	while (--ants_left >= 0)
 	{
 		ants_per_node[i]++;

@@ -133,7 +133,7 @@ void			del_ant(t_env *env, t_ant *ant);
 
 t_path			*new_path(t_env *env, int *path, int size);
 t_path			*duplicate_path(t_env *env, t_path *path);
-t_path			*add_path(t_env *env, t_path *path, t_room *room);
+// t_path			*add_path(t_env *env, t_path *path, t_room *room);
 int				in_path(t_path *path, t_room *r);
 int				path_len(int *path, int size);
 void			del_ant_path(t_path *path);
@@ -160,10 +160,14 @@ void			put_parsed_room_links(t_env *env, t_room *room);
 /*
 ** SOLVE
 */
+
+int             **ft_matrixdup(int **src, size_t size);
+int             *bfs(t_env *env, int **matrix, int b);
 void			solver(t_env *env);
 void            explore_paths(t_env *env, int **paths, int path_n, int room_id);
 void            combo_optimal(t_env *env);
 void            assign_colony(t_env *env);
 void			move_colony(t_env *env);
+void            ek(t_env *env);
 
 #endif

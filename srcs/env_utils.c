@@ -111,6 +111,7 @@ void			init_env(t_env *env)
 	env->first_line = NULL;
 	env->fw = NULL;
 	env->option = 0;
+	env->block = NULL;
 	R1 = NULL;
 	R2 = NULL;
 	L1 = NULL;

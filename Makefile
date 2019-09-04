@@ -35,9 +35,10 @@ COMMON =	main \
 			parser_utils \
 			move_colony \
 			print_anthill \
-			solver	\
 			combo \
-			prepare_env
+			prepare_env	\
+			ek	\
+			bfs
 
 SRC_FILES = $(addsuffix $(SRC_SUFFIX),$(COMMON))
 OBJ_FILES = $(SRC_FILES:.c=.o)
