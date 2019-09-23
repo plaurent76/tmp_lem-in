@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:54 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 13:27:18 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/17 12:39:53 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,8 @@ void		perr(t_env *env, const char *err_msg)
 
 int			anthill_complete(t_env *env)
 {
-	t_parsed_room *parsed;
-
 	env->nb_ants <= 0 ? perr(env, "Error: no ants") : 0;
 	!env->start ? perr(env, "Error: no start room") : 0;
 	!env->end ? perr(env, "Error: no end room") : 0;
-	parsed = R1;
-	if (!(parsed && parsed->room && parsed->room->link))
-		perr(env, "Error: incomplete anthill");
 	return (1);
 }

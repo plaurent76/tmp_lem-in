@@ -3,70 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 13:41:11 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/18 13:58:39 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_link		*add_link(t_room *new_room, t_link *prev_link)
+t_link		*link_search(t_graph *graph, char *name)
 {
-	t_link *link;
+	t_link	*tmp;
+	t_link	*res;
 
-	link = (t_link *)malloc(sizeof(t_link));
-	link->room = new_room;
-	link->prev = prev_link;
-	link->next = NULL;
-	return (link);
+	if (!name || !graph || !graph->link)
+		return (NULL);
+	tmp = graph->link;
+	while (graph->link && ft_strcmp(graph->link->adjacent->name, name))
+		graph->link = graph->link->next;
+	res = graph->link;
+	graph->link = tmp;
+	return (res);
 }
 
-void		new_link(t_env *env, t_room *room1, t_room *room2)
+t_link		*new_link(t_env *env, t_graph *room)
 {
-	t_parsed_link *parsed_link;
+	t_link	*tmp;
 
-	if (!room1 || !room2)
-		perr(env, "Error: tried to link non-existing room");
-	parsed_link = (t_parsed_link *)malloc(sizeof(t_parsed_link));
-	parsed_link->room1 = room1;
-	parsed_link->room2 = room2;
-	parsed_link->next = NULL;
-	if (L2)
-	{
-		parsed_link->prev = L2;
-		L2->next = parsed_link;
-		L2 = parsed_link;
-	}
+	if (!(tmp = (t_link *)malloc(sizeof(t_link))))
+		perr(env, "Error: failling malloc link");
+	if (room)
+		tmp->adjacent = room;
 	else
-	{
-		parsed_link->prev = NULL;
-		L1 ? perr(env, "Error: no last link among parsed") : 0;
-		L2 = parsed_link;
-		L1 = parsed_link;
-	}
-	link_rooms(env, room1, room2);
+		tmp->adjacent = NULL;
+	tmp->flow = 0;
+	tmp->next = NULL;
+	tmp->len = 0;
+	return (tmp);
 }
 
-void		link_rooms(t_env *env, t_room *room1, t_room *room2)
+void		add_link(t_link **src, t_link *new)
 {
-	room1 == room2 ? perr(env, "Error: room linked to itself") : 0;
-	if (room1->link)
+	t_link *tmp;
+
+	tmp = (*src);
+	if (*src && src)
 	{
-		room1->link->next = add_link(room2, room1->link);
-		room1->link = room1->link->next;
+		if ((*src)->adjacent && !ft_strcmp((*src)->adjacent->name, new->adjacent->name))
+			return ;
+		while((*src)->next)
+		{
+			if ((*src)->next->adjacent && !ft_strcmp((*src)->next->adjacent->name, new->adjacent->name))
+			{
+				(*src) = tmp;
+				return ;
+			}
+			(*src) = (*src)->next;
+		}
+		(*src)->next = new;
+		(*src) = tmp;
 	}
 	else
-		room1->link = add_link(room2, NULL);
-	if (room2->link)
-	{
-		room2->link->next = add_link(room1, room2->link);
-		room2->link = room2->link->next;
-	}
-	else
-		room2->link = add_link(room1, NULL);
+		(*src) = new;
 }
+
+// void		new_link(t_env *env, t_graph *room1, t_graph *room2)
+// {
+// 	if (!room1 || !room2)
+// 		perr(env, "Error: tried to link non-existing room");
+// 		add_link(&room1->link, new_link(room2));
+// 		add_link(&room2->link, new_link(room1));
+// }
+
+// void		link_rooms(t_env *env, t_room *room1, t_room *room2)
+// {
+// 	room1 == room2 ? perr(env, "Error: room linked to itself") : 0;
+// 	if (room1->link)
+// 	{
+// 		room1->link->next = add_link(room2, room1->link);
+// 		room1->link = room1->link->next;
+// 	}
+// 	else
+// 		room1->link = add_link(room2, NULL);
+// 	if (room2->link)
+// 	{
+// 		room2->link->next = add_link(room1, room2->link);
+// 		room2->link = room2->link->next;
+// 	}
+// 	else
+// 		room2->link = add_link(room1, NULL);
+// }
 
 // void		put_parsed_link(t_env *env, t_parsed_link *l)
 // {
@@ -76,48 +103,48 @@ void		link_rooms(t_env *env, t_room *room1, t_room *room2)
 // 	: perr(env, "Error: no room name to print");
 // }
 
-void		put_parsed_links(t_env *env)
-{
-	t_parsed_link *parsed;
+// void		put_parsed_links(t_env *env)
+// {
+// 	t_parsed_link *parsed;
 
-	parsed = L1;
-	if (parsed->room1 && parsed->room2)
-	{
-		// put_parsed_link(env, parsed);
-		(parsed->room1 && &(parsed->room1->id[0]))
-			? sp_putstr(1, &(parsed->room1->id[0]), '-')
-			: perr(env, "Error: no room name to print");
-			(parsed->room2 && &(parsed->room2->id[0]))
-			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
-			: perr(env, "Error: no room name to print");
-		while (parsed->next)
-		{
-			parsed = parsed->next;
-			// put_parsed_link(env, parsed);
-			(parsed->room1 && &(parsed->room1->id[0]))
-			? sp_putstr(1, &(parsed->room1->id[0]), '-')
-			: perr(env, "Error: no room name to print");
-			(parsed->room2 && &(parsed->room2->id[0]))
-			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
-			: perr(env, "Error: no room name to print");
-		}
-	}
-}
+// 	parsed = L1;
+// 	if (parsed->room1 && parsed->room2)
+// 	{
+// 		// put_parsed_link(env, parsed);
+// 		(parsed->room1 && &(parsed->room1->id[0]))
+// 			? sp_putstr(1, &(parsed->room1->id[0]), '-')
+// 			: perr(env, "Error: no room name to print");
+// 			(parsed->room2 && &(parsed->room2->id[0]))
+// 			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
+// 			: perr(env, "Error: no room name to print");
+// 		while (parsed->next)
+// 		{
+// 			parsed = parsed->next;
+// 			// put_parsed_link(env, parsed);
+// 			(parsed->room1 && &(parsed->room1->id[0]))
+// 			? sp_putstr(1, &(parsed->room1->id[0]), '-')
+// 			: perr(env, "Error: no room name to print");
+// 			(parsed->room2 && &(parsed->room2->id[0]))
+// 			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
+// 			: perr(env, "Error: no room name to print");
+// 		}
+// 	}
+// }
 
-void		put_links(t_env *env)
-{
-	int i = -1;
-	int j;
-	char c;
+// void		put_links(t_env *env)
+// {
+// 	int i = -1;
+// 	int j;
+// 	char c;
 
-	while (++i < env->nb_rooms && ft_printf(" %d\t| ", i))
-	{
-		j = -1;
-		while (++j < env->nb_rooms && env->links[i][j] != -1)
-		{
-			c = (char)((env->links[i][j] == 1) ? 'X' : '-');
-			(j == 0 ? ft_printf("%c", c) : ft_printf(" | %c", c));
-		}
-		ft_printf("\n");
-	}
-}
+// 	while (++i < env->nb_rooms && ft_printf(" %d\t| ", i))
+// 	{
+// 		j = -1;
+// 		while (++j < env->nb_rooms && env->links[i][j] != -1)
+// 		{
+// 			c = (char)((env->links[i][j] == 1) ? 'X' : '-');
+// 			(j == 0 ? ft_printf("%c", c) : ft_printf(" | %c", c));
+// 		}
+// 		ft_printf("\n");
+// 	}
+// }

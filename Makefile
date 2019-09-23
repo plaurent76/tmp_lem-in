@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+         #
+#    By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/08/22 16:26:54 by plaurent         ###   ########.fr        #
+#    Updated: 2019/09/23 11:34:59 by paullaurent      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,25 +20,22 @@ SRC_SUFFIX	= .c
 COMMON =	main \
 			get_lines \
 			error \
-			memory \
 			array \
-			matrix \
 			ants \
 			links \
 			rooms \
 			path \
-			count \
 			env_utils \
 			str_utils \
 			basics \
 			parser \
 			parser_utils \
 			move_colony \
-			print_anthill \
-			combo \
-			prepare_env	\
 			ek	\
-			bfs
+			soluc	\
+			queue_utils	\
+			print_utils	\
+			path_utils
 
 SRC_FILES = $(addsuffix $(SRC_SUFFIX),$(COMMON))
 OBJ_FILES = $(SRC_FILES:.c=.o)

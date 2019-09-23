@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 15:21:58 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/23 11:26:31 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,64 @@
 // map invalid command: il faut detecter que qd ## c est une commande qui peuvent etre invalid
 // map startisend a faire gaffe
 
-void			flag_v(t_env *env)
-{
-		int i;
+// void			flag_v(t_env *env)
+// {
+// 		int i;
+// 		int	j;
 
-// print valid paths:
-		ft_printf("found %d valid paths:\n", env->nb_valid);
-		print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
-		ft_printf("\n");
-		ft_printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
-		print_matrix_int(env->node_exploration, 2, env->flow_start_max);
-		ft_printf("\n");
-		ft_printf("optimal combo found:\nenv->best_score: %d\nenv->best_flow: %d\nenv->best_combo:\n"
-			, env->best_score, env->best_flow);
-		print_array_int(env->best_combo, env->best_flow);
-		ft_printf("env->best_combo: paths:\n");
-		i = -1;
-		while (++i < env->flow_max && env->best_combo[i] != -1)
-			print_array_int(env->paths[env->best_combo[i]], env->nb_rooms);
+// // print valid paths:
+// 		ft_printf("found %d valid paths:\n", env->nb_valid);
+// 		print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
+// 		ft_printf("\n");
+// 		ft_printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
+// 		ft_printf("\n");
+// 		ft_printf("optimal combo found:\nenv->best_score: %d\nenv->best_flow: %d\nenv->best_combo:\n"
+// 			, env->best_score, env->best_flow);
+// 		print_array_int(env->best_combo, env->best_flow);
+// 		ft_printf("env->best_combo: paths:\n");
+// 		i = -1;
+// 		while (++i < env->flow_max && env->best_combo[i] != -1)
+// 		{
+// 			j = -1;
+// 			while (++j < env->nb_rooms && env->paths[env->best_combo[i]][j] != -1)
+// 				ft_printf("%s-", env->room_names[env->paths[env->best_combo[i]][j]]);
+// 			ft_printf("\n len: %d \n", j);
+// 		}
+// }
+
+void			print_graph(t_graph *pack)
+{
+	t_graph	*beglp;
+	t_link	*begp;
+
+	beglp = pack;
+	while (pack)
+	{
+		ft_printf("room: %s\n", pack->name);
+		begp = pack->link;
+		ft_printf("link:	");
+		while (pack->link)
+		{
+			if (pack->link->adjacent->name)
+				ft_printf("%s", pack->link->adjacent->name);
+			if (pack->link->next)
+				ft_printf("->");
+			pack->link = pack->link->next;
+		}
+		pack->link = begp;
+		ft_printf("\n\n");
+		pack = pack->next;
+	}
+	pack = beglp;
 }
 
 static void		make_magic_happen(t_env *env)
 {
 	anthill_complete(env);
-	prepare_env(env);
-	ek(env);
-	// print_matrix_int(env->paths, env->nb_rooms, env->nb_paths);
-	// solver(env);
-	combo_optimal(env);
-	if (IS_SET_V)
-		flag_v(env);
+	if (ed_karp(env) == 0)
+		perr(env, "Error: no path found");
 	!IS_SET_M ?	put_lines(env) : 0;
-	// IS_SET_R ? put_parsed_rooms(env) : 0;
-	// IS_SET_L ? put_parsed_links(env) : 0;
-	IS_SET_R ? put_rooms(env) : 0;
-	IS_SET_L ? put_links(env) : 0;
+	IS_SET_R ? print_rooms(env->graph) : 0;
 	move_colony(env);
 	deinit_env(env);
 	exit(EXIT_SUCCESS);

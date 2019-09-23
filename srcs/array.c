@@ -25,15 +25,15 @@ int		*alloc_array_int(int n, int val)
 	return (array);
 }
 
-char	*alloc_array_char(int n, char val)
-{
-	char	*array;
+// char	*alloc_array_char(int n, char val)
+// {
+// 	char	*array;
 
-	if (!(array = (char*)malloc(sizeof(char) * n)))
-		return (NULL);
-	ft_memset(array, val, n);
-	return (array);
-}
+// 	if (!(array = (char*)malloc(sizeof(char) * n)))
+// 		return (NULL);
+// 	ft_memset(array, val, n);
+// 	return (array);
+// }
 
 void 	print_array_int(int *array, int n)
 {

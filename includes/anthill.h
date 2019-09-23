@@ -13,98 +13,88 @@
 #ifndef ANTHILL_H
 # define ANTHILL_H
 
-typedef struct s_path			t_path;
-typedef struct s_room			t_room;
-typedef struct s_ant			t_ant;
-typedef struct s_env			t_env;
-typedef struct s_link			t_link;
-typedef struct s_lines			t_lines;
-typedef struct s_parsed_room	t_parsed_room;
-typedef struct s_parsed_link	t_parsed_link;
+ typedef struct s_graph t_graph;
+ typedef struct s_link t_link;
+ typedef struct s_ant t_ant;
+ typedef struct s_queue t_queue;
+ typedef struct s_paths t_paths;
+ typedef struct s_solut t_solut;
+ typedef struct s_env t_env;
+ typedef struct s_lines t_lines;
 
-struct			s_env
+typedef struct		s_graph
 {
-	t_room			*start;
-	t_room			*end;
-	t_path			*fw;
-	t_lines			*first_line;
-	t_parsed_room	*first_parsed_room;
-	t_parsed_room	*last_parsed_room;
-	t_parsed_link	*first_parsed_link;
-	t_parsed_link	*last_parsed_link;
+	char	*name;
+	int		visited;
+	t_link	*link;
+	int		dst;
+	int		x;
+	int		y;
+	int		ant;
+	struct s_graph	*parent;
+	struct s_graph	*next;
+}					t_graph;
 
-	int				new_line;
-	int				*best_combo;
+typedef struct		s_link
+{
+	int		len;
+	int		flow;
+	struct s_graph	*adjacent;
+	struct s_link	*next;
+}					t_link;
+
+typedef struct		s_queue
+{
+	t_graph			*graph;
+	struct s_queue	*next;
+}					t_queue;
+
+typedef struct		s_paths
+{
+	int				len;
+	int				rm;
+	t_link			*path;
+	struct s_paths	*next;
+}					t_paths;
+
+typedef struct		s_solut
+{
+	int				len;
+	int				score;
+	t_paths			*paths;
+	struct s_solut	*next;
+}					t_solut;
+
+typedef struct		s_ant
+{
+	int				n;
+	t_link			*path;
+}					t_ant;
+
+typedef struct		s_env
+{
+	t_graph			*graph;
+	t_graph			*start;
+	t_graph			*end;
+	int				end_found;
+	t_solut			*solut;
+	t_solut			*best_solut;
 	int				best_score;
 	int				best_flow;
+	t_ant			**colony;
+	t_lines			*first_line;
+	int				new_line;
 	int				flow_max;
-	int				flow_start_max;
-	int 			lpri;
 	int				option;
 	int				nb_rooms;
 	int				nb_ants;
-	int				nb_paths;
-	int				max_paths_per_node;
-	int				**node_exploration;
-	int 			nb_valid;
-	int				*block;
-	int				**links;
-	int 			**paths;
-	char			**room_names;
-	char 			*room_free;
-	t_ant			**colony;
-};
+}						t_env;
 
-struct			s_room
-{
-	char			id[256];
-	int 			idx;
-	int				x;
-	int				y;
-	t_ant			*ant;
-	t_link			*link;
-};
-
-struct			s_parsed_room
-{
-	t_room			*room;
-	t_parsed_room	*prev;
-	t_parsed_room	*next;
-};
-
-struct			s_link
-{
-	t_room			*room;
-	t_link			*prev;
-	t_link			*next;
-};
-
-struct			s_lines
+typedef struct	s_lines
 {
 	char			*txt;
 	t_lines			*prev;
 	t_lines			*next;
-};
-
-struct			s_parsed_link
-{
-	t_room			*room1;
-	t_room			*room2;
-	t_parsed_link	*prev;
-	t_parsed_link	*next;
-};
-
-struct			s_ant
-{
-	int				n;
-	t_path			*path;
-};
-
-struct			s_path
-{
-	int				*rooms;
-	int				size;
-	int				current;
-};
+}				t_lines;
 
 #endif

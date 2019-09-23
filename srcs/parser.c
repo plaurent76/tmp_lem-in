@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 16:25:29 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/20 13:46:12 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,32 +44,35 @@ static int		get_room(t_env *env, const char *p, int x, int y, int state)
 		else
 			tmp[2][++y] = p[i];
 	tmp[2][++y] = '\0';
-	new_room(env, tmp[0], fatol(env, tmp[1]), fatol(env, tmp[2]), state);
+	add_room(env, new_room(env, tmp[0], fatol(env, tmp[1]), fatol(env, tmp[2])), state);
+	env->nb_rooms++;
 	return (1);
 }
 
 static int		get_link(t_env *env, const char *p, int i, int j)
 {
-	t_room	*room1;
-	t_room	*room2;
+	t_graph	*room1;
+	t_graph	*room2;
 	char	tmp[256];
 
-	// ft_printf("un lien");
+	if (env->end_found++ == 1)
+		add_room(env, env->end, 0);
 	while (!p[++i] || p[i] != '-')
-		if (!p[i] || is_space(p[i]))
+		if (!p[i] || is_space(p[i]) || p[i] == 'L' || p[i] == '#')
 			return (0);
 		else
 			tmp[i] = p[i];
 	tmp[i] = '\0';
 	room1 = str_to_room(env, tmp);
 	while (p[++i])
-		if (is_space(p[i]))
+		if (is_space(p[i]) || p[i] == 'L' || p[i] == '#')
 			return (0);
 		else
 			tmp[++j] = p[i];
 	tmp[++j] = '\0';
 	room2 = str_to_room(env, tmp);
-	new_link(env, room1, room2);
+	add_link(&room1->link, new_link(env, room2));
+	add_link(&room2->link, new_link(env, room1));
 	// ft_printf("test");
 	return (1);
 }
@@ -102,13 +105,8 @@ int				interpret_line(t_env *env, const char *p)
 		return ((state = (!ft_strcmp(p, "##start") ? 2 : 3)));
 	}
 	if (state == 4)
-	{
-		// ft_printf("avant get_link");
 		return ((get_link(env, p, -1, -1) ? 4 : 0));
-	}
 	if (!(get_room(env, p, -1, -1, state)) && check_room(env, p))
 		return ((state = 4));
-	state == 2 ? (env->start = env->last_parsed_room->room) : 0;
-	state == 3 ? (env->end = env->last_parsed_room->room) : 0;
 	return ((state = 1));
 }
