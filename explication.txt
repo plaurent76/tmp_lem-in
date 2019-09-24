@@ -1,0 +1,34 @@
+meme parsing a la difference que mtn on stock dans un graph
+donc ce graph va commencer par start et finir par end mais a
+l'interieur il est non ponderer, cest une liste chainer ou chaque maillon
+est une room avec son nom, si elle a ete visiter(utiliser que dans bfs),
+link ou toutes les rooms lier a cette rooms sont stocker, faut supp dst il sert pas,
+ant va etre utiliser dans l'ecriture pour savoir si la room est ocuper par une fourmie
+parent donne la room anterieur pour bfs.
+ensuite ek, il va executer bfs tant que bfs a trouver une chemins, dans la 
+boucle on repart de end et on va modifier flow en recuperant parent a chauqe fois
+donc le flow dans le bon sens prend -1 et dans le sens inverse au chemin il prend
++1, grace a ca bfs va pouvoir savoir comment reculer dans le chemin quand il y a 
+bloquage.
+BFS: dabord il remet tout les rooms en non visiter, il part de start et la met en 
+visité, queue est celle du bfs de base ou on va mettre les rooms quon a trouver
+donc au debut elle est remplit de start puis de toutes ses rooms adjacent non visiter et
+ainsi de suite avec add_to_queue pour stocker une room et next room to queue
+pour supprimer la current et passer sur le maillon suivant.
+donc tant qu'on a des rooms dans la queue on stock toute ses rooms adjacent non visiter
+et ainsi de suite puis on retourne la variable visiter de end pour savoir si bfs
+a trouver une chemin.
+le systeme qui fait que quand on a bloquage on recule ce fait dans check flow
+si le flow est -1 c'est quon veut avancer dans une room deja occuper alors que si c'est
+1 on le laisse reculer, si c'est 0 on regarde si c'est pas deja un lien trouver dans un bfs precedent.
+link est une liste chainer qui va etre utiliser soit pour stocker les liens d'une
+room avec adjacent qui est la room lier mais elle va etre aussi utilisé pour stpcker
+un chemins avec adjacent la room et next la suivante (len est a supp elle ne sert a rien)
+la liste paths va avoir dans chaque maillon un chemins et sa taille (rm est a supp)
+cette liste est utilisé dans solut qui va pour chaque apl de bfs va avoir le droit
+a un nouveau maillon ou va etre stocker le(s) nouveau(x) chemins trouver par bfs
+et les precedents avec len qui donne le nb de chemins, le score qui est le nb final de 
+ligne que donnerais ce combo de chemin si on l'utilisais (calculer dans extract_paths)
+puis l'ecriture est aussi similaire a l'ancienne.
+si ta des petites questions je peut rep par msg mais si c'est plus long autant que tu les ecrivent
+en dessous que je developpe plus la reponse.
