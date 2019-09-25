@@ -1,34 +1,47 @@
-meme parsing a la difference que mtn on stock dans un graph
-donc ce graph va commencer par start et finir par end mais a
-l'interieur il est non ponderer, cest une liste chainer ou chaque maillon
+meme parsing: a la difference que mtn on stock dans un graph toutes les donner de
+la fourmilliere, ce graph va commencer par start et finir par end
+mais a l'interieur il est non ponderer, cest une liste chainer ou chaque maillon
 est une room avec son nom, si elle a ete visiter(utiliser que dans bfs),
-link ou toutes les rooms lier a cette rooms sont stocker, faut supp dst il sert pas,
-ant va etre utiliser dans l'ecriture pour savoir si la room est ocuper par une fourmie
+link ou toutes les rooms lier a cette rooms sont stocker,
+ant va etre utiliser dans l'ecriture pour savoir si la room est ocuper par une fourmie,
 parent donne la room anterieur pour bfs.
-ensuite ek, il va executer bfs tant que bfs a trouver une chemins, dans la 
-boucle on repart de end et on va modifier flow en recuperant parent a chauqe fois
-donc le flow dans le bon sens prend -1 et dans le sens inverse au chemin il prend
+
+EK:
+il va executer bfs tant que bfs trouve un chemin, dans la 
+boucle de ek on part de end, on remonte le chemin trouver par bfs et on va modifier le flow
+en recuperant parent a chaque fois (donc on a la room qu'on regarde et la precedente),
+le flow dans le bon sens prend -1 (direction end) et dans le sens inverse au chemin il prend
 +1, grace a ca bfs va pouvoir savoir comment reculer dans le chemin quand il y a 
-bloquage.
-BFS: dabord il remet tout les rooms en non visiter, il part de start et la met en 
-visité, queue est celle du bfs de base ou on va mettre les rooms quon a trouver
-donc au debut elle est remplit de start puis de toutes ses rooms adjacent non visiter et
+bloquage.(qd il y a -1 il est completement bloquer et 1 c'est qu'il peut reculer)
+
+BFS:
+dabord il remet toutes les rooms en non visiter(=0), il part de start et la met en 
+visité et la stock dans queue, queue est celle du bfs de base ou on va mettre
+les rooms qu'on a trouver et on va toutes les gerer une par une.
+au debut elle est remplit de start puis de toutes ses rooms adjacent non visiter et
 ainsi de suite avec add_to_queue pour stocker une room et next room to queue
-pour supprimer la current et passer sur le maillon suivant.
+pour supprimer la current et passer sur le maillon suivant et donc la room suivante.
 donc tant qu'on a des rooms dans la queue on stock toute ses rooms adjacent non visiter
 et ainsi de suite puis on retourne la variable visiter de end pour savoir si bfs
 a trouver une chemin.
 le systeme qui fait que quand on a bloquage on recule ce fait dans check flow
 si le flow est -1 c'est quon veut avancer dans une room deja occuper alors que si c'est
-1 on le laisse reculer, si c'est 0 on regarde si c'est pas deja un lien trouver dans un bfs precedent.
+1 on le laisse reculer, si c'est 0 on regarde si c'est pas deja un lien trouver dans un bfs precedent,
+en parcourant la liste link de cette room et en checkant le flow a chaque fois, si il sont tous a zero cest que c'est ok
+
 link est une liste chainer qui va etre utiliser soit pour stocker les liens d'une
-room avec adjacent qui est la room lier mais elle va etre aussi utilisé pour stpcker
-un chemins avec adjacent la room et next la suivante (len est a supp elle ne sert a rien)
-la liste paths va avoir dans chaque maillon un chemins et sa taille (rm est a supp)
+room avec adjacent qui est la room lier (donc dans chaque maillon de graph il va y avoir une liste link)
+mais elle va etre aussi utilisé pour stocker un chemins avec adjacent la room et next la suivante
+(la link va etre stocker dans paths ou a chaque maillon de paths il va y avoir une liste link donc un chemin)
+len correspond a la taille du chemin.
+
+la liste paths va avoir dans chaque maillon un chemins et sa taille
 cette liste est utilisé dans solut qui va pour chaque apl de bfs va avoir le droit
 a un nouveau maillon ou va etre stocker le(s) nouveau(x) chemins trouver par bfs
 et les precedents avec len qui donne le nb de chemins, le score qui est le nb final de 
-ligne que donnerais ce combo de chemin si on l'utilisais (calculer dans extract_paths)
+ligne que donnerais ce combo de chemin si on l'utilisais (calculer dans extract_paths).
+
 puis l'ecriture est aussi similaire a l'ancienne.
+juste que ant cette fois va avoir un pointeur sur un chemins et non sont index
 si ta des petites questions je peut rep par msg mais si c'est plus long autant que tu les ecrivent
 en dessous que je developpe plus la reponse.

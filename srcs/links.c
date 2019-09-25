@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/18 13:58:39 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/25 10:47:32 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_link		*new_link(t_env *env, t_graph *room)
 		tmp->adjacent = NULL;
 	tmp->flow = 0;
 	tmp->next = NULL;
-	tmp->len = 0;
 	return (tmp);
 }
 

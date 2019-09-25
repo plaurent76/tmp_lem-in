@@ -27,7 +27,6 @@ typedef struct		s_graph
 	char	*name;
 	int		visited;
 	t_link	*link;
-	int		dst;
 	int		x;
 	int		y;
 	int		ant;
