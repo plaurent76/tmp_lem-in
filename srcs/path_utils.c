@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 20:21:23 by paullaurent       #+#    #+#             */
-/*   Updated: 2019/09/25 11:06:32 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/26 14:45:58 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_paths				*new_path(t_env *env, t_link *path)
 		perr(env, "Error: malloc paths failed");
 	new->len = path->len;
 	new->path = path;
-	new->rm = 0;
 	new->next = NULL;
 	return (new);
 }

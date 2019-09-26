@@ -51,7 +51,6 @@ typedef struct		s_queue
 typedef struct		s_paths
 {
 	int				len;
-	int				rm;
 	t_link			*path;
 	struct s_paths	*next;
 }					t_paths;
@@ -87,6 +86,8 @@ typedef struct		s_env
 	int				option;
 	int				nb_rooms;
 	int				nb_ants;
+	int				t_len;
+
 }						t_env;
 
 typedef struct	s_lines

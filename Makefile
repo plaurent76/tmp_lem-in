@@ -6,7 +6,7 @@
 #    By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/09/23 11:34:59 by paullaurent      ###   ########.fr        #
+#    Updated: 2019/09/26 11:28:06 by paullaurent      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME    	= lem-in
 SRC_PATH	= srcs/
 OBJ_PATH	= objs/
 LIB			= libft/libft.a
-FLAGS		= -Wall -Werror -Wextra 
+FLAGS		= -Wall -Werror -Wextra
 CC			= gcc $(FLAGS)
 SRC_SUFFIX	= .c
 COMMON =	main \

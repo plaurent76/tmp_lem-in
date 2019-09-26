@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:07 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/20 17:32:45 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/26 19:15:26 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,14 @@ static void	free_solut(t_solut **s)
 
 void			init_env(t_env *env)
 {
+	env->t_len = 0;
 	env->graph = NULL;
 	env->start = NULL;
 	env->end = NULL;
 	env->end_found = 0;
 	env->solut = NULL;
 	env->best_solut = NULL;
-	env->best_score = 0;
+	env->best_score = 10000;
 	env->best_flow = 1;
 	env->start = NULL;
 	env->end = NULL;
@@ -83,6 +84,8 @@ void			init_env(t_env *env)
 	env->option = 0;
 	env->first_line = NULL;
 	env->nb_rooms = 0;
+	env->new_line = 0;
+	env->flow_max = 0;
 }
 
 void			deinit_env(t_env *env)

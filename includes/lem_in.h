@@ -146,6 +146,6 @@ void			move_colony(t_env *env);
 int             ed_karp(t_env *env);
 void        extract_solut(t_env *env, int flow_max);
 t_solut     *new_soluc(t_env *env, t_paths *paths, int flow_max);
-t_paths     *extract_paths(t_env *env, int *t_len);
+t_paths     *extract_paths(t_env *env);
 
 #endif
