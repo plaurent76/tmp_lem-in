@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:33 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 12:59:41 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 16:35:07 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ t_graph		*str_to_room(t_env *env, const char *s)
 
 	tmp = env->graph;
 	(env->graph && env->graph->name) ? 0 : perr(env, "Error: no room to link to");
-	s ? 0 : perr(env, "Error: no room name to link to");
+	if (!s)
+		return (NULL);
 	if (!ft_strcmp(env->graph->name, s))
 		return (env->graph);
 	while (env->graph->next && env->graph->next->name)
@@ -88,6 +89,5 @@ t_graph		*str_to_room(t_env *env, const char *s)
 		}
 	}
 	env->graph = tmp;
-	perr(env, "Error: name could not relate to any room.name");
 	return (NULL);
 }

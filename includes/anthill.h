@@ -6,21 +6,21 @@
 /*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 13:39:17 by eviana            #+#    #+#             */
-/*   Updated: 2019/08/22 13:39:17 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/29 16:53:27 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ANTHILL_H
 # define ANTHILL_H
 
- typedef struct s_graph t_graph;
- typedef struct s_link t_link;
- typedef struct s_ant t_ant;
- typedef struct s_queue t_queue;
- typedef struct s_paths t_paths;
- typedef struct s_solut t_solut;
- typedef struct s_env t_env;
- typedef struct s_lines t_lines;
+typedef struct s_graph t_graph;
+typedef struct s_link t_link;
+typedef struct s_ant t_ant;
+typedef struct s_queue t_queue;
+typedef struct s_paths t_paths;
+typedef struct s_solut t_solut;
+typedef struct s_env t_env;
+typedef struct s_lines t_lines;
 
 typedef struct		s_graph
 {

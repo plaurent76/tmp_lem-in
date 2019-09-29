@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 20:21:32 by paullaurent       #+#    #+#             */
-/*   Updated: 2019/09/29 12:58:47 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 16:19:16 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void        extract_solut(t_env *env, int flow_max)
         tmp = env->solut;
         while (env->solut->next)
             env->solut = env->solut->next;
-        env->solut->score = (((env->t_len + env->nb_ants - 1) / (env->solut->len)) + 0.999999f);
+        env->solut->score = (((env->t_len + env->nb_ants) / (env->solut->len)) - 1);
         if (env->solut->len <= 3 || env->best_score > env->solut->score)
         {
             env->best_score = env->solut->score;

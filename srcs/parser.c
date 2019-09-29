@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 14:42:53 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 16:31:16 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ int				interpret_line(t_env *env, const char *p)
 		return (1);
 	if (!ft_strcmp(p, "##start") || !ft_strcmp(p, "##end"))
 	{
-		((!ft_strcmp(p, "##start") && env->start) || (!ft_strcmp(p, "##end") && env->end))
-		? perr(env, "Error: duplicate command") : 0;
+		if ((!ft_strcmp(p, "##start") && env->start) || (!ft_strcmp(p, "##end") && env->end))
+			return (0);
 		return ((state = (!ft_strcmp(p, "##start") ? 2 : 3)));
 	}
 	if (state == 4)
