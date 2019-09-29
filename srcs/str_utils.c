@@ -6,23 +6,11 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:47 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:13:39 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/29 17:38:17 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-// int			scmp(const char *s1, const char *s2)
-// {
-// 	while (*s1 && *s2)
-// 	{
-// 		if (*s1 != *s2)
-// 			return (*s1 - *s2);
-// 		++s1;
-// 		++s2;
-// 	}
-// 	return (*s1 - *s2);
-// }
 
 int			sp_putstr(int fd, const char *s, char end)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   links.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 12:58:27 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 18:23:33 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,13 @@ void		add_link(t_link **src, t_link *new)
 	tmp = (*src);
 	if (*src && src)
 	{
-		if ((*src)->adjacent && !ft_strcmp((*src)->adjacent->name, new->adjacent->name))
+		if ((*src)->adjacent
+			&& !ft_strcmp((*src)->adjacent->name, new->adjacent->name))
 			return ;
-		while((*src)->next)
+		while ((*src)->next)
 		{
-			if ((*src)->next->adjacent && !ft_strcmp((*src)->next->adjacent->name, new->adjacent->name))
+			if (!ft_strcmp((*src)->next->adjacent->name, new->adjacent->name)
+				&& (*src)->next->adjacent)
 			{
 				(*src) = tmp;
 				return ;

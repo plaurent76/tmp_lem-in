@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:33 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 16:35:07 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/29 18:02:12 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ void		add_room(t_env *env, t_graph *new, int state)
 	}
 	else if (env->graph && new)
 	{
-		while (env->graph->next)
-			env->graph = env->graph->next;
-		env->graph->next = new;
-		env->graph = tmp;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
 	else
 	{
@@ -73,7 +72,7 @@ t_graph		*str_to_room(t_env *env, const char *s)
 	t_graph	*res;
 
 	tmp = env->graph;
-	(env->graph && env->graph->name) ? 0 : perr(env, "Error: no room to link to");
+	(env->graph && env->graph->name) ? 0 : perr(env, "Error: no possible path");
 	if (!s)
 		return (NULL);
 	if (!ft_strcmp(env->graph->name, s))

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/22 13:39:17 by eviana            #+#    #+#             */
-/*   Updated: 2019/09/29 16:53:27 by eviana           ###   ########.fr       */
+/*   Created: 2019/09/29 17:15:21 by eviana            #+#    #+#             */
+/*   Updated: 2019/09/29 18:50:34 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,20 @@ typedef struct s_lines t_lines;
 
 typedef struct		s_graph
 {
-	char	*name;
-	int		visited;
-	t_link	*link;
-	int		x;
-	int		y;
-	int		ant;
+	char			*name;
+	int				visited;
+	t_link			*link;
+	int				x;
+	int				y;
+	int				ant;
 	struct s_graph	*parent;
 	struct s_graph	*next;
 }					t_graph;
 
 typedef struct		s_link
 {
-	int		len;
-	int		flow;
+	int				len;
+	int				flow;
 	struct s_graph	*adjacent;
 	struct s_link	*next;
 }					t_link;
@@ -84,17 +84,15 @@ typedef struct		s_env
 	int				new_line;
 	int				flow_max;
 	int				option;
-	int				nb_rooms;
 	int				nb_ants;
 	int				t_len;
+}					t_env;
 
-}						t_env;
-
-typedef struct	s_lines
+typedef struct		s_lines
 {
 	char			*txt;
-	t_lines			*prev;
-	t_lines			*next;
-}				t_lines;
+	struct s_lines	*prev;
+	struct s_lines	*next;
+}					t_lines;
 
 #endif

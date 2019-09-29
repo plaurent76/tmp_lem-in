@@ -1,7 +1,7 @@
-meme parsing: a la difference que mtn on stock dans un graph toutes les donner de
-la fourmilliere, ce graph va commencer par start et finir par end
-mais a l'interieur il est non ponderer, cest une liste chainer ou chaque maillon
-est une room avec son nom, si elle a ete visiter(utiliser que dans bfs),
+Parsing :
+Maintenant on stock dans un graph toutes les données de la fourmilliere. 
+Ce graph va commencer par start et finir par end mais á l'intérieur il est non pondéré.
+C'est une liste chainée ou chaque maillon est une room avec son nom, si elle a éte visiter(utiliser que dans bfs),
 link ou toutes les rooms lier a cette rooms sont stocker,
 ant va etre utiliser dans l'ecriture pour savoir si la room est ocuper par une fourmie,
 parent donne la room anterieur pour bfs.

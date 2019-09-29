@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:26:35 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 14:33:34 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 18:15:15 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ int				get_lines(t_env *env)
 		if (c == 10)
 		{
 			if (p[i - 1] == '\0')
-				break;
-				// perr(env, "Error: empty line\n");
+				break ;
 			p[i] = '\0';
 			if (!*p || (*p && !interpret_line(env, p)))
 				break ;

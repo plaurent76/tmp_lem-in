@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+         #
+#    By: eviana <eviana@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/09/29 16:52:53 by eviana           ###   ########.fr        #
+#    Updated: 2019/09/29 18:57:24 by eviana           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,15 +24,14 @@ COMMON =	main \
 			ants \
 			links \
 			rooms \
-			path \
-			env_utils \
+			free \
 			str_utils \
 			basics \
 			parser \
 			parser_utils \
 			move_colony \
 			ek	\
-			soluc	\
+			solut	\
 			queue_utils	\
 			print_utils	\
 			path_utils

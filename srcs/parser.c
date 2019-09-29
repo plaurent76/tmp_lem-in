@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 16:31:16 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/29 18:55:12 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int		get_ants(t_env *env, const char *p)
 	return (1);
 }
 
-static int		get_room(t_env *env, const char *p, int x, int y, int state)
+static int		get_room(t_env *e, const char *p, int x, int state)
 {
 	int		i;
 	char	tmp[3][256];
@@ -38,14 +38,14 @@ static int		get_room(t_env *env, const char *p, int x, int y, int state)
 		else
 			tmp[1][++x] = p[i];
 	tmp[1][++x] = '\0';
+	x = -1;
 	while ((p[++i]))
 		if (!is_digit(p[i]))
 			return (0);
 		else
-			tmp[2][++y] = p[i];
-	tmp[2][++y] = '\0';
-	add_room(env, new_room(env, tmp[0], fatol(env, tmp[1]), fatol(env, tmp[2])), state);
-	env->nb_rooms++;
+			tmp[2][++x] = p[i];
+	tmp[2][++x] = '\0';
+	add_room(e, new_room(e, tmp[0], fatol(e, tmp[1]), fatol(e, tmp[2])), state);
 	return (1);
 }
 
@@ -94,17 +94,19 @@ int				interpret_line(t_env *env, const char *p)
 			return ((1));
 		return ((get_ants(env, p) ? (state = 1) : 0));
 	}
-	if (!p || (p[0] && p[0] == '#' && ft_strcmp(p, "##start") && ft_strcmp(p, "##end")))
+	if (!p || (p[0] && p[0] == '#' && ft_strcmp(p, "##start")
+		&& ft_strcmp(p, "##end")))
 		return (1);
 	if (!ft_strcmp(p, "##start") || !ft_strcmp(p, "##end"))
 	{
-		if ((!ft_strcmp(p, "##start") && env->start) || (!ft_strcmp(p, "##end") && env->end))
+		if ((!ft_strcmp(p, "##start") && env->start)
+			|| (!ft_strcmp(p, "##end") && env->end))
 			return (0);
 		return ((state = (!ft_strcmp(p, "##start") ? 2 : 3)));
 	}
 	if (state == 4)
 		return ((get_link(env, p, -1, -1) ? 4 : 0));
-	if (!(get_room(env, p, -1, -1, state)) && check_room(env, p))
+	if (!(get_room(env, p, -1, state)) && check_room(env, p))
 		return ((state = 4));
 	return ((state = 1));
 }

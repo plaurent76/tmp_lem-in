@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:13:57 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:13:58 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/29 18:11:44 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ int		is_digit(const char c)
 {
 	return ((c >= '0' && c <= '9') ? 1 : 0);
 }
-
-// int		slen(char *s)
-// {
-// 	return (*s ? slen(++s) + 1 : 0);
-// }
 
 long	labs(long n)
 {

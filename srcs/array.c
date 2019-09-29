@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eviana <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/22 12:13:42 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 12:13:42 by plaurent         ###   ########.fr       */
+/*   Created: 2019/09/29 18:08:44 by eviana            #+#    #+#             */
+/*   Updated: 2019/09/29 18:11:15 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ int		*alloc_array_int(int n, int val)
 	return (array);
 }
 
-void 	print_array_int(int *array, int n)
+void	print_array_int(int *array, int n)
 {
-	int i = -1;
+	int i;
 
+	i = -1;
 	while (++i < n && array[i] != -1)
 		(i == 0 ? ft_putnbr(array[i]) : ft_printf("\t| %d", array[i]));
 	ft_printf("\n");

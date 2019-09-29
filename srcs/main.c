@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
+/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 14:48:40 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 18:58:11 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,29 @@ void		print_start_end(t_env *env)
 	exit(EXIT_SUCCESS);
 }
 
-static void		make_magic_happen(t_env *env)
+static void	make_magic_happen(t_env *env)
 {
 	if (env->end_found <= 1)
-		perr(env, "Error: end note found or no link");
+		perr(env, "Error: end not found or no link");
 	if (link_search(env->start, env->end->name))
 		print_start_end(env);
 	anthill_complete(env);
 	if ((env->flow_max = ed_karp(env)) == 0)
 		perr(env, "Error: no path found");
-	!IS_SET_M ?	put_lines(env) : 0;
+	!IS_SET_M ? put_lines(env) : 0;
 	IS_SET_R ? print_rooms(env->graph) : 0;
 	move_colony(env);
 	deinit_env(env);
 	exit(EXIT_SUCCESS);
 }
 
-static int		get_option(t_env *env, char *av, int i)
+static int	get_option(t_env *env, char *av, int i)
 {
 	while (av[++i])
 	{
-		if ((av[i] != 'u' && av[i] != 'm' && av[i] != 'a' && av[i] != 'l'
-			&& av[i] != 'r' && av[i] != 's' && av[i] != 'v' && av[i] != 'h'
-			&& av[i] != 'e'))
+		if ((av[i] != 'u' && av[i] != 'm' && av[i] != 'a'
+			&& av[i] != 'l' && av[i] != 'r' && av[i] != 's'
+			&& av[i] != 'v' && av[i] != 'h' && av[i] != 'e'))
 			perr(env, "Error: invalid option");
 		else if ((av[i] == 'u' && IS_SET_U) || (av[i] == 'm' && IS_SET_M)
 			|| (av[i] == 'a' && IS_SET_A) || (av[i] == 'l' && IS_SET_L)
@@ -72,12 +72,32 @@ static int		get_option(t_env *env, char *av, int i)
 	return (active_bits(env->option));
 }
 
-int				main(int ac, char **av)
+void		init_env(t_env *env)
+{
+	env->t_len = 0;
+	env->graph = NULL;
+	env->start = NULL;
+	env->end = NULL;
+	env->end_found = 0;
+	env->solut = NULL;
+	env->best_solut = NULL;
+	env->best_score = 10000;
+	env->best_flow = 1;
+	env->start = NULL;
+	env->end = NULL;
+	env->nb_ants = 0;
+	env->colony = NULL;
+	env->option = 0;
+	env->first_line = NULL;
+	env->new_line = 0;
+	env->flow_max = 0;
+}
+
+int			main(int ac, char **av)
 {
 	t_env	env;
 	int		i;
 
-	//signal(SIGINT, sig_handler);
 	init_env(&env);
 	i = 0;
 	while (++i < ac && av[i] && av[i][0] == '-')

@@ -6,7 +6,7 @@
 /*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:09:47 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 17:09:57 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/29 17:14:07 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "anthill.h"
 # include "libft.h"
 # include "ft_printf.h"
+
 # define IS_SET_U		(env->option & (1 << 0))
 # define IS_SET_M		(env->option & (1 << 1))
 # define IS_SET_A		(env->option & (1 << 2))
@@ -24,6 +25,7 @@
 # define IS_SET_V		(env->option & (1 << 6))
 # define IS_SET_H		(env->option & (1 << 7))
 # define IS_SET_E		(env->option & (1 << 8))
+
 # define SET_U			(env->option |= (1 << 0))
 # define SET_M			(env->option |= (1 << 1))
 # define SET_A			(env->option |= (1 << 2))
@@ -33,6 +35,9 @@
 # define SET_H			(env->option |= (1 << 7))
 # define SET_E			(env->option |= (1 << 8))
 
+/*
+** Basics
+*/
 int				*alloc_array_int(int n, int val);
 int				*int_set(int *tab, int val, int size);
 void			free_matrix(void **mx, int depth);
@@ -75,7 +80,8 @@ void			del_ant(t_ant *ant);
 
 t_paths			*new_path(t_env *env, t_link *path);
 void			del_path(t_link **path);
-t_link			*extract_path(t_env *env, t_link *path, t_graph *cur, t_graph *tmp_g);
+t_link			*extract_path(t_env *env, t_link *path,
+				t_graph *cur, t_graph *tmp_g);
 
 void			print_array_int(int *array, int n);
 void			print_matrix_int(int **mx, int x, int y);

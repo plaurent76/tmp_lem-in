@@ -6,13 +6,13 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 20:21:23 by paullaurent       #+#    #+#             */
-/*   Updated: 2019/09/27 16:45:18 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 18:19:11 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-t_paths				*new_path(t_env *env, t_link *path)
+t_paths		*new_path(t_env *env, t_link *path)
 {
 	t_paths		*new;
 
@@ -24,7 +24,7 @@ t_paths				*new_path(t_env *env, t_link *path)
 	return (new);
 }
 
-void				del_path(t_link **path)
+void		del_path(t_link **path)
 {
 	if (!path || !(*path))
 		return ;
@@ -37,9 +37,10 @@ void				del_path(t_link **path)
 	}
 }
 
-static void			add_link_to_path(t_env *env, t_graph **cur, t_link **tmp_p, t_link **path)
+static void	add_link_to_path(t_env *env, t_graph **cur,
+		t_link **tmp_p, t_link **path)
 {
-	t_graph		*tmp;
+	t_graph	*tmp;
 
 	(*cur)->link->adjacent->visited = 2;
 	add_link(path, new_link(env, (*cur)->link->adjacent));
@@ -49,9 +50,10 @@ static void			add_link_to_path(t_env *env, t_graph **cur, t_link **tmp_p, t_link
 	(*path)->len++;
 }
 
-t_link      *extract_path(t_env *env, t_link *path, t_graph *cur, t_graph *tmp_g)
+t_link		*extract_path(t_env *env, t_link *path, t_graph *cur,
+		t_graph *tmp_g)
 {
-	t_link		*tmp_p;
+	t_link	*tmp_p;
 
 	cur->visited = 2;
 	add_link(&path, new_link(env, cur));
