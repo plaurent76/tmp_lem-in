@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:49 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/26 19:25:51 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 12:58:27 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,84 +67,3 @@ void		add_link(t_link **src, t_link *new)
 	else
 		(*src) = new;
 }
-
-// void		new_link(t_env *env, t_graph *room1, t_graph *room2)
-// {
-// 	if (!room1 || !room2)
-// 		perr(env, "Error: tried to link non-existing room");
-// 		add_link(&room1->link, new_link(room2));
-// 		add_link(&room2->link, new_link(room1));
-// }
-
-// void		link_rooms(t_env *env, t_room *room1, t_room *room2)
-// {
-// 	room1 == room2 ? perr(env, "Error: room linked to itself") : 0;
-// 	if (room1->link)
-// 	{
-// 		room1->link->next = add_link(room2, room1->link);
-// 		room1->link = room1->link->next;
-// 	}
-// 	else
-// 		room1->link = add_link(room2, NULL);
-// 	if (room2->link)
-// 	{
-// 		room2->link->next = add_link(room1, room2->link);
-// 		room2->link = room2->link->next;
-// 	}
-// 	else
-// 		room2->link = add_link(room1, NULL);
-// }
-
-// void		put_parsed_link(t_env *env, t_parsed_link *l)
-// {
-// 	(l->room1 && &(l->room1->id[0])) ? sp_putstr(1, &(l->room1->id[0]), '-')
-// 	: perr(env, "Error: no room name to print");
-// 	(l->room2 && &(l->room2->id[0])) ? sp_putstr(1, &(l->room2->id[0]), '\n')
-// 	: perr(env, "Error: no room name to print");
-// }
-
-// void		put_parsed_links(t_env *env)
-// {
-// 	t_parsed_link *parsed;
-
-// 	parsed = L1;
-// 	if (parsed->room1 && parsed->room2)
-// 	{
-// 		// put_parsed_link(env, parsed);
-// 		(parsed->room1 && &(parsed->room1->id[0]))
-// 			? sp_putstr(1, &(parsed->room1->id[0]), '-')
-// 			: perr(env, "Error: no room name to print");
-// 			(parsed->room2 && &(parsed->room2->id[0]))
-// 			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
-// 			: perr(env, "Error: no room name to print");
-// 		while (parsed->next)
-// 		{
-// 			parsed = parsed->next;
-// 			// put_parsed_link(env, parsed);
-// 			(parsed->room1 && &(parsed->room1->id[0]))
-// 			? sp_putstr(1, &(parsed->room1->id[0]), '-')
-// 			: perr(env, "Error: no room name to print");
-// 			(parsed->room2 && &(parsed->room2->id[0]))
-// 			? sp_putstr(1, &(parsed->room2->id[0]), '\n')
-// 			: perr(env, "Error: no room name to print");
-// 		}
-// 	}
-// }
-
-// void		put_links(t_env *env)
-// {
-// 	int i = -1;
-// 	int j;
-// 	char c;
-
-// 	while (++i < env->nb_rooms && ft_printf(" %d\t| ", i))
-// 	{
-// 		j = -1;
-// 		while (++j < env->nb_rooms && env->links[i][j] != -1)
-// 		{
-// 			c = (char)((env->links[i][j] == 1) ? 'X' : '-');
-// 			(j == 0 ? ft_printf("%c", c) : ft_printf(" | %c", c));
-// 		}
-// 		ft_printf("\n");
-// 	}
-// }

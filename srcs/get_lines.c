@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_lines.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:26:35 by plaurent          #+#    #+#             */
-/*   Updated: 2019/08/22 16:26:38 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/29 14:33:34 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ int				get_lines(t_env *env)
 		p[++i] = c;
 		if (c == 10)
 		{
+			if (p[i - 1] == '\0')
+				break;
+				// perr(env, "Error: empty line\n");
 			p[i] = '\0';
 			if (!*p || (*p && !interpret_line(env, p)))
 				break ;

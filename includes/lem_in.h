@@ -107,7 +107,6 @@ int				room_id_error(t_env *env, int room_id);
 int				is_room_free(t_env *env, int room_id);
 int				set_room_free(t_env *env, int room_id);
 int				set_room_busy(t_env *env, int room_id);
-void			free_parsed_rooms(t_env *env);
 
 /*
 ** ANTS
@@ -116,7 +115,7 @@ void			free_parsed_rooms(t_env *env);
 // void			ant_add_path(t_env *env, t_ant *ant, t_room *room);
 int				move_ant_forward(t_env *env, t_ant *ant);
 t_ant			*new_ant(t_env *env, t_link *path);
-// void			del_ant(t_env *env, t_ant *ant);
+void			del_ant(t_ant *ant);
 
 /*
 ** PATHS

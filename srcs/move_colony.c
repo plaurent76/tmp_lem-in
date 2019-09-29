@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:16:32 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/26 18:38:04 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 14:49:07 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,11 @@ int *get_ants_per_path(t_env *env)
 	int ants_left;
 	t_paths	*tmp;
 
-	ft_printf("debut get_ants\n");
 	(ants_per_path = alloc_array_int(env->best_flow, 0)) ? 0
 	: perr(env, "Error: ants_per_node malloc failed");
 	i = -1;
-
-	// if (env->best_solut->len)
-	// 	ft_printf("best_solut\n");
-	// if (env->best_solut->paths)
-	// 	ft_printf("paths\n");
-	// if (env->best_score)
-	// 	ft_printf("score\n");
-	// if (env->best_solut->paths->len)
-	// 	ft_printf("paths->len\n");
-
 	tmp = env->best_solut->paths;
 	ants_left = env->nb_ants;
-	ft_printf("avant 1 while et best_flow = %d\n", env->best_flow);
 	while (++i < env->best_flow && ants_left > 0)
 	{
 		if ((env->best_solut->score - (env->best_solut->paths->path->len - 1)) >= ants_left)
@@ -43,10 +31,8 @@ int *get_ants_per_path(t_env *env)
 		else if ((env->best_solut->score - (env->best_solut->paths->path->len - 1)) > 0)
 			ants_per_path[i] = env->best_solut->score - (env->best_solut->paths->path->len - 1);
         ants_left -= ants_per_path[i];
-		ft_printf("teste si ca ce fait qu'une fois\n");
 		env->best_solut->paths = env->best_solut->paths->next;
 	}
-	ft_printf("apres while 1\n");
 	env->best_solut->paths = tmp;
 	i = 0;
 	while (--ants_left >= 0)
@@ -96,6 +82,7 @@ void assign_colony(t_env *env)
 				break;
 		}
 	}
+	env->best_solut->paths = tmp;
 	free(ants_per_path);
 }
 
@@ -103,9 +90,6 @@ void put_ant(t_env *env, t_ant *ant)
 {
 	if (ant && ant->path && ant->path->adjacent)
 	{
-		// ((ant->path->current != ant->path->size) && (ant != env->colony[0]))
-		// ? write(1, " ", 1) : 0;
-		// (ant != env->colony[0] && ant->path->size == 2)
 		if (env->new_line > 0)	
 			write(1, " ", 1);
 		else
@@ -114,7 +98,6 @@ void put_ant(t_env *env, t_ant *ant)
 		sp_putlong(1, ant->n, '\0');
 		write(1, "-", 1);
 		sp_putstr(1, ant->path->adjacent->name, '\0');
-		// write(1, " ", 1);
 	}
 }
 
@@ -149,6 +132,7 @@ void move_colony(t_env *env)
 	n_line = -1;
 	n_arrived = 0;
 	assign_colony(env);
+	ft_putchar('\n');
 	while (n_arrived < env->nb_ants && (i = -1))
 	{
 		env->new_line = 0;

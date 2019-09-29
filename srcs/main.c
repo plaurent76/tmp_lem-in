@@ -6,70 +6,39 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/23 11:26:31 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 14:48:40 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-// map invalid command: il faut detecter que qd ## c est une commande qui peuvent etre invalid
-// map startisend a faire gaffe
-
-// void			flag_v(t_env *env)
-// {
-// 		int i;
-// 		int	j;
-
-// // print valid paths:
-// 		ft_printf("found %d valid paths:\n", env->nb_valid);
-// 		print_matrix_int(env->paths, env->nb_rooms, env->nb_valid);
-// 		ft_printf("\n");
-// 		ft_printf("env->node_exploration finished:\n\n node #\t| room\t| n_paths\n--------------------------\n");
-// 		ft_printf("\n");
-// 		ft_printf("optimal combo found:\nenv->best_score: %d\nenv->best_flow: %d\nenv->best_combo:\n"
-// 			, env->best_score, env->best_flow);
-// 		print_array_int(env->best_combo, env->best_flow);
-// 		ft_printf("env->best_combo: paths:\n");
-// 		i = -1;
-// 		while (++i < env->flow_max && env->best_combo[i] != -1)
-// 		{
-// 			j = -1;
-// 			while (++j < env->nb_rooms && env->paths[env->best_combo[i]][j] != -1)
-// 				ft_printf("%s-", env->room_names[env->paths[env->best_combo[i]][j]]);
-// 			ft_printf("\n len: %d \n", j);
-// 		}
-// }
-
-void			print_graph(t_graph *pack)
+void		print_start_end(t_env *env)
 {
-	t_graph	*beglp;
-	t_link	*begp;
+	int i;
 
-	beglp = pack;
-	while (pack)
+	put_lines(env);
+	i = 0;
+	ft_putchar('\n');
+	while (i < env->nb_ants)
 	{
-		ft_printf("room: %s\n", pack->name);
-		begp = pack->link;
-		ft_printf("link:	");
-		while (pack->link)
-		{
-			if (pack->link->adjacent->name)
-				ft_printf("%s", pack->link->adjacent->name);
-			if (pack->link->next)
-				ft_printf("->");
-			pack->link = pack->link->next;
-		}
-		pack->link = begp;
-		ft_printf("\n\n");
-		pack = pack->next;
+		ft_printf("L%d-%s", i + 1, env->end->name);
+		if (i != env->nb_ants - 1)
+			ft_printf(" ");
+		i++;
 	}
-	pack = beglp;
+	ft_printf("\n");
+	deinit_env(env);
+	exit(EXIT_SUCCESS);
 }
 
 static void		make_magic_happen(t_env *env)
 {
+	if (env->end_found <= 1)
+		perr(env, "Error: end note found or no link");
+	if (link_search(env->start, env->end->name))
+		print_start_end(env);
 	anthill_complete(env);
-	if (ed_karp(env) == 0)
+	if ((env->flow_max = ed_karp(env)) == 0)
 		perr(env, "Error: no path found");
 	!IS_SET_M ?	put_lines(env) : 0;
 	IS_SET_R ? print_rooms(env->graph) : 0;
@@ -115,7 +84,6 @@ int				main(int ac, char **av)
 	{
 		get_option(&env, av[i], 0);
 		(env.option & (1 << 7)) ? put_usage(&env) : 0;
-		//ajouter les autres options
 	}
 	get_lines(&env);
 	make_magic_happen(&env);

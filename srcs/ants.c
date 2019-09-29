@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:18 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/23 11:34:36 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/27 15:11:00 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,12 @@ t_ant	*new_ant(t_env *env, t_link *path)
 	a->path = path;
 	a->n = ++g_ant_id;
 	return (a);
+}
+
+void	del_ant(t_ant *ant)
+{
+	if (!ant)
+		return ;
+	free (ant);
+	ant = NULL;
 }

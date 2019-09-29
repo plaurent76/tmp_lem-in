@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/20 13:46:12 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 14:42:53 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static int		get_link(t_env *env, const char *p, int i, int j)
 	room2 = str_to_room(env, tmp);
 	add_link(&room1->link, new_link(env, room2));
 	add_link(&room2->link, new_link(env, room1));
-	// ft_printf("test");
 	return (1);
 }
 
@@ -89,7 +88,6 @@ int				interpret_line(t_env *env, const char *p)
 {
 	static int state = 0;
 
-	// sp_putlong(1, state, '\n');
 	if (state == 0)
 	{
 		if (p[0] == '#' && ft_strcmp(p, "##start") && ft_strcmp(p, "##end"))

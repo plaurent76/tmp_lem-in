@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 20:21:23 by paullaurent       #+#    #+#             */
-/*   Updated: 2019/09/26 14:45:58 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/27 16:45:18 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ void				del_path(t_link **path)
 	if ((*path)->next != NULL)
 		del_path(&(*path)->next);
 	if (path)
+	{
 		free(*path);
+		*path = NULL;
+	}
 }
 
 static void			add_link_to_path(t_env *env, t_graph **cur, t_link **tmp_p, t_link **path)

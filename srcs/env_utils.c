@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:07 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/26 19:15:26 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/09/29 12:59:04 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,31 @@
 
 static void		free_colony(t_env *env)
 {
-	// int i;
+	int i;
 
-	// i = env->nb_ants;
-	// if (env->colony)
-	// 	while (--i >= 0)
-	// 		env->colony[i] ? del_ant(env, env->colony[i]) : 0;
-	if (env->colony != NULL)
-	{
-		free(env->colony);
-		env->colony = NULL;
-	}
+	i = env->nb_ants;
+	if (env->colony)
+		while (--i >= 0)
+			env->colony[i] ? del_ant(env->colony[i]) : 0;
+	free(env->colony);
+	env->colony = NULL;
 }
 
 static void	free_graph(t_graph **g)
 {
-	if (!g || !((*g)))
-		return ;
-	if ((*g)->next != NULL)
-		free_graph(&(*g)->next);
+	t_graph	*tmp;
+
 	if (g)
 	{
-		ft_strdel(&(*g)->name);
-		del_path(&(*g)->link);
+		while (*g)
+		{
+			tmp = (*g)->next;
+			ft_strdel(&(*g)->name);
+			del_path(&(*g)->link);
+			free(*g);
+			*g = NULL;
+			(*g) = tmp;
+		}
 	}
 }
 
@@ -50,19 +52,24 @@ static void	free_paths(t_paths **p)
 	{
 		del_path(&(*p)->path);
 		free(*p);
+		*p = NULL;
 	}
 }
 
 static void	free_solut(t_solut **s)
 {
-	if (!s || !(*s))
-		return ;
-	if ((*s)->next != NULL)
-		free_solut(&(*s)->next);
+	t_solut	*tmp;
+
 	if (s)
 	{
-		free_paths(&(*s)->paths);
-		free(*s);
+		while (*s)
+		{
+			tmp = (*s)->next;
+			free_paths(&(*s)->paths);
+			free(*s);
+			*s = NULL;
+			(*s) = tmp;
+		}
 	}
 }
 
@@ -93,7 +100,6 @@ void			deinit_env(t_env *env)
 	env->start = NULL;
 	free_graph(&env->graph);
 	free_solut(&env->solut);
-	// free_solut(env->best_solut);
 	free_lines(env);
 	free_colony(env);
 }
