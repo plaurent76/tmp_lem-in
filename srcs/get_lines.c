@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:26:35 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 12:20:57 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/30 16:14:40 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int				get_lines(t_env *env)
 		if (!handler || !c)
 			break ;
 		p[++i] = c;
-		if (c == 10)
+		if (c == 10 || c == '\0')
 		{
 			if (p[i - 1] == '\0')
 				break ;

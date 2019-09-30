@@ -6,13 +6,13 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 10:46:05 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/30 15:29:05 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		print_start_end(t_env *env)
+static void	print_start_end(t_env *env)
 {
 	int i;
 
@@ -51,11 +51,13 @@ static int	get_option(t_env *env, char *av, int i)
 {
 	while (av[++i])
 	{
-		if ((av[i] != 'm' && av[i] != 'r' && av[i] != 'v'))
+		if ((av[i] != 'm' && av[i] != 'r' && av[i] != 'v' && av[i] != 'h'))
 			perr(env, "Error: invalid option");
 		else if (((av[i] == 'm' && IS_SET_M)
-			|| (av[i] == 'v' && IS_SET_V) || (av[i] == 'r' && IS_SET_R)))
+			|| (av[i] == 'v' && IS_SET_V) || (av[i] == 'r' && IS_SET_R)
+			|| (av[i] == 'h' && IS_SET_H)))
 			perr(env, "Error: duplicate option");
+		(av[i] == 'h') ? SET_H : 0;
 		(av[i] == 'm') ? SET_M : 0;
 		(av[i] == 'r') ? SET_R : 0;
 		(av[i] == 'v') ? SET_V : 0;
@@ -63,7 +65,7 @@ static int	get_option(t_env *env, char *av, int i)
 	return (active_bits(env->option));
 }
 
-void		init_env(t_env *env)
+static void	init_env(t_env *env)
 {
 	env->t_len = 0;
 	env->graph = NULL;

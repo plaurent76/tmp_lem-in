@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:12 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 18:55:12 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/30 15:05:51 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int		get_ants(t_env *env, const char *p)
 static int		get_room(t_env *e, const char *p, int x, int state)
 {
 	int		i;
-	char	tmp[3][256];
+	char	tmp[3][1024];
 
 	i = -1;
 	while (!p[++i] || !is_space(p[i]))
@@ -53,7 +53,7 @@ static int		get_link(t_env *env, const char *p, int i, int j)
 {
 	t_graph	*room1;
 	t_graph	*room2;
-	char	tmp[256];
+	char	tmp[1024];
 
 	if (env->end_found++ == 1)
 		add_room(env, env->end, 0);
@@ -63,14 +63,16 @@ static int		get_link(t_env *env, const char *p, int i, int j)
 		else
 			tmp[i] = p[i];
 	tmp[i] = '\0';
-	room1 = str_to_room(env, tmp);
+	if (!(room1 = str_to_room(env, tmp)))
+		return (0);
 	while (p[++i])
 		if (is_space(p[i]) || p[i] == 'L' || p[i] == '#')
 			return (0);
 		else
 			tmp[++j] = p[i];
 	tmp[++j] = '\0';
-	room2 = str_to_room(env, tmp);
+	if (!(room2 = str_to_room(env, tmp)))
+		return (0);
 	add_link(&room1->link, new_link(env, room2));
 	add_link(&room2->link, new_link(env, room1));
 	return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:54 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 18:29:33 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/30 14:40:36 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@ void		put_usage(t_env *env)
 	sp_putstr(1,
 		"Usage: ./lem-in [OPTION]... [INPUT]\n"
 		"       ./lem-in [OPTION]... < [FILE]\n\n"
-		"  -u\tuncomment: hides comments on output\n"
 		"  -m\tmute: hides execution output\n"
 		"  -v\tverbose: displays solver full output\n"
 		"  -r\trooms: displays room list\n"
-		"  -l\tlinks: displays link matrix\n"
-		"  -a\tants: displays colony details\n"
 		, '\0');
 	deinit_env(env);
 	exit(0);

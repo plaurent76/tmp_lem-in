@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   solut.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/16 20:21:32 by paullaurent       #+#    #+#             */
-/*   Updated: 2019/09/29 17:50:54 by eviana           ###   ########.fr       */
+/*   Created: 2019/09/30 15:37:06 by plaurent          #+#    #+#             */
+/*   Updated: 2019/09/30 15:37:09 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void			add_to_paths(t_paths **paths, t_paths *new)
+static void		add_to_paths(t_paths **paths, t_paths *new)
 {
 	t_paths	*tmp;
 
@@ -28,7 +28,7 @@ void			add_to_paths(t_paths **paths, t_paths *new)
 		*paths = new;
 }
 
-t_paths			*extract_paths(t_env *env)
+static t_paths	*extract_paths(t_env *env)
 {
 	t_paths	*new_paths;
 	t_link	*new_p;
@@ -43,7 +43,7 @@ t_paths			*extract_paths(t_env *env)
 	return (new_paths);
 }
 
-t_solut			*new_solut(t_env *env, t_paths *paths, int flow_max)
+static t_solut	*new_solut(t_env *env, t_paths *paths, int flow_max)
 {
 	t_solut	*tmp;
 

@@ -6,13 +6,13 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 14:27:10 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 14:27:54 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/30 16:10:31 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	empty_ants_left(t_env *env, int *ants_per_path, int ants_left)
+static void	empty_ants_left(t_env *env, int *ants_per_path, int ants_left)
 {
 	int i;
 
@@ -27,7 +27,7 @@ void	empty_ants_left(t_env *env, int *ants_per_path, int ants_left)
 	}
 }
 
-int		*get_ants_per_path(t_env *env)
+static int	*get_ants_per_path(t_env *env)
 {
 	int		*ants_per_path;
 	int		i;
@@ -53,7 +53,7 @@ int		*get_ants_per_path(t_env *env)
 	return (ants_per_path);
 }
 
-int		test(t_env *env, int id_path, t_paths *tmp)
+static int	next_path(t_env *env, int id_path, t_paths *tmp)
 {
 	if (id_path == (env->best_flow - 1) && !(id_path = 0))
 		env->best_solut->paths = tmp;
@@ -65,7 +65,7 @@ int		test(t_env *env, int id_path, t_paths *tmp)
 	return (id_path);
 }
 
-void	assign_colony(t_env *env)
+void		assign_colony(t_env *env)
 {
 	int		i;
 	int		*ants_per_path;
@@ -85,7 +85,7 @@ void	assign_colony(t_env *env)
 		ants_per_path[id_path]--;
 		while (i != (env->nb_ants - 1))
 		{
-			id_path = test(env, id_path, tmp);
+			id_path = next_path(env, id_path, tmp);
 			if (ants_per_path[id_path] != 0)
 				break ;
 		}

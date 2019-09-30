@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:07 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 18:57:07 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/30 14:50:40 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,51 +24,51 @@ static void		free_colony(t_env *env)
 	env->colony = NULL;
 }
 
-static void		free_graph(t_graph **g)
+static void		free_graph(t_graph **graph)
 {
 	t_graph	*tmp;
 
-	if (g)
+	if (graph)
 	{
-		while (*g)
+		while (*graph)
 		{
-			tmp = (*g)->next;
-			ft_strdel(&(*g)->name);
-			del_path(&(*g)->link);
-			free(*g);
-			*g = NULL;
-			(*g) = tmp;
+			tmp = (*graph)->next;
+			ft_strdel(&(*graph)->name);
+			del_path(&(*graph)->link);
+			free(*graph);
+			*graph = NULL;
+			(*graph) = tmp;
 		}
 	}
 }
 
-static void		free_paths(t_paths **p)
+static void		free_paths(t_paths **paths)
 {
-	if (!p || !(*p))
+	if (!paths || !(*paths))
 		return ;
-	if ((*p)->next != NULL)
-		free_paths(&(*p)->next);
-	if (p)
+	if ((*paths)->next != NULL)
+		free_paths(&(*paths)->next);
+	if (paths)
 	{
-		del_path(&(*p)->path);
-		free(*p);
-		*p = NULL;
+		del_path(&(*paths)->path);
+		free(*paths);
+		*paths = NULL;
 	}
 }
 
-static void		free_solut(t_solut **s)
+static void		free_solut(t_solut **solut)
 {
 	t_solut	*tmp;
 
-	if (s)
+	if (solut)
 	{
-		while (*s)
+		while (*solut)
 		{
-			tmp = (*s)->next;
-			free_paths(&(*s)->paths);
-			free(*s);
-			*s = NULL;
-			(*s) = tmp;
+			tmp = (*solut)->next;
+			free_paths(&(*solut)->paths);
+			free(*solut);
+			*solut = NULL;
+			(*solut) = tmp;
 		}
 	}
 }
