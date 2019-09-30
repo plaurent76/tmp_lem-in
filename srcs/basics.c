@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:13:57 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 18:11:44 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/30 10:27:08 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ int		is_space(const char c)
 int		is_digit(const char c)
 {
 	return ((c >= '0' && c <= '9') ? 1 : 0);
-}
-
-long	labs(long n)
-{
-	return (n > 0 ? n : -n);
 }
 
 int		active_bits(int c)

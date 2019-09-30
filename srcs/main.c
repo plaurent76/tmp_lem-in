@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:11:43 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 18:58:11 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/30 10:46:05 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,14 @@ static int	get_option(t_env *env, char *av, int i)
 {
 	while (av[++i])
 	{
-		if ((av[i] != 'u' && av[i] != 'm' && av[i] != 'a'
-			&& av[i] != 'l' && av[i] != 'r' && av[i] != 's'
-			&& av[i] != 'v' && av[i] != 'h' && av[i] != 'e'))
+		if ((av[i] != 'm' && av[i] != 'r' && av[i] != 'v'))
 			perr(env, "Error: invalid option");
-		else if ((av[i] == 'u' && IS_SET_U) || (av[i] == 'm' && IS_SET_M)
-			|| (av[i] == 'a' && IS_SET_A) || (av[i] == 'l' && IS_SET_L)
-			|| (av[i] == 'v' && IS_SET_V) || (av[i] == 'h' && IS_SET_H)
-			|| (av[i] == 'e' && IS_SET_E) || (av[i] == 'r' && IS_SET_R))
+		else if (((av[i] == 'm' && IS_SET_M)
+			|| (av[i] == 'v' && IS_SET_V) || (av[i] == 'r' && IS_SET_R)))
 			perr(env, "Error: duplicate option");
-		(av[i] == 'u') ? SET_U : 0;
 		(av[i] == 'm') ? SET_M : 0;
-		(av[i] == 'a') ? SET_A : 0;
-		(av[i] == 'l') ? SET_L : 0;
 		(av[i] == 'r') ? SET_R : 0;
 		(av[i] == 'v') ? SET_V : 0;
-		(av[i] == 'h') ? SET_H : 0;
-		(av[i] == 'e') ? SET_E : 0;
 	}
 	return (active_bits(env->option));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/29 17:09:47 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 17:14:07 by eviana           ###   ########.fr       */
+/*   Created: 2019/09/30 10:07:16 by plaurent          #+#    #+#             */
+/*   Updated: 2019/09/30 10:44:14 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,15 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-# define IS_SET_U		(env->option & (1 << 0))
 # define IS_SET_M		(env->option & (1 << 1))
-# define IS_SET_A		(env->option & (1 << 2))
-# define IS_SET_L		(env->option & (1 << 3))
 # define IS_SET_R		(env->option & (1 << 4))
 # define IS_SET_V		(env->option & (1 << 6))
-# define IS_SET_H		(env->option & (1 << 7))
-# define IS_SET_E		(env->option & (1 << 8))
 
-# define SET_U			(env->option |= (1 << 0))
 # define SET_M			(env->option |= (1 << 1))
-# define SET_A			(env->option |= (1 << 2))
-# define SET_L			(env->option |= (1 << 3))
 # define SET_R			(env->option |= (1 << 4))
 # define SET_V			(env->option |= (1 << 6))
-# define SET_H			(env->option |= (1 << 7))
-# define SET_E			(env->option |= (1 << 8))
 
-/*
-** Basics
-*/
 int				*alloc_array_int(int n, int val);
-int				*int_set(int *tab, int val, int size);
-void			free_matrix(void **mx, int depth);
-long			labs(long n);
 int				active_bits(int c);
 int				is_space(const char c);
 int				is_digit(const char c);
@@ -57,7 +41,6 @@ void			free_lines(t_env *env);
 int				get_lines(t_env *env);
 void			put_lines(t_env *env);
 
-void			sig_handler(int sig);
 void			put_usage(t_env *env);
 void			perr(t_env *env, const char *err_msg);
 int				anthill_complete(t_env *env);
@@ -69,10 +52,6 @@ t_link			*link_search(t_graph *graph, char *name);
 void			add_room(t_env *env, t_graph *new, int state);
 t_graph			*new_room(t_env *env, char *name, long x, long y);
 t_graph			*str_to_room(t_env *env, const char *s);
-int				room_id_error(t_env *env, int room_id);
-int				is_room_free(t_env *env, int room_id);
-int				set_room_free(t_env *env, int room_id);
-int				set_room_busy(t_env *env, int room_id);
 
 int				move_ant_forward(t_env *env, t_ant *ant);
 t_ant			*new_ant(t_env *env, t_link *path);
@@ -81,11 +60,9 @@ void			del_ant(t_ant *ant);
 t_paths			*new_path(t_env *env, t_link *path);
 void			del_path(t_link **path);
 t_link			*extract_path(t_env *env, t_link *path,
-				t_graph *cur, t_graph *tmp_g);
+		t_graph *cur, t_graph *tmp_g);
 
 void			print_array_int(int *array, int n);
-void			print_matrix_int(int **mx, int x, int y);
-void			print_matrix_char(char **mx, int x, int y);
 void			print_solut(t_solut *solut, int *ants_per_path);
 void			print_rooms(t_graph *graph);
 

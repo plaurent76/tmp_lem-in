@@ -3,30 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   anthill.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/29 17:15:21 by eviana            #+#    #+#             */
-/*   Updated: 2019/09/29 18:50:34 by eviana           ###   ########.fr       */
+/*   Created: 2019/09/30 10:13:15 by plaurent          #+#    #+#             */
+/*   Updated: 2019/09/30 10:37:01 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ANTHILL_H
 # define ANTHILL_H
 
-typedef struct s_graph t_graph;
-typedef struct s_link t_link;
-typedef struct s_ant t_ant;
-typedef struct s_queue t_queue;
-typedef struct s_paths t_paths;
-typedef struct s_solut t_solut;
-typedef struct s_env t_env;
-typedef struct s_lines t_lines;
-
 typedef struct		s_graph
 {
 	char			*name;
 	int				visited;
-	t_link			*link;
+	struct s_link	*link;
 	int				x;
 	int				y;
 	int				ant;
@@ -44,14 +35,14 @@ typedef struct		s_link
 
 typedef struct		s_queue
 {
-	t_graph			*graph;
+	struct s_graph	*graph;
 	struct s_queue	*next;
 }					t_queue;
 
 typedef struct		s_paths
 {
 	int				len;
-	t_link			*path;
+	struct s_link	*path;
 	struct s_paths	*next;
 }					t_paths;
 
@@ -59,15 +50,22 @@ typedef struct		s_solut
 {
 	int				len;
 	int				score;
-	t_paths			*paths;
+	struct s_paths	*paths;
 	struct s_solut	*next;
 }					t_solut;
 
 typedef struct		s_ant
 {
 	int				n;
-	t_link			*path;
+	struct s_link	*path;
 }					t_ant;
+
+typedef struct		s_lines
+{
+	char			*txt;
+	struct s_lines	*prev;
+	struct s_lines	*next;
+}					t_lines;
 
 typedef struct		s_env
 {
@@ -87,12 +85,5 @@ typedef struct		s_env
 	int				nb_ants;
 	int				t_len;
 }					t_env;
-
-typedef struct		s_lines
-{
-	char			*txt;
-	struct s_lines	*prev;
-	struct s_lines	*next;
-}					t_lines;
 
 #endif

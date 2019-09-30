@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_lines.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
+/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 16:26:35 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 18:15:15 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/30 12:20:57 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,6 @@ void			put_lines(t_env *env)
 	(l && l->txt) ? 0 : perr(env, "Error: no anthill to print");
 	while (l)
 	{
-		if (IS_SET_U && l->txt[0] == '#'
-			&& ft_strcmp(l->txt, "##start") && ft_strcmp(l->txt, "##end"))
-		{
-			l = l->next;
-			continue;
-		}
 		sp_putstr(1, l->txt, '\n');
 		l = l->next;
 	}
@@ -87,7 +81,7 @@ int				get_lines(t_env *env)
 	i = -1;
 	while ((handler = read(0, &c, 1)) >= 0)
 	{
-		if (!handler)
+		if (!handler || !c)
 			break ;
 		p[++i] = c;
 		if (c == 10)

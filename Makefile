@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eviana <eviana@student.42.fr>              +#+  +:+       +#+         #
+#    By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/21 15:01:58 by eviana            #+#    #+#              #
-#    Updated: 2019/09/29 18:57:24 by eviana           ###   ########.fr        #
+#    Updated: 2019/09/30 14:28:25 by plaurent         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,11 @@ COMMON =	main \
 			parser \
 			parser_utils \
 			move_colony \
-			ek	\
-			solut	\
+			ek \
+			solut \
 			queue_utils	\
 			print_utils	\
+			assign_colony \
 			path_utils
 
 SRC_FILES = $(addsuffix $(SRC_SUFFIX),$(COMMON))
