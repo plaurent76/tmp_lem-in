@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_colony.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:16:32 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/29 19:40:51 by eviana           ###   ########.fr       */
+/*   Updated: 2019/09/29 23:31:09 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,18 @@ int		*get_ants_per_path(t_env *env)
 	return (ants_per_path);
 }
 
+int		test(t_env *env, int id_path, t_paths *tmp)
+{
+	if (id_path == (env->best_flow - 1) && !(id_path = 0))
+		env->best_solut->paths = tmp;
+	else
+	{
+		id_path++;
+		env->best_solut->paths = env->best_solut->paths->next;
+	}
+	return (id_path);
+}
+
 void	assign_colony(t_env *env)
 {
 	int		i;
@@ -68,22 +80,12 @@ void	assign_colony(t_env *env)
 	tmp = env->best_solut->paths;
 	while (++i < env->nb_ants)
 	{
-		IS_SET_V ? ft_printf("new ant #%d in colony: using node %d\n"
-				, i, id_path) : 0;
+		IS_SET_V ? ft_printf("ant #%d using node %d\n", i, id_path) : 0;
 		env->colony[i] = new_ant(env, env->best_solut->paths->path);
 		ants_per_path[id_path]--;
 		while (i != (env->nb_ants - 1))
 		{
-			if (id_path == (env->best_flow - 1))
-			{
-				id_path = 0;
-				env->best_solut->paths = tmp;
-			}
-			else
-			{
-				id_path++;
-				env->best_solut->paths = env->best_solut->paths->next;
-			}
+			id_path = test(env, id_path, tmp);
 			if (ants_per_path[id_path] != 0)
 				break ;
 		}
