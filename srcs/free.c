@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:07 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 14:50:40 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/30 17:20:39 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,18 @@ static void		free_graph(t_graph **graph)
 
 static void		free_paths(t_paths **paths)
 {
-	if (!paths || !(*paths))
-		return ;
-	if ((*paths)->next != NULL)
-		free_paths(&(*paths)->next);
+	t_paths	*tmp;
+
 	if (paths)
 	{
-		del_path(&(*paths)->path);
-		free(*paths);
-		*paths = NULL;
+		while (*paths)
+		{
+			tmp = (*paths)->next;
+			del_path(&(*paths)->path);
+			free(*paths);
+			*paths = NULL;
+			(*paths) = tmp;
+		}
 	}
 }
 

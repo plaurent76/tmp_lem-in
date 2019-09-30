@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 14:27:10 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 16:10:31 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/30 17:05:44 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@ static void	empty_ants_left(t_env *env, int *ants_per_path, int ants_left)
 	int i;
 
 	i = 0;
-	while (--ants_left >= 0)
+	while (ants_left >= 0)
 	{
 		if (ants_per_path[i] > 0)
 		{
+			ants_left--;
 			ants_per_path[i]++;
 			i = (i == (env->best_flow - 1)) ? 0 : (i + 1);
 		}
+		else
+			i++;
 	}
 }
 
