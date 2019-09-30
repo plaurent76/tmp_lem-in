@@ -6,7 +6,7 @@
 /*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:07:16 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 15:38:28 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/09/30 18:23:07 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # define SET_V			(env->option |= (1 << 6))
 # define SET_H			(env->option |= (1 << 7))
 
-
 int				*alloc_array_int(int n, int val);
 int				active_bits(int c);
 int				is_space(const char c);
@@ -36,7 +35,6 @@ int				sp_putlong(int fd, long n, char end);
 int				sp_putstr(int fd, const char *s, char end);
 int				sp_strcpy(char *dest, const char *src, char c);
 long			fatol(t_env *env, const char *str);
-// void			init_env(t_env *env);
 void			deinit_env(t_env *env);
 
 int				interpret_line(t_env *env, const char *p);
@@ -76,6 +74,5 @@ void			move_colony(t_env *env);
 int				ed_karp(t_env *env);
 void			extract_solut(t_env *env, int flow_max);
 t_solut			*new_soluc(t_env *env, t_paths *paths, int flow_max);
-// t_paths			*extract_paths(t_env *env);
 
 #endif
