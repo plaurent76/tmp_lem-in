@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eviana <eviana@student.42.fr>              +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 11:41:55 by paullaurent       #+#    #+#             */
-/*   Updated: 2019/09/29 18:27:32 by eviana           ###   ########.fr       */
+/*   Updated: 2019/10/03 11:07:50 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_solut(t_solut *solut, int *app)
 
 	tmp_paths = solut->paths;
 	i = 0;
-	ft_printf("env->best_solut: \n");
+	ft_printf("env->flow: %d\n", solut->len);
 	while (solut->paths)
 	{
 		ft_printf("path: %d\n", ++i);

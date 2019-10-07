@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:07:16 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 18:23:07 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/10/07 11:56:43 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@
 # include "ft_printf.h"
 
 # define IS_SET_M		(env->option & (1 << 1))
+# define IS_SET_C		(env->option & (1 << 2))
 # define IS_SET_R		(env->option & (1 << 4))
 # define IS_SET_V		(env->option & (1 << 6))
 # define IS_SET_H		(env->option & (1 << 7))
 
 # define SET_M			(env->option |= (1 << 1))
+# define SET_C			(env->option |= (1 << 2))
 # define SET_R			(env->option |= (1 << 4))
 # define SET_V			(env->option |= (1 << 6))
 # define SET_H			(env->option |= (1 << 7))

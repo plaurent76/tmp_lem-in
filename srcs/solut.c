@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solut.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plaurent <plaurent@student.42.fr>          +#+  +:+       +#+        */
+/*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 15:37:06 by plaurent          #+#    #+#             */
-/*   Updated: 2019/09/30 15:37:09 by plaurent         ###   ########.fr       */
+/*   Updated: 2019/10/07 15:04:13 by paullaurent      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void			extract_solut(t_env *env, int flow_max)
 		while (env->solut->next)
 			env->solut = env->solut->next;
 		env->solut->score = (env->t_len + env->nb_ants) / env->solut->len - 1;
-		if (env->solut->len <= 3 || env->best_score > env->solut->score)
+		if (env->solut->len <= 3 || env->best_score >= env->solut->score)
 		{
 			env->best_score = env->solut->score;
 			env->best_solut = env->solut;
