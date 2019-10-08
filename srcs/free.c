@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 12:12:07 by plaurent          #+#    #+#             */
-/*   Updated: 2019/10/07 11:55:29 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/10/08 13:24:03 by plaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		free_colony(t_env *env)
 	env->colony = NULL;
 }
 
-static void		free_graph(t_graph **graph)
+static void		free_graph(t_graph **graph, t_env *env)
 {
 	t_graph	*tmp;
 
@@ -32,6 +32,8 @@ static void		free_graph(t_graph **graph)
 	{
 		while (*graph)
 		{
+			if (env->end && !ft_strcmp((*graph)->name, env->end->name))
+				env->end = NULL;
 			tmp = (*graph)->next;
 			ft_strdel(&(*graph)->name);
 			del_path(&(*graph)->link);
@@ -39,6 +41,13 @@ static void		free_graph(t_graph **graph)
 			*graph = NULL;
 			(*graph) = tmp;
 		}
+	}
+	if (env->end)
+	{
+		ft_strdel(&(env->end)->name);
+		del_path(&(env->end)->link);
+		free(env->end);
+		env->end = NULL;
 	}
 }
 
@@ -79,7 +88,7 @@ static void		free_solut(t_solut **solut)
 void			deinit_env(t_env *env)
 {
 	env->start = NULL;
-	free_graph(&env->graph);
+	free_graph(&env->graph, env);
 	free_solut(&env->solut);
 	free_lines(env);
 	free_colony(env);
