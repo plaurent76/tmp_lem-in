@@ -6,7 +6,7 @@
 /*   By: paullaurent <paullaurent@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 14:27:10 by plaurent          #+#    #+#             */
-/*   Updated: 2019/10/07 14:59:14 by paullaurent      ###   ########.fr       */
+/*   Updated: 2019/10/08 12:00:48 by eviana           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static void	empty_ants_left(t_env *env, int *ants_per_path, int ants_left)
 	}
 }
 
-static int	*assign(t_env *env, int *ants_per_path, int ants_left)
+static int	*assign(t_env *env, int *app, int ants_left)
 {
 	int		i;
 	int		j;
-	int		best_len;
+	int		len;
 	t_paths	*tmp;
 
 	i = -1;
@@ -42,21 +42,21 @@ static int	*assign(t_env *env, int *ants_per_path, int ants_left)
 	while (ants_left > 0)
 	{
 		tmp = env->best_solut->paths;
-		best_len = 0;
+		len = 0;
 		j = 0;
 		while (++i < env->best_flow)
 		{
-			if (best_len == 0 || (best_len > (tmp->path->len + ants_per_path[i])))
+			if (len == 0 || (len > (tmp->path->len + app[i])))
 			{
 				j = i;
-				best_len = tmp->path->len;
+				len = tmp->path->len;
 			}
 			tmp = tmp->next;
 		}
-		ants_per_path[j]++;
+		app[j]++;
 		ants_left--;
 	}
-	return (ants_per_path);
+	return (app);
 }
 
 static int	*get_ants_per_path(t_env *env)
@@ -87,14 +87,19 @@ static int	*get_ants_per_path(t_env *env)
 	return (ants_per_path);
 }
 
-static int	next_path(t_env *env, int id_path, t_paths *tmp)
+static int	next_path(t_env *env, int id_path, t_paths *tmp, int *app)
 {
-	if (id_path == (env->best_flow - 1) && !(id_path = 0))
-		env->best_solut->paths = tmp;
-	else
+	while (1)
 	{
-		id_path++;
-		env->best_solut->paths = env->best_solut->paths->next;
+		if (id_path == (env->best_flow - 1) && !(id_path = 0))
+			env->best_solut->paths = tmp;
+		else
+		{
+			id_path++;
+			env->best_solut->paths = env->best_solut->paths->next;
+		}
+		if (app[id_path] != 0)
+			return (id_path);
 	}
 	return (id_path);
 }
@@ -120,12 +125,8 @@ void		assign_colony(t_env *env)
 			ants_per_path[id_path]--;
 			IS_SET_V ? ft_printf("ant #%d using node %d\n", i, id_path) : 0;
 		}
-		while (i < (env->nb_ants - 1))
-		{
-			id_path = next_path(env, id_path, tmp);
-			if (ants_per_path[id_path] != 0)
-				break ;
-		}
+		if (i < (env->nb_ants - 1))
+			id_path = next_path(env, id_path, tmp, ants_per_path);
 	}
 	env->best_solut->paths = tmp;
 	free(ants_per_path);
